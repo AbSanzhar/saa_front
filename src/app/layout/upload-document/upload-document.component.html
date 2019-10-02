@@ -1,0 +1,50 @@
+<div class="container">
+    <p class="message" [ngClass]="message.type" *ngIf="message.type">
+      {{message.text}}
+    </p>
+    <div class="formBox">
+      <form [formGroup]='docUploadForm' (ngSubmit)="onSubmit()" enctype="multipart/form-data" method="post" action="/submit">
+          <div class="row">
+            <div class="col-sm-12">
+              <h1>upload file</h1>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="inputBox" [class.focus]="docUploadForm.get('docName').value">
+                <div class="inputText">Title</div>
+                <input type="text" name="" class="input" formControlName="docName">
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="inputBox" [class.focus]="docUploadForm.get('docType').value">
+                <div class="inputText">Type</div>
+                <input type="text" name="" class="input" formControlName="docType">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="inputBox" style="border-bottom: 1px solid rgba(0,0,0,.5);">
+                <div class="inputText" [class.focus]="file">
+                  <span *ngIf="file" style="color: #3eaaf4">{{file.name}}</span>
+                  <span *ngIf="!file">Upload your file</span>
+                </div>
+                <input type="file" name="" accept="*/*" multiple class="input" formControlName="docFile"  (change)="onFileChange($event.target.files)">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <button type="submit" class="button"  [disabled]="this.docUploadForm.invalid" [class.disabled]="this.docUploadForm.invalid" >
+                <i class="fa fa-file" aria-hidden="true"></i> Upload File
+              </button>
+            </div>
+          </div>
+      </form>
+    </div>
+  </div>

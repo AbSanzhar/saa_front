@@ -1,0 +1,701 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="osahan-account-page-left shadow-sm bg-white">
+                <div class="border-bottom p-4">
+                    <div class="osahan-user text-center">
+                        <div class="osahan-user-media">
+                            <img class="mb-3 rounded-pill shadow-sm mt-1" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="gurdeep singh osahan">
+                            <div class="osahan-user-media-body">
+                                <h6 class="mb-2">{{ user.firstName }} {{ user.lastName }}</h6>
+                                <p class="mb-1" *ngIf="user.usersDepts">{{user.usersDepts[0].deptName}}</p>
+                                <p class="mb-1">{{user.email}}</p>
+                                <p  class="mb-1" *ngIf="headDep">Вы заведующий этой кафедры</p>
+                                <div class="row text-center">
+                                    <p class="col-12 mb-0 text-black font-weight-bold text-center" style="justify-content: center"><a class="text-primary mr-3" data-toggle="modal" data-target="#edit-profile-modal" (click)="updatePublication()"><i class="far fa-edit"></i> EDIT</a></p>
+                                    <p class="mt-3 col-12 mb-0 text-black font-weight-bold text-center" routerLink="/year-plan"><a class="text-primary mr-3" data-toggle="modal" data-target="#edit-profile-modal"><i class="far fa-calendar"></i> YEAR PLAN</a></p>
+                                </div>
+                              <hr>
+                              <button *ngIf="!updatePub && selectTable == 2" class="btn btn-warning" type="submit" data-toggle="modal" data-target="#exampleModal1">Cоздать мероприятие</button>
+                              <button *ngIf="!updatePub && selectTable == 1" class="btn btn-warning" type="submit" data-toggle="modal" data-target="#exampleModal">Cоздать публикацию</button>
+                              <button *ngIf="!updatePub" class="btn btn-warning my-3" type="submit" (click)="genereatePubPDF()">Cоздать cписок научных трудов</button>
+                              <button *ngIf="!updatePub && disRole" class="btn btn-warning " type="submit"  data-toggle="modal" data-target="#exampleModalCenter">Cоздать Диссовет</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="osahan-account-page-right shadow-sm bg-white p-4 h-100">
+                <div class="tab-content" id="myTabContent">
+                  <div class="list-group list-group-horizontal" id="list-tab" role="tablist">
+                    <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home"  (click)="selectTable = 1">Мои публикации</a>
+                    <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile" (click)="selectTable = 2">Мои мероприятия</a>
+                    <a *ngIf="headDep" class="list-group-item list-group-item-action" id="list-profile-list1" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile" (click)="selectTable = 3">Мои сотрудники</a>
+                    <a *ngIf="disRole || disMemRole" class="list-group-item list-group-item-action" id="list-profile-list2" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile" (click)="selectTable = 4">Мои диссоветы</a>
+                  </div>
+                    <div class="tab-pane fade  active show" id="favourites" role="tabpanel" aria-labelledby="favourites-tab" *ngIf="selectTable == 1">
+                      <div class="row">
+                        <div class="col">
+                          <label>От</label>
+                          <input type="date" [formControl]="startPubDate" class="form-control" (change)="changeStartDate()">
+
+                        </div>
+                        <div class="col">
+                          <label>До</label>
+                          <input type="date" [formControl]="endPubDate" class="form-control" (change)="changeEndDate()">
+                        </div>
+                      </div>
+<!--                      {{startDate}}-->
+<!--                      {{endDate}}-->
+                      <p class="message" [ngClass]="message.type" *ngIf="!message.hide">
+                        {{message.text}}
+                      </p>
+                        <div class="row">
+                          <form *ngIf="!updatePub">
+                          <table class="table  table-bordered table-hover table-sm my-2" *ngIf="reloadPublications">
+                            <thead class="thead-dark">
+                            <tr>
+                              <th scope="col" colspan="1" rowspan="1">№</th>
+                              <th scope="col" colspan="1" rowspan="1">Тип публикации</th>
+                              <th scope="col" colspan="1">Соавторы</th>
+                              <th scope="col" colspan="1">Название публикации</th>
+                              <th scope="col" colspan="1">Год</th>
+                              <th scope="col" colspan="1">Город</th>
+                              <th scope="col" colspan="1">Издатель</th>
+                              <th scope="col" colspan="1">Страница</th>
+                              <th scope="col" colspan="1">URL</th>
+                              <th scope="col" colspan="1">DOI</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let results of publications;" (click)="downloadPublicationFile(results.pubFile)">
+                                <td>{{results.pubId}}</td>
+                              <td>{{results.pubType}}</td>
+                              <td>{{results.pubCoAuthor}}</td>
+                                <td>{{results.pubName}}</td>
+                              <td>{{results.pubYear}}</td>
+                              <td>{{results.pubCity}}</td>
+                              <td>{{results.pubPubName}}</td>
+                              <td>{{results.pubPage}}</td>
+                              <td>{{results.pubUrl}}</td>
+                              <td>{{results.pubDoi}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          </form>
+
+                          <form *ngIf="updatePub" [formGroup]="updatePubForm" class="table-responsive">
+                            <table class="table  table-bordered table-hover table-sm" *ngIf="reloadPublications">
+                              <thead class="thead-dark">
+                              <tr>
+                                <th scope="col" colspan="1" rowspan="1">№</th>
+                                <th scope="col" colspan="1" rowspan="1">Тип публикации</th>
+                                <th scope="col" colspan="1">Соавторы</th>
+                                <th scope="col" colspan="1">Название публикации</th>
+                                <th scope="col" colspan="1">Год</th>
+                                <th scope="col" colspan="1">Город</th>
+                                <th scope="col" colspan="1">Издатель</th>
+                                <th scope="col" colspan="1">Страница</th>
+                                <th scope="col" colspan="1">URL</th>
+                                <th scope="col" colspan="1">DOI</th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <tr>
+                                <td>
+                                  <div formArrayName="updatePubId" *ngFor="let pubIds of updatePubId.controls; let i=index">
+                                    <input type="number" class="form-control my-1" [formControlName]="i" readonly>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div formArrayName="pubType" *ngFor="let pubIds of pubType.controls; let i=index">
+                                    <select class="form-control mb-1 mt-1" id="publicationTypeUpdate" [formControlName]="i">
+                                      <option value="Материалы конференции">Материалы конференции</option>
+                                      <option value="Монография">Монография</option>
+                                      <option value="Учебник">Учебник</option>
+                                      <option value="Пособие">Пособие</option>
+                                      <option value="Охранный документ">Охранный документ</option>
+                                      <option value="Периодическое издание">Периодическое издание</option>
+                                    </select>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div formArrayName="pubCoAuthor" *ngFor="let pubIds of pubCoAuthor.controls; let i=index">
+                                    <input type="text" class="form-control my-1" [formControlName]="i">
+                                  </div>
+                                </td>
+                                <td>
+                                  <div formArrayName="pubName" *ngFor="let pubIds of pubName.controls; let i=index">
+                                    <input [class.is-invalid]="pubName.invalid"  type="text" class="form-control my-1" [formControlName]="i">
+                                  </div>
+                                </td>
+                                <td>
+                                  <div formArrayName="pubYear" *ngFor="let pubIds of pubYear.controls; let i=index">
+                                    <input type="date" class="form-control my-1" [formControlName]="i">
+                                  </div>
+                                </td>
+                                <td>
+                                  <div formArrayName="pubCity" *ngFor="let pubIds of pubCity.controls; let i=index">
+                                    <input type="text" class="form-control my-1" [formControlName]="i">
+                                  </div>
+                                </td>
+                                <td>
+                                  <div formArrayName="pubPubName" *ngFor="let pubIds of pubPubName.controls; let i=index">
+                                    <input type="text" class="form-control my-1" [formControlName]="i">
+                                  </div>
+                                </td>
+                                <td>
+                                  <div formArrayName="pubPage" *ngFor="let pubIds of pubPage.controls; let i=index">
+                                    <input type="number" class="form-control my-1" [formControlName]="i">
+                                  </div>
+                                </td>
+                                <td>
+                                  <div formArrayName="pubUrl" *ngFor="let pubIds of pubUrl.controls; let i=index">
+                                    <input type="text" class="form-control my-1" [formControlName]="i">
+                                  </div>
+                                </td>
+                                <td>
+                                  <div formArrayName="pubDoi" *ngFor="let pubIds of pubDoi.controls; let i=index">
+                                    <input type="number" class="form-control my-1" [formControlName]="i">
+                                  </div>
+                                </td>
+                              </tr>
+                              </tbody>
+                            </table>
+                          </form>
+                        </div>
+                    </div>
+
+
+                  <div class="tab-pane fade  active show" id="favourites1" role="tabpanel" aria-labelledby="favourites-tab" *ngIf="selectTable == 2">
+                    <p class="message" [ngClass]="message.type" *ngIf="!message.hide">
+                      {{message.text}}
+                    </p>
+                    <div class="row">
+                      <form *ngIf="!updatePub">
+                        <table class="table  table-bordered table-hover table-sm my-2" *ngIf="reloadEvenet">
+                          <thead class="thead-dark">
+                          <tr>
+                            <th scope="col" colspan="1" rowspan="1">№</th>
+                            <th scope="col" colspan="1" rowspan="1">Тип мероприятия</th>
+                            <th scope="col" colspan="1">Роль</th>
+                            <th scope="col" colspan="1">Название</th>
+                            <th scope="col" colspan="1">Год</th>
+                            <th scope="col" colspan="1">Город</th>
+                            <th scope="col" colspan="1">URL</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr *ngFor="let results of events;">
+                            <td>{{results.evId}}</td>
+                            <td>{{results.evType}}</td>
+                            <td>{{results.evRole}}</td>
+                            <td>{{results.evName}}</td>
+                            <td>{{results.evYear}}</td>
+                            <td>{{results.evCity}}</td>
+                            <td>{{results.evUrl}}</td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </form>
+
+                      <form *ngIf="updatePub" [formGroup]="updateEventForm">
+                        <table class="table  table-bordered table-hover table-sm" *ngIf="reloadEvenet">
+                          <thead class="thead-dark">
+                          <tr>
+                            <th scope="col" colspan="1" rowspan="1">№</th>
+                            <th scope="col" colspan="1" rowspan="1">Тип мероприятия</th>
+                            <th scope="col" colspan="1">Роль</th>
+                            <th scope="col" colspan="1">Название</th>
+                            <th scope="col" colspan="1">Год</th>
+                            <th scope="col" colspan="1">Город</th>
+                            <th scope="col" colspan="1">URL</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr >
+                            <td>
+                              <div formArrayName="evId" *ngFor="let evIds of evId.controls; let i=index">
+                                <input type="number" class="form-control my-1" [formControlName]="i" readonly>
+                              </div>
+                            </td>
+                            <td>
+                              <div formArrayName="evType" *ngFor="let evIds of evType.controls; let i=index">
+                                <select class="form-control mb-1 mt-1" id="evType1" [formControlName]="i">
+                                  <option value="Конференция">Конференция</option>
+                                  <option value="Форум">Форум</option>
+                                  <option value="Семинар">Семинар</option>
+                                </select>
+                              </div>
+                            </td>
+                            <td>
+                              <div formArrayName="evRole" *ngFor="let evIds of evRole.controls; let i=index">
+                                <select class="form-control mt-1 mb-1" id="evRole1" [formControlName]="i">
+                                  <option value="Председатель">Председатель</option>
+                                  <option value="Участник">Участник</option>
+                                  <option value="Слушатель">Слушатель</option>
+                                  <option value="Секретарь/Модератор">Секретарь/Модератор</option>
+                                </select>
+                              </div>
+                            </td>
+                            <td>
+                              <div formArrayName="evName" *ngFor="let evIds of evName.controls; let i=index">
+                                <input type="text" class="form-control my-1" [formControlName]="i">
+                              </div>
+                            </td>
+                            <td>
+                              <div formArrayName="evYear" *ngFor="let pubIds of evYear.controls; let i=index">
+                                <input type="date" class="form-control my-1" [formControlName]="i">
+                              </div>
+                            </td>
+                            <td>
+                              <div formArrayName="evCity" *ngFor="let evIds of evCity.controls; let i=index">
+                                <input type="text" class="form-control my-1" [formControlName]="i">
+                              </div>
+                            </td>
+                            <td>
+                              <div formArrayName="evUrl" *ngFor="let evIds of evUrl.controls; let i=index">
+                                <input type="text" class="form-control my-1" [formControlName]="i">
+                              </div>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              <div>
+
+              </div>
+<!--              <div class="col-md-9">-->
+<!--                <div class="osahan-account-page-right shadow-sm bg-white p-4 h-100">-->
+<!--                  <div class="tab-content" id="myTabContent1">-->
+<!--                    <div class="tab-pane fade  active show" id="favourites1" role="tabpanel" aria-labelledby="favourites-tab">-->
+<!--                      <h4 class="font-weight-bold mt-0 mb-4">Мои мероприятия</h4>-->
+<!--                      <div class="row">-->
+
+<!--                        <div class="col-md-4 col-sm-6 mb-4 pb-2" *ngFor="let ev of events | paginate: { itemsPerPage: 6, currentPage: currentPage }">-->
+<!--                          <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">-->
+<!--                            <div class="list-card-image">-->
+<!--                              <div class="favourite-heart text-danger position-absolute"><a href="#"><i class="icofont-heart"></i></a></div>-->
+<!--                              <div class="member-plan position-absolute"><span class="badge badge-dark">{{ev.evType}}</span></div>-->
+<!--                            </div>-->
+<!--                            <div class="p-3 position-relative">-->
+<!--                              <div class="list-card-body">-->
+<!--                                <h6 class="mb-1 pt-3">-->
+<!--                                  <a href="#" class="text-black">{{ev.evRole}}</a>-->
+<!--                                </h6>-->
+<!--                                <p class="text-gray mb-3">{{ev.evCity}}</p>-->
+<!--                                <p class="text-gray mb-3">{{ev.evUrl}}</p>-->
+<!--                                <p class="text-gray mb-3 time"><span class="bg-light text-dark rounded-sm pl-2 pb-1 pt-1 pr-2"><i class="icofont-wall-clock"></i> {{ev.evYear | date:'shortDate'}}</span></p>-->
+<!--                              </div>-->
+<!--                              <div class="list-card-badge">-->
+<!--                                <span class="badge badge-danger">{{ev.evName}}</span> <small></small>-->
+<!--                              </div>-->
+<!--                            </div>-->
+<!--                          </div>-->
+<!--                        </div>-->
+<!--                        <pagination-controls (pageChange)="currentPage = $event"-->
+<!--                                             maxSize="9"-->
+<!--                                             directionLinks="true"-->
+<!--                                             autoHide="true"-->
+<!--                                             responsive="true"-->
+<!--                                             previousLabel="Previous"-->
+<!--                                             nextLabel="Next"-->
+<!--                                             screenReaderPaginationLabel="Pagination"-->
+<!--                                             screenReaderPageLabel="page"-->
+<!--                                             screenReaderCurrentLabel="You're on page"></pagination-controls>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <button class="btn btn-primary" type="submit" data-toggle="modal" data-target="#exampleModal1">Cоздать мероприятие</button>-->
+<!--                </div>-->
+<!--              </div>-->
+
+
+              <form *ngIf="selectTable == 3">
+                <table class="table table-bordered table-hover table-sm my-2" *ngIf="headDep">
+                  <thead class="thead-light">
+                  <tr>
+                    <th scope="col" colspan="1" rowspan="1">ID</th>
+                    <th scope="col" colspan="1" rowspan="1">Фамилия</th>
+                    <th scope="col" colspan="1">Имя</th>
+                    <th scope="col" colspan="1">E-mail</th>
+                    <th scope="col" colspan="1">Описание</th>
+                    <th scope="col" collspan="1">Тип работника</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let results of depUsers;">
+                    <td>{{results.userId}}</td>
+                    <td>{{results.lastName}}</td>
+                    <td>{{results.firstName}}</td>
+                    <td>{{results.email}}</td>
+                    <td>{{results.description}}</td>
+                    <td>{{results.userType}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </form>
+
+              <div class="tab-pane fade  active show" id="favourites2" role="tabpanel" aria-labelledby="favourites-tab" *ngIf="selectTable == 4">
+                <p class="message" [ngClass]="message.type" *ngIf="!message.hide">
+                  {{message.text}}
+                </p>
+                <div class="row">
+                  <form *ngIf="!updatePub">
+                    <table class="table  table-bordered table-hover table-sm my-2" *ngIf="reloadEvenet">
+                      <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" colspan="1" rowspan="1">№</th>
+                        <th scope="col" colspan="1" rowspan="1">Тип мероприятия</th>
+                        <th scope="col" colspan="1">Роль</th>
+                        <th scope="col" colspan="1">Название</th>
+                        <th scope="col" colspan="1">Год</th>
+                        <th scope="col" colspan="1">Город</th>
+                        <th scope="col" colspan="1">URL</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let results of events;">
+                        <td>{{results.evId}}</td>
+                        <td>{{results.evType}}</td>
+                        <td>{{results.evRole}}</td>
+                        <td>{{results.evName}}</td>
+                        <td>{{results.evYear}}</td>
+                        <td>{{results.evCity}}</td>
+                        <td>{{results.evUrl}}</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </form>
+                </div>
+              </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Новая публикация</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="publicationForm">
+          <label>Тип источника</label>
+          <select class="form-control" id="publicationType">
+            <option value="Материалы конференции">Материалы конференции</option>
+            <option value="Монография">Монография</option>
+            <option value="Учебник">Учебник</option>
+            <option value="Пособие">Пособие</option>
+            <option value="Охранный документ">Охранный документ</option>
+            <option value="Периодическое издание">Периодическое издание</option>
+          </select>
+          <div class="form-group">
+            <label for="soAname" class="col-form-label">Cоавтор:</label>
+            <input type="text" class="form-control" id="soAname" formControlName="pubCoAuthor">
+          </div>
+          <div class="form-group">
+            <label for="publicationName" class="col-form-label required">Название:</label>
+            <input [class.is-invalid]="publicationForm.get('pubName').invalid && publicationForm.get('pubName').touched"  type="text" class="form-control" id="publicationName" formControlName="pubName">
+          <small [class.d-none]="publicationForm.get('pubName').valid || publicationForm.get('pubName').untouched" class="text-danger">Данное поле обязательно для заполнения</small>
+          </div>
+          <div class="form-group">
+            <label for="year" class="col-form-label required">Год:</label>
+            <input [class.is-invalid]="publicationForm.get('pubYear').invalid && publicationForm.get('pubYear').touched" type="date" class="form-control" id="year" formControlName="pubYear">
+            <small [class.d-none]="publicationForm.get('pubYear').valid || publicationForm.get('pubYear').untouched" class="text-danger">Данное поле обязательно для заполнения</small>
+          </div>
+          <div class="form-group">
+            <label for="publisher" class="col-form-label required">Название журнала/издательства:</label>
+            <input [class.is-invalid]="publicationForm.get('pubPubName').invalid && publicationForm.get('pubPubName').touched" type="text" class="form-control" id="publisher" formControlName="pubPubName">
+            <small [class.d-none]="publicationForm.get('pubPubName').valid || publicationForm.get('pubPubName').untouched" class="text-danger">Данное поле обязательно для заполнения</small>
+          </div>
+          <div class="form-group">
+            <label for="publicationCity" class="col-form-label required">Город:</label>
+            <input [class.is-invalid]="publicationForm.get('pubCity').invalid && publicationForm.get('pubCity').touched" type="text" class="form-control" id="publicationCity" formControlName="pubCity">
+            <small class="text-danger" [class.d-none]="publicationForm.get('pubCity').untouched || publicationForm.get('pubCity').valid">Данное поле обязательно для заполнения</small>
+          </div>
+          <div class="form-group">
+            <label for="publicationPage" class="col-form-label required">Номер страницы публикации:</label>
+            <input [class.is-invalid]="publicationForm.get('pubPage').invalid && publicationForm.get('pubPage').touched" type="number" class="form-control" id="publicationPage" formControlName="pubPage">
+            <small class="text-danger" [class.d-none]="publicationForm.get('pubPage').valid || publicationForm.get('pubPage').untouched">Данное поле обязательно для заполнения</small>
+          </div>
+          <div class="form-group">
+            <label for="publicationURL" class="col-form-label required"> URL:</label>
+            <input [class.is-invalid]="publicationForm.get('pubUrl').invalid && publicationForm.get('pubUrl').touched" type="text" class="form-control" id="publicationURL" formControlName="pubUrl">
+            <small class="text-danger" [class.d-none]="publicationForm.get('pubUrl').valid || publicationForm.get('pubUrl').untouched">Данное поле обязательно для заполнения</small>
+          </div>
+          <div class="form-group">
+            <label for="publicationDOI" class="col-form-label required"> DOI:</label>
+            <input [class.is-invalid]="publicationForm.get('pubDoi').invalid && publicationForm.get('pubDoi').touched"  type="number" class="form-control" id="publicationDOI" formControlName="pubDoi">
+            <small class="text-danger" [class.d-none]="publicationForm.get('pubDoi').valid || publicationForm.get('pubDoi').untouched">Данное поле обязательно для заполнения</small>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlFile1">Загрузить файл</label>
+            <input formControlName="pubFile" type="file" class="form-control-file" id="exampleFormControlFile1" (change)="onFileSelected($event)">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+        <button type="button" class="btn btn-primary" [disabled]="publicationForm.invalid" [class.disabled]="publicationForm.invalid" (click)="sendPublication($event)" data-dismiss="modal">Сохранить публикацию</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel1">Новая публикация</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="eventForm">
+          <label>Тип мероприятия</label>
+          <select class="form-control" id="evType">
+            <option value="Конференция">Конференция</option>
+            <option value="Форум">Форум</option>
+            <option value="Семинар">Семинар</option>
+          </select>
+          <label>Роль</label>
+          <select class="form-control" id="evRole">
+            <option value="Председатель">Председатель</option>
+            <option value="Участник">Участник</option>
+            <option value="Слушатель">Слушатель</option>
+            <option value="Секретарь/Модератор">Секретарь/Модератор</option>
+          </select>
+          <div class="form-group">
+            <label for="publicationName" class="col-form-label required">Название:</label>
+            <input [class.is-invalid]="eventForm.get('evName').invalid && eventForm.get('evName').touched" type="text" class="form-control" id="evName" formControlName="evName">
+            <small class="text-danger" [class.d-none]="eventForm.get('evName').valid || eventForm.get('evName').untouched">Данное поле обязательно для заполнения</small>
+          </div>
+          <div class="form-group">
+            <label for="year" class="col-form-label required">Год:</label>
+            <input [class.is-invalid]= "eventForm.get('evYear').invalid && eventForm.get('evYear').touched" type="date" class="form-control" id="evYear" formControlName="evYear">
+            <small class="text-danger" [class.d-none]="eventForm.get('evYear').valid || eventForm.get('evYear').untouched">Данное поле обязательно для заполнения</small>
+          </div>
+          <div class="form-group">
+            <label for="publicationCity" class="col-form-label required">Город:</label>
+            <input [class.is-invalid]="eventForm.get('evCity').invalid && eventForm.get('evCity').touched" type="text" class="form-control" id="evCity" formControlName="evCity">
+          <small class="text-danger" [class.d-none]="eventForm.get('evCity').valid || eventForm.get('evCity').untouched">Данное поле обязательно для заполнения</small>
+          </div>
+          <div class="form-group">
+            <label for="publicationURL" class="col-form-label required"> URL</label>
+            <input [class.is-invalid]="eventForm.get('evUrl').invalid && eventForm.get('evUrl').touched" type="text" class="form-control" id="evURL" formControlName="evUrl">
+          <small class="text-danger" [class.d-none]="eventForm.get('evUrl').valid || eventForm.get('evUrl').untouched">Данное поле обязательно для заполнения</small>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlFile1">Загрузить файл</label>
+            <input type="file" class="form-control-file" id="exampleFormControlFile2">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+        <button [disabled]="eventForm.invalid" [class.disabled]="eventForm.invalid" type="button" class="btn btn-primary" (click)="sendEvent()" data-dismiss="modal">Сохранить мероприятие</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Карточка Диссовета</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="disForm">
+          <div class="form-group">
+            <label for="disInfo" class="col-form-label required">Название:</label>
+            <input [class.is-invalid]="disForm.get('disInfo').invalid && disForm.get('disInfo').touched" type="text" class="form-control" id="disInfo" formControlName="disInfo">
+            <small class="text-danger" [class.d-none]="disForm.get('disInfo').valid || disForm.get('disInfo').untouched">Данное поле обязательно для заполнения</small>
+          </div>
+          <div class="form-group">
+            <label for="disStartDate" class="col-form-label required">Начиная с:</label>
+            <input [class.is-invalid]= "disForm.get('disStartDate').invalid && disForm.get('disStartDate').touched" type="date" class="form-control" id="disStartDate" formControlName="disStartDate">
+            <small class="text-danger" [class.d-none]="disForm.get('disStartDate').valid || disForm.get('disStartDate').untouched">Данное поле обязательно для заполнения</small>
+          </div>
+          <div class="form-group">
+            <label for="disStopDate" class="col-form-label required">Заканчивая в:</label>
+            <input [class.is-invalid]= "disForm.get('disStopDate').invalid && disForm.get('disStopDate').touched" type="date" class="form-control" id="disStopDate" formControlName="disStopDate">
+            <small class="text-danger" [class.d-none]="disForm.get('disStopDate').valid || disForm.get('disStopDate').untouched">Данное поле обязательно для заполнения</small>
+          </div>
+          <div class="form-group">
+            <label for="ministryOrder" class="col-form-label required">Основание создания(No приказа МОНРК):</label>
+            <input [class.is-invalid]="disForm.get('ministryOrder').invalid && disForm.get('ministryOrder').touched" type="number" class="form-control" id="ministryOrder" formControlName="ministryOrder">
+            <small class="text-danger" [class.d-none]="disForm.get('ministryOrder').valid || disForm.get('ministryOrder').untouched">Данное поле обязательно для заполнения</small>
+          </div>
+          <div class="form-group">
+            <label for="membersNum" class="col-form-label required">Количественный состав:</label>
+            <input [class.is-invalid]="disForm.get('membersNum').invalid && disForm.get('membersNum').touched" type="number" class="form-control" id="membersNum" formControlName="membersNum">
+            <small class="text-danger" [class.d-none]="disForm.get('membersNum').valid || disForm.get('membersNum').untouched">Данное поле обязательно для заполнения</small>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+        <button type="button" class="btn btn-primary" [disabled]="disForm.invalid" [class.disabled]="disForm.invalid" (click)="createDisSovet()" data-toggle="modal" data-target=".bd-example-modal-xl" data-dismiss="modal">Создать</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+        <h5 class="modal-title" id="exampleModalLongTitle1">Добавление участников дис. совета</h5>
+      <form [formGroup]="disMemForm" *ngIf="disMemForm">
+        <table class="table  table-bordered table-hover table-sm" formArrayName="disMember">
+          <thead class="thead-light">
+          <tr>
+            <th scope="col" colspan="1" rowspan="2">Фамилия и Имя</th>
+            <th scope="col" colspan="1" rowspan="2">Тип сотрудника</th>
+            <th scope="col" colspan="1" rowspan="2">Ученная степень</th>
+            <th scope="col" colspan="1" rowspan="2">Шифр специальности</th>
+            <th scope="col" colspan="1" rowspan="2">Шифр специальности в диссовете</th>
+            <th scope="col" colspan="1" rowspan="2">Место работы и должность</th>
+            <th scope="col" colspan="1" rowspan="2">Занимаемая позиция в диссовете</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let row of disMemForm.controls.disMember.controls; let i= index" [formGroupName]="i">
+<!--            <td *ngIf="disMemForm.get('disMember').value[i].memberType == 'Внутренний сотрудник'">-->
+<!--              <input type="text" class="form-control my-1" formControlName="fullName">-->
+<!--            </td>-->
+            <td *ngIf="disMemForm.get('disMember').value[i].memberType == 'Внешний представитель' || disMemForm.get('disMember').value[i].memberType == null">
+              <input type="text" class="form-control my-1" name="lastName" list="exNames" formControlName="userId">
+              <datalist id="exNames">
+                <option *ngFor = "let name of exNames; let j = index" [value]="exNames[j].userId">{{exNames[j].lastName}} {{exNames[j].firstName}}
+              </datalist>
+            </td>
+            <td *ngIf="disMemForm.get('disMember').value[i].memberType == 'Внутренний сотрудник'">
+          <input type="text" class="form-control my-1" name="lastName" list="names" formControlName="userId">
+              <datalist id="names">
+                <option *ngFor = "let name of names; let j = index" [value]="name.userId">{{names[j].lastName}} {{names[j].firstName}} </option>
+              </datalist>
+            </td>
+<!--            <td *ngIf="disMemForm.get('disMember').value[i].memberType == 'Внутренний сотрудник'">-->
+<!--              <input type="text" class="form-control my-1" formControlName="firstName">-->
+<!--            </td>-->
+<!--            <td *ngIf="disMemForm.get('disMember').value[i].memberType == 'Внешний представитель' || disMemForm.get('disMember').value[i].memberType == null">-->
+<!--              <input type="text" class="form-control my-1" formControlName="firstName">-->
+<!--            </td>-->
+            <td>
+              <select class="form-control mb-1 mt-1" id="memberType" formControlName="memberType" >
+                <option value="Внутренний сотрудник">Внутренний сотрудник</option>
+                <option value="Внешний представитель">Внешний представитель</option>
+              </select>
+            </td>
+            <td>
+              <input type="text" class="form-control my-1" formControlName="academicDegree">
+<!--              <small [class.d-none] = "disMemForm.get('disMember').value[i].acamedicDegree.valid || disMemForm.get('disMember').value[i].acamedicDegree.untouched"></small>-->
+            </td>
+            <td>
+              <input type="text" class="form-control my-1" formControlName="specCode">
+            </td>
+            <td>
+              <input type="text" class="form-control my-1" formControlName="disSpecCode">
+            </td>
+            <td>
+              <input type="text" class="form-control my-1" formControlName="workPlace">
+            </td>
+            <td>
+              <select class="form-control mb-1 mt-1" id = "disPosition" formControlName="disPosition">
+                <option value="Председатель">Председатель</option>
+                <option value="Член">Член</option>
+              </select>
+            </td>
+<!--            <td *ngIf="!ourMem">-->
+<!--              <form [formGroup]="disMemForm" (ngSubmit)="onSubmit()">-->
+<!--                <div formArrayName="lastName" *ngFor="let orgIds of disLastName.controls; let i=index">-->
+<!--                  <input type="text" class="form-control my-1" [formControlName]="i">-->
+<!--                </div>-->
+<!--              </form>-->
+<!--            </td>-->
+<!--            <td *ngIf="!ourMem"> <form [formGroup]="disMemForm" (ngSubmit)="onSubmit()">-->
+<!--              <div formArrayName="firstName" *ngFor="let acts of disFirstName.controls; let i=index">-->
+<!--                <input type="text" class="form-control my-1" [formControlName]="i">-->
+<!--              </div>-->
+<!--            </form></td>-->
+<!--            <td *ngIf="ourMem">-->
+<!--              <form [formGroup]="disMemForm" (ngSubmit)="onSubmit()">-->
+<!--                <div formArrayName="fullName" *ngFor="let fullNames of disFullName.controls; let i=index;">-->
+<!--                  <select class="form-control mb-1 mt-1" id="fullName">-->
+<!--                    <option *ngFor="let names of names" [ngValue]="this.names" [value]="setMemId(names.userId)"> {{names.lastName}} {{names.firstName}}</option>-->
+<!--                  </select>-->
+<!--                </div>-->
+<!--              </form>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <form [formGroup]="disMemForm" (ngSubmit)="onSubmit()">-->
+<!--            <div formArrayName="memberType" *ngFor="let evIds of disMemberType.controls; let i=index">-->
+<!--              <select class="form-control mb-1 mt-1" id="memberType" [formControlName]="i" (change)="changeDisMem()">-->
+<!--                <option value="Внутренний сотрудник">Внутренний сотрудник</option>-->
+<!--                <option value="Внешний представитель">Внешний представитель</option>-->
+<!--              </select>-->
+<!--            </div>-->
+<!--              </form>-->
+<!--          </td>-->
+<!--            <td > <form [formGroup]="disMemForm" (ngSubmit)="onSubmit()">-->
+<!--              <div formArrayName="academicDegree" *ngFor="let acts of disAcademDegree.controls; let i=index">-->
+<!--                <input type="text" class="form-control my-1" [formControlName]="i">-->
+<!--              </div>-->
+<!--            </form></td>-->
+<!--            <td > <form [formGroup]="disMemForm" (ngSubmit)="onSubmit()">-->
+<!--              <div formArrayName="specCode" *ngFor="let acts of disSpecCode.controls; let i=index">-->
+<!--                <input type="text" class="form-control my-1" [formControlName]="i">-->
+<!--              </div>-->
+<!--            </form></td>-->
+<!--            <td > <form [formGroup]="disMemForm" (ngSubmit)="onSubmit()">-->
+<!--              <div formArrayName="disSpecCode" *ngFor="let acts of disDisSpecCode.controls; let i=index">-->
+<!--                <input type="text" class="form-control my-1" [formControlName]="i">-->
+<!--              </div>-->
+<!--            </form></td>-->
+<!--            <td > <form [formGroup]="disMemForm" (ngSubmit)="onSubmit()">-->
+<!--              <div formArrayName="workPlace" *ngFor="let acts of disWorkPlace.controls; let i=index">-->
+<!--                <input type="text" class="form-control my-1" [formControlName]="i">-->
+<!--              </div>-->
+<!--            </form></td>-->
+<!--            <td>-->
+<!--              <form [formGroup]="disMemForm" (ngSubmit)="onSubmit()">-->
+<!--                <div formArrayName="disPosition" *ngFor="let evIds of disPosition.controls; let i=index">-->
+<!--                  <select class="form-control mb-1 mt-1" id="disPosition" [formControlName]="i">-->
+<!--                    <option value="Председатель">Председатель</option>-->
+<!--                    <option value="Член">Член</option>-->
+<!--                  </select>-->
+<!--                </div>-->
+<!--              </form>-->
+<!--            </td>-->
+          </tr>
+          </tbody>
+        </table>
+      </form>
+      <button type="button" class="btn btn-primary" (click)="sendDisMembers()" data-dismiss="modal">Содать диссовет</button>
+    </div>
+  </div>
+</div>
+
+{{disMemForm.value | json}}

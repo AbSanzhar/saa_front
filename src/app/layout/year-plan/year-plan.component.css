@@ -1,0 +1,27 @@
+.error{
+  background: #e74c3c!important;
+}
+.success{
+  background: #2ecc71!important;
+}
+.message{
+   position: absolute;
+   top: -25px;
+   left: 0;
+   height: 25px;
+   width: 100%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: #fff
+ }
+.alert-danger {
+
+}
+container-fluid {
+  width: 100%;
+  padding-right: 0px;
+  padding-left: 0px;
+  margin-right: 0;
+  margin-left: 0;
+}

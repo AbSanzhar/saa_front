@@ -1,0 +1,27 @@
+<div class="container-fluid">
+  <div class="loader" *ngIf="loaderActive"></div>
+
+  <div class="wrapper fadeInDown">
+    <div id="formContent">
+      <!-- Tabs Titles -->
+  
+      <!-- Icon -->
+      <div class="fadeIn first">
+        
+      </div>
+  
+      <!-- Login Form -->
+      <form [formGroup]='loginForm' (ngSubmit)="onSubmit()">
+        <p class="message" [ngClass]="message.type" *ngIf="message.type">
+          {{message.text}}
+        </p>
+        <input formControlName='username' [class.invalid]="loginForm.get('username').invalid && loginForm.get('username').touched" type="text" id="login" class="fadeIn second" name="login" placeholder="login">
+        <input formControlName='password' [class.invalid]="loginForm.get('password').invalid && loginForm.get('password').touched" type="password" id="password" class="fadeIn third" name="login" placeholder="password">
+        <button type="submit" class="myButton fadeIn fourth my-3"
+          [disabled]="loginForm.get('username').invalid || loginForm.get('password').invalid"
+          [class.disabled]="loginForm.get('username').invalid || loginForm.get('password').invalid">Войти</button>
+      </form>
+  
+    </div>
+  </div>  
+</div>

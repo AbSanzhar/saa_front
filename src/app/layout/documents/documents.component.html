@@ -1,0 +1,66 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="osahan-account-page-left shadow-sm bg-white">
+                <div class="border-bottom p-4">
+                    <div class="form-inline row">
+                      <button type="submit" class="btn btn-primary mb-2" style="border-radius: .25rem 0 0 .25rem" disabled>
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                      </button>
+                      <div class="form-group mb-2">
+                        <input (keyup)="onSearch($event)" type="text" class="form-control" style="outline: none !important; border-radius: 0 .25rem .25rem 0 !important" placeholder="Search">
+                      </div>
+                      
+                      <a class="col-12 btn mt-2 btn-primary btn-block text-white" routerLink="/upload-document" >
+                        Add new Document
+                      </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="osahan-account-page-right shadow-sm bg-white p-4 h-100">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade  active show" id="favourites" role="tabpanel" aria-labelledby="favourites-tab">
+                        <h4 class="font-weight-bold mt-0 mb-4">Documents</h4>
+                        <div class="row">
+
+                            <div class="col-md-4 col-sm-6 mb-4 pb-2" *ngFor="let doc of filteredDocs | paginate: { itemsPerPage: 6, currentPage: currentPage }">
+                                <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
+                                    <div class="list-card-image">
+                                        <div class="favourite-heart text-danger position-absolute"><a href="#"><i class="icofont-heart"></i></a></div>
+                                        <div class="member-plan position-absolute"><span class="badge badge-dark">{{doc.docStatus}}</span></div>
+                                    </div>
+                                    <div class="p-3 position-relative">
+                                        <div class="list-card-body">
+                                            <h6 class="mb-1 pt-3">
+                                                <a href="#" class="text-black">{{doc.docName}}</a>
+                                            </h6>
+                                            <p class="text-gray mb-3">{{doc.docType}}</p>
+                                            <p class="text-gray mb-3 time"><span class="bg-light text-dark rounded-sm pl-2 pb-1 pt-1 pr-2"><i class="icofont-wall-clock"></i> {{doc.docDate | date:'shortDate'}}</span></p>
+                                        </div>
+                                        <div class="list-card-badge">
+                                            <span class="badge badge-danger">{{doc.userId}}</span> <small></small>
+                                        </div>
+                                        <button type="button" class="btn btn-primary mt-3" (click)="downloadDoc()">Download</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <pagination-controls (pageChange)="currentPage = $event"
+                            maxSize="9"
+                            directionLinks="true"
+                            autoHide="true"
+                            responsive="true"
+                            previousLabel="Previous"
+                            nextLabel="Next"
+                            screenReaderPaginationLabel="Pagination"
+                            screenReaderPageLabel="page"
+                            screenReaderCurrentLabel="You're on page"></pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
