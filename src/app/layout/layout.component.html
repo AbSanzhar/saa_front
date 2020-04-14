@@ -12,44 +12,48 @@
 
 
 <div class="wrapper">
-  <div class="menu" [class.menu_active]="menu_condition">
+  <div class="menu" [class.menu_active]="menu_condition" *ngIf="Teacher_Role">
     <ul (click)="showTableSelect()">
+<!--      <li>-->
+<!--        <a (click)="table=1" routerLink="/year-plan">Выполнение учебной нагрузки</a>-->
+<!--      </li>-->
+      <li >
+        <a (click)="table=1" routerLink="/year-plan">Учебно-методическая работа</a>
+      </li>
       <li>
-        <a (click)="table=1" routerLink="/year-plan">Выполнение учебной нагрузки</a>
+        <a (click)="table=2" routerLink="/year-plan">Научная работа</a>
+      </li>
+      <li>
+        <a (click)="table=3" routerLink="/year-plan">Бюджетные НИР и руковдство НИРС</a>
+      </li>
+      <li>
+        <a (click)="table=4" routerLink="/year-plan">Организационно-методическая работа</a>
+      </li>
+      <li>
+        <a (click)="table=5" routerLink="/year-plan">Воспитательная, профориентационная, общественная работа, работа по оказанию платных услуг, оборудованию кабинетов, повышению квалификации</a>
       </li>
       <li >
-        <a (click)="table=2" routerLink="/year-plan">Учебно-методическая работа</a>
-      </li>
-      <li>
-        <a (click)="table=3" routerLink="/year-plan">Научная работа</a>
-      </li>
-      <li>
-        <a (click)="table=4" routerLink="/year-plan">Бюджетные НИР и руковдство НИРС</a>
-      </li>
-      <li>
-        <a (click)="table=5" routerLink="/year-plan">Организационно-методическая работа</a>
-      </li>
-      <li>
-        <a (click)="table=6" routerLink="/year-plan">Воспитательная, профориентационная, общественная работа, работа по оказанию платных услуг, оборудованию кабинетов, повышению квалификации</a>
-      </li>
-      <li >
-        <a (click)="table=7" routerLink="/year-plan">Итоги выполнения ИПП преподавателя</a>
+        <a (click)="table=6" routerLink="/year-plan">Итоги выполнения ИПП преподавателя</a>
       </li>
     </ul>
   </div>
 
   <div class="content" [class.content_active]="content_condition">
     <nav class="mb-1 navbar navbar-expand-lg navbar-dark info-color" style="background: #212529">
-      <span class="navbar-brand mr-2" (click)="pushMenu()">
+      <span *ngIf="Teacher_Role" class="navbar-brand mr-2" (click)="pushMenu()">
         <i class="fas fa-bars"></i>
       </span>
       <a class="navbar-brand mr-auto" routerLink=''>GF Project</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-4" aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-
       <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
         <ul class="navbar-nav ml-auto">
+          <li class="nav-item dropdown active" style="cursor: pointer;">
+            <a class="nav-link dropdown-toggle waves-effect waves-light" id="navbarDropdownMenuLink-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-bell"></i>Уведомления  <span class="badge badge-light">{{couter_notification}}</span></a>
+          </li>
+
           <li class="nav-item dropdown active" style="cursor: pointer">
             <a class="nav-link dropdown-toggle waves-effect waves-light" id="navbarDropdownMenuLink-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="fas fa-language"></i>Язык</a>
@@ -73,6 +77,9 @@
   </div>
 </div>
 
+
 <div style="padding-top: 70px" [class.content_active]="content_condition">
   <router-outlet></router-outlet>
 </div>
+<!--<simple-notifications></simple-notifications>-->
+<!--<button (click)="onSuccess('sdfsdf')">Click me</button>-->

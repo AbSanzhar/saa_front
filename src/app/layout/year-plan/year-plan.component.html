@@ -3,152 +3,153 @@
     {{message.text}}
   </div>
 </div>
-<div class="container-fluid" xmlns="http://www.w3.org/1999/html">
-  <div class="row">
-    <div class="col-12 text-center table-responsive" *ngIf="getTableSeceltion()==1">
-      <h1> {{getTableSeceltion()}}.
-        Выполнение учебной нагрузки
-      </h1>
-        <table class="table table-bordered table-hover">
-          <caption>Выполнение учебной нагрузки</caption>
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col" rowspan="2" style="vertical-align: middle">Учебная нагрузка</th>
-              <th scope="col" colspan="5">Аудитория учебная работа, час</th>
-              <th scope="col" colspan="7">Внеаудитория учебная работа, час</th>
-            </tr>
 
-            <tr>
-              <th scope="col">Дәрістер, Лекции, Lectures</th>
-              <th scope="col">Практ., семин., занятия</th>
-              <th scope="col">Лабораторные занятия</th>
-              <th scope="col">НИРМ, практики(все виды)</th>
+<!--<div class="container-fluid" xmlns="http://www.w3.org/1999/html">-->
+<!--  <div class="row">-->
+<!--    <div class="col-12 text-center table-responsive" *ngIf="getTableSeceltion()==1">-->
+<!--      <h1> {{getTableSeceltion()}}.-->
+<!--        Выполнение учебной нагрузки-->
+<!--      </h1>-->
+<!--        <table class="table table-bordered table-hover">-->
+<!--          <caption>Выполнение учебной нагрузки</caption>-->
+<!--          <thead class="thead-dark">-->
+<!--            <tr>-->
+<!--              <th scope="col" rowspan="2" style="vertical-align: middle">Учебная нагрузка</th>-->
+<!--              <th scope="col" colspan="5">Аудитория учебная работа, час</th>-->
+<!--              <th scope="col" colspan="7">Внеаудитория учебная работа, час</th>-->
+<!--            </tr>-->
 
-              <th scope="col">Руководство дип.проектами</th>
-              <th scope="col">Участие в ГАК(ИГА)</th>
-              <th scope="col">СРСП, TSIS</th>
+<!--            <tr>-->
+<!--              <th scope="col">Дәрістер, Лекции, Lectures</th>-->
+<!--              <th scope="col">Практ., семин., занятия</th>-->
+<!--              <th scope="col">Лабораторные занятия</th>-->
+<!--              <th scope="col">НИРМ, практики(все виды)</th>-->
 
-
-              <th scope="col">Рубежный контроль</th>
-              <th scope="col">Проверка контрольных работ</th>
-              <th scope="col">УМКД</th>
+<!--              <th scope="col">Руководство дип.проектами</th>-->
+<!--              <th scope="col">Участие в ГАК(ИГА)</th>-->
+<!--              <th scope="col">СРСП, TSIS</th>-->
 
 
-              <th scope="col">Переводы</th>
-              <th scope="col">Эдвейзерство, кураторство</th>
-            </tr>
-          </thead>
-          <div class="btn-group">
-            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Выберите план
-            </button>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" (click)="choosePlan(1)">План на первое полугодие</a>
-              <a class="dropdown-item" (click)="choosePlan(2)">План на второе полугодие</a>
-              <a class="dropdown-item" (click)="choosePlan(3)">План на год</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" (click)="choosePlan(4)">Вывести весь план</a>
-            </div>
-          </div>
+<!--              <th scope="col">Рубежный контроль</th>-->
+<!--              <th scope="col">Проверка контрольных работ</th>-->
+<!--              <th scope="col">УМКД</th>-->
 
-          <tbody (change)="changePlan()">
-            <tr *ngIf="selectPlan == 1">
-              <th scope="row">План на 1 полугодие</th>
-              <td><input [formControl]="lectures" type="number" min="1" data-bind="value:replyNumber" class="form-control" ></td>
-              <td><input [formControl]="practiceStudies" type="number" min="1" data-bind="value:replyNumber" class="form-control" ></td>
-              <td><input [formControl]="labs" type="number" min="1" data-bind="value:replyNumber" class="form-control" ></td>
-              <td><input [formControl]="practicesMasters" type="number" min="1" data-bind="value:replyNumber" class="form-control" ></td>
-              <td><input [formControl]="supervisDiplomas" type="number" min="1" data-bind="value:replyNumber" class="form-control" ></td>
-              <td><input [formControl]="stateAttestComm" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="tsis" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="midEndTerm" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="writtenPaper" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="umkd" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="translations" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="advisor" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-            </tr>
 
-            <tr *ngIf="selectPlan == 2">
-              <th scope="row">План на 2 полугодие</th>
-              <td><input [formControl]="lectures2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="practiceStudies2" type="number" min="1" data-bind="value:replyNumber" class="form-control" ></td>
-              <td><input [formControl]="labs2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="practicesMasters2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="supervisDiplomas2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="stateAttestComm2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="tsis2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="midEndTerm2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="writtenPaper2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="umkd2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="translations2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="advisor2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-            </tr>
-            <tr *ngIf = "selectPlan == 3">
-              <th scope="row">План на год</th>
-              <td><input [formControl]="lectures3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="practiceStudies3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="labs3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly ></td>
-              <td><input [formControl]="practicesMasters3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="supervisDiplomas3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="stateAttestComm3" type="number" min="1" data-bind="value:replyNumber" class="form-control"readonly></td>
-              <td><input [formControl]="tsis3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="midEndTerm3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="writtenPaper3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="umkd3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="translations3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="advisor3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-            </tr>
+<!--              <th scope="col">Переводы</th>-->
+<!--              <th scope="col">Эдвейзерство, кураторство</th>-->
+<!--            </tr>-->
+<!--          </thead>-->
+<!--          <div class="btn-group">-->
+<!--            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--              Выберите план-->
+<!--            </button>-->
+<!--            <div class="dropdown-menu">-->
+<!--              <a class="dropdown-item" (click)="choosePlan(1)">План на первое полугодие</a>-->
+<!--              <a class="dropdown-item" (click)="choosePlan(2)">План на второе полугодие</a>-->
+<!--              <a class="dropdown-item" (click)="choosePlan(3)">План на год</a>-->
+<!--              <div class="dropdown-divider"></div>-->
+<!--              <a class="dropdown-item" (click)="choosePlan(4)">Вывести весь план</a>-->
+<!--            </div>-->
+<!--          </div>-->
 
-            <tr *ngIf="selectPlan == 4" (click)="choosePlan(1)">
-              <th scope="row">План на 1 полугодие</th>
-              <td><input [formControl]="lectures" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="practiceStudies" type="number" min="1" data-bind="value:replyNumber" class="form-control" ></td>
-              <td><input [formControl]="labs" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="practicesMasters" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="supervisDiplomas" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="stateAttestComm" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="tsis" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="midEndTerm" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="writtenPaper" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="umkd" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="translations" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="advisor" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-            </tr>
-            <tr *ngIf="selectPlan == 4" (click)="choosePlan(2)">
-              <th scope="row">План на 2 полугодие</th>
-              <td><input [formControl]="lectures2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="practiceStudies2" type="number" min="1" data-bind="value:replyNumber" class="form-control" ></td>
-              <td><input [formControl]="labs2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="practicesMasters2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="supervisDiplomas2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="stateAttestComm2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="tsis2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="midEndTerm2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="writtenPaper2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="umkd2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="translations2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-              <td><input [formControl]="advisor2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>
-            </tr>
-            <tr *ngIf="selectPlan == 4" (click)="choosePlan(3)">
-              <th scope="row">План на год</th>
-              <td><input [formControl]="lectures3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="practiceStudies3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="labs3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="practicesMasters3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="supervisDiplomas3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="stateAttestComm3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="tsis3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="midEndTerm3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="writtenPaper3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="umkd3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="translations3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-              <td><input [formControl]="advisor3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>
-            </tr>
-          </tbody>
-        </table>
-    </div>
-  </div>
-</div>
+<!--          <tbody (change)="changePlan()">-->
+<!--            <tr *ngIf="selectPlan == 1">-->
+<!--              <th scope="row">План на 1 полугодие</th>-->
+<!--              <td><input [formControl]="lectures" type="number" min="1" data-bind="value:replyNumber" class="form-control" ></td>-->
+<!--              <td><input [formControl]="practiceStudies" type="number" min="1" data-bind="value:replyNumber" class="form-control" ></td>-->
+<!--              <td><input [formControl]="labs" type="number" min="1" data-bind="value:replyNumber" class="form-control" ></td>-->
+<!--              <td><input [formControl]="practicesMasters" type="number" min="1" data-bind="value:replyNumber" class="form-control" ></td>-->
+<!--              <td><input [formControl]="supervisDiplomas" type="number" min="1" data-bind="value:replyNumber" class="form-control" ></td>-->
+<!--              <td><input [formControl]="stateAttestComm" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="tsis" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="midEndTerm" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="writtenPaper" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="umkd" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="translations" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="advisor" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--            </tr>-->
+
+<!--            <tr *ngIf="selectPlan == 2">-->
+<!--              <th scope="row">План на 2 полугодие</th>-->
+<!--              <td><input [formControl]="lectures2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="practiceStudies2" type="number" min="1" data-bind="value:replyNumber" class="form-control" ></td>-->
+<!--              <td><input [formControl]="labs2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="practicesMasters2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="supervisDiplomas2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="stateAttestComm2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="tsis2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="midEndTerm2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="writtenPaper2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="umkd2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="translations2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="advisor2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--            </tr>-->
+<!--            <tr *ngIf = "selectPlan == 3">-->
+<!--              <th scope="row">План на год</th>-->
+<!--              <td><input [formControl]="lectures3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="practiceStudies3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="labs3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly ></td>-->
+<!--              <td><input [formControl]="practicesMasters3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="supervisDiplomas3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="stateAttestComm3" type="number" min="1" data-bind="value:replyNumber" class="form-control"readonly></td>-->
+<!--              <td><input [formControl]="tsis3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="midEndTerm3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="writtenPaper3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="umkd3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="translations3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="advisor3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--            </tr>-->
+
+<!--            <tr *ngIf="selectPlan == 4" (click)="choosePlan(1)">-->
+<!--              <th scope="row">План на 1 полугодие</th>-->
+<!--              <td><input [formControl]="lectures" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="practiceStudies" type="number" min="1" data-bind="value:replyNumber" class="form-control" ></td>-->
+<!--              <td><input [formControl]="labs" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="practicesMasters" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="supervisDiplomas" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="stateAttestComm" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="tsis" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="midEndTerm" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="writtenPaper" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="umkd" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="translations" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="advisor" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--            </tr>-->
+<!--            <tr *ngIf="selectPlan == 4" (click)="choosePlan(2)">-->
+<!--              <th scope="row">План на 2 полугодие</th>-->
+<!--              <td><input [formControl]="lectures2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="practiceStudies2" type="number" min="1" data-bind="value:replyNumber" class="form-control" ></td>-->
+<!--              <td><input [formControl]="labs2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="practicesMasters2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="supervisDiplomas2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="stateAttestComm2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="tsis2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="midEndTerm2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="writtenPaper2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="umkd2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="translations2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--              <td><input [formControl]="advisor2" type="number" min="1" data-bind="value:replyNumber" class="form-control"></td>-->
+<!--            </tr>-->
+<!--            <tr *ngIf="selectPlan == 4" (click)="choosePlan(3)">-->
+<!--              <th scope="row">План на год</th>-->
+<!--              <td><input [formControl]="lectures3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="practiceStudies3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="labs3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="practicesMasters3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="supervisDiplomas3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="stateAttestComm3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="tsis3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="midEndTerm3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="writtenPaper3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="umkd3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="translations3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--              <td><input [formControl]="advisor3" type="number" min="1" data-bind="value:replyNumber" class="form-control" readonly></td>-->
+<!--            </tr>-->
+<!--          </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 
 <!--<div class="container-fluid">-->
 <!--  <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">-->
@@ -165,11 +166,12 @@
 <!--</div>-->
 <div class="container-fluid" xmlns="http://www.w3.org/1999/html">
   <div class="row">
-    <div class="col-12 text-center table-responsive" *ngIf="getTableSeceltion()==2">
+    <div class="col-12 text-center table-responsive" *ngIf="getTableSeceltion()==1">
       <h1>
         {{getTableSeceltion()}}.Учебно-методическая работа
       </h1>
-<table class="table  table-bordered table-hover table-sm">
+<form [formGroup]="AcadMetForm" *ngIf="AcadMetForm" style="overflow-x:auto;">
+<table class="table  table-bordered table-hover table-sm" >
   <caption>Учебно-методическая работа</caption>
   <thead class="thead-dark">
   <tr>
@@ -182,42 +184,60 @@
     <th scope="col">Жоспардың орындалуы<br>Фактическое выполнение плана<br>Implementation</th>
   </tr>
   </thead>
-  <tbody>
-  <tr *ngFor="let results of gettedActs">
-    <td><input type="number" class="form-control" [(ngModel)]="results.id"></td>
-    <td><input type="text" class="form-control" [(ngModel)]="results.activity"></td>
-    <td><input type="text" class="form-control" [(ngModel)]="results.time_frame"></td>
-    <td><input type="number" class="form-control" [(ngModel)]="results.impl"></td>
-  </tr>
-  <tr>
-    <td >
-      <form [formGroup]="activities" (ngSubmit)="onSubmit()">
-              <div formArrayName="act_id" *ngFor="let actId of act_id.controls; let i=index">
-                <input type="number" class="form-control my-1" [formControlName]="i">
-              </div>
-      </form>
+  <tbody formArrayName="AcadMetAct">
+<!--  <tr *ngFor="let results of gettedActs">-->
+<!--    <td><input type="number" class="form-control" [(ngModel)]="results.acId"></td>-->
+<!--    <td><input type="text" class="form-control" [(ngModel)]="results.activities"></td>-->
+<!--    <td><input type="text" class="form-control" [(ngModel)]="results.timeFrame"></td>-->
+<!--    <td><input type="number" class="form-control" [(ngModel)]="results.implementation"></td>-->
+<!--  </tr>-->
+<!--  <tr>-->
+<!--    <td >-->
+<!--      <form [formGroup]="AcadMetForm" (ngSubmit)="onSubmit()">-->
+<!--              <div formArrayName="act_id" *ngFor="let actId of act_id.controls; let i=index">-->
+<!--                <input type="number" class="form-control my-1" [formControlName]="i">-->
+<!--              </div>-->
+<!--      </form>-->
+<!--    </td>-->
+<!--    <td > <form [formGroup]="activities" (ngSubmit)="onSubmit()">-->
+<!--      <div formArrayName="activity" *ngFor="let acts of activity.controls; let i=index">-->
+<!--        <input type="text" class="form-control my-1" [formControlName]="i">-->
+<!--      </div>-->
+<!--    </form></td>-->
+
+<!--    <td > <form [formGroup]="activities" (ngSubmit)="onSubmit()">-->
+<!--      <div formArrayName="time_frame" *ngFor="let tf of time_frame.controls; let i=index">-->
+<!--        <input type="text" class="form-control my-1" [formControlName]="i">-->
+<!--      </div>-->
+<!--    </form></td>-->
+
+<!--    <td> <form [formGroup]="activities" (ngSubmit)="onSubmit()">-->
+<!--      <div formArrayName="impl" *ngFor="let tf of impl.controls; let i=index">-->
+<!--        <input type="number" class="form-control my-1" [formControlName]="i">-->
+<!--      </div>-->
+<!--    </form></td>-->
+<!--  </tr>-->
+
+  <tr *ngFor="let item of AcadMetForm.controls.AcadMetAct.controls; let i = index" [formGroupName]="i">
+    <td>
+        <input type="number" class="form-control my-1" formControlName="acId">
     </td>
-    <td > <form [formGroup]="activities" (ngSubmit)="onSubmit()">
-      <div formArrayName="activity" *ngFor="let acts of activity.controls; let i=index">
-        <input type="text" class="form-control my-1" [formControlName]="i">
-      </div>
-    </form></td>
-
-    <td > <form [formGroup]="activities" (ngSubmit)="onSubmit()">
-      <div formArrayName="time_frame" *ngFor="let tf of time_frame.controls; let i=index">
-        <input type="text" class="form-control my-1" [formControlName]="i">
-      </div>
-    </form></td>
-
-    <td> <form [formGroup]="activities" (ngSubmit)="onSubmit()">
-      <div formArrayName="impl" *ngFor="let tf of impl.controls; let i=index">
-        <input type="number" class="form-control my-1" [formControlName]="i">
-      </div>
-    </form></td>
+    <td>
+      <input type="text" class="form-control my-1" formControlName="activities">
+    </td>
+    <td>
+      <input type="text" class="form-control my-1" formControlName="timeFrame">
+    </td>
+    <td>
+      <input type="number" class="form-control my-1" formControlName="implementation">
+    </td>
+<!--    {{AcadMetForm.controls.AcadMetAct.controls[i].value | json}}-->
   </tr>
+
   </tbody>
-  <button type="button" class="btn btn-secondary btn-sm m-2" (click)="addNewActId() || addNewActivity() || addTimeFrame() || addImpl()">Добавить</button>
+  <button type="button" class="btn btn-secondary btn-sm m-2" (click)="addAcadMetForm()">Добавить</button>
 </table>
+</form>
 </div>
   </div>
 </div>
@@ -226,7 +246,7 @@
 
 <div class="container-fluid" xmlns="http://www.w3.org/1999/html">
   <div class="row">
-    <div class="col-12 text-center table-responsive" *ngIf="getTableSeceltion()==3">
+    <div class="col-12 text-center table-responsive" *ngIf="getTableSeceltion()==2">
       <h1>
         {{getTableSeceltion()}}.Научная работа
       </h1>
@@ -304,9 +324,9 @@
 
 <div class="container-fluid" xmlns="http://www.w3.org/1999/html">
   <div class="row">
-    <div class="col-12 text-center table-responsive" *ngIf="getTableSeceltion()==4">
+    <div class="col-12 text-center table-responsive" *ngIf="getTableSeceltion()==3">
       <h1>{{getTableSeceltion() - 1}}.2 Бюджетные НИР и руководство НИРС</h1>
-<table class="table  table-bordered table-hover table-sm" *ngIf="getTableSeceltion()==4">
+<table class="table  table-bordered table-hover table-sm" *ngIf="getTableSeceltion()==3">
   <caption>Бюджетные НИР и руководство НИРС</caption>
   <thead class="thead-dark">
   <tr>
@@ -366,7 +386,7 @@
 
 <div class="container-fluid" xmlns="http://www.w3.org/1999/html">
   <div class="row">
-    <div class="col-12 text-center table-responsive" *ngIf="getTableSeceltion()==5">
+    <div class="col-12 text-center table-responsive" *ngIf="getTableSeceltion()==4">
       <h1> {{getTableSeceltion() - 1}}. Организационно-методическая работа</h1>
       <table class="table  table-bordered table-hover table-sm" (change)="somethingChanged()">
         <caption>Организационно-методическая работа</caption>
@@ -417,7 +437,7 @@
 
 <div class="container-fluid" xmlns="http://www.w3.org/1999/html">
   <div class="row">
-    <div class="col-12 text-center table-responsive" *ngIf="getTableSeceltion()==6">
+    <div class="col-12 text-center table-responsive" *ngIf="getTableSeceltion()==5">
       <h1>{{getTableSeceltion() - 1}}. Воспитательная, профориентационная, общественная работа, работа по оказанию платных услуг,
         оборудованию кабинетов, повышению квалификации </h1>
       <table class="table  table-bordered table-hover table-sm" (change)="somethingChanged()">
@@ -467,7 +487,7 @@
 
 <div class="container-fluid" xmlns="http://www.w3.org/1999/html">
   <div class="row">
-    <div class="col-12 text-center table-responsive" *ngIf="getTableSeceltion()==7">
+    <div class="col-12 text-center table-responsive" *ngIf="getTableSeceltion()==6">
       <h1> Итоги выполнения ИПП преподавателя</h1>
       <table class="table  table-bordered table-hover table-sm" (change)="somethingChanged()">
         <caption>Итоги выполнения ИПП преподавателя</caption>
@@ -510,3 +530,4 @@
 
 <button type="submit" class="btn btn-primary" type ="submit" (click)="sendPlan()">Отправить план</button>
 <button type="submit" class="btn btn-primary mx-3" type= "submit" (click)="downloadPlan()">Вывести план</button>
+

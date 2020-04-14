@@ -7,6 +7,12 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { Interceptor } from './api/interceptor';
+import {WebSocketService} from './services/websocket.service';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { PushNotificationsModule } from 'ng-push';
+import {CustomHttpInterceptorService} from './api/CustomHttpInterceptorService';
+const config: SocketIoConfig = { url: 'http://localhost:8077', options: {} };
+import { HashLocationStrategy, LocationStrategy  } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -15,14 +21,18 @@ import { Interceptor } from './api/interceptor';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    PushNotificationsModule,
     HttpClientModule,
+    SocketIoModule.forRoot(config)
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: Interceptor,
-      multi: true
-    }
+      multi: true,
+    },
+    {provide : LocationStrategy , useClass: HashLocationStrategy},
+    WebSocketService
   ],
   bootstrap: [AppComponent]
 })

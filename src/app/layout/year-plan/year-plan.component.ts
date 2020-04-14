@@ -12,20 +12,44 @@ import {takeUntil} from 'rxjs/operators';
   styleUrls: ['./year-plan.component.css']
 })
 export class YearPlanComponent implements OnInit {
+  public AcadMetForm: FormGroup;
+  public AcadMetAct: FormArray;
   constructor(private api: ApiService, private layout: LayoutComponent, private fb: FormBuilder) {
+
+  }
+  gettedActs = [];
+
+  initAcadMetForm(): FormGroup {
+    return this.fb.group({
+      acId : [null, Validators.required],
+      activities: [null, Validators.required],
+      timeFrame: [null, Validators.required],
+      implementation: [null, Validators.required],
+      created: [new Date()],
+      updated: [new Date()]
+    });
   }
 
-  get act_id() {
-    return this.activities.get('act_id') as FormArray;
+
+  initAcadMetFormParam(id, activity, timeFrame, implementation): FormGroup {
+    return this.fb.group({
+      acId : [id, Validators.required],
+      activities: [activity, Validators.required],
+      timeFrame: [timeFrame, Validators.required],
+      implementation: [implementation, Validators.required],
+      created: [new Date()],
+      updated: [new Date()]
+    });
   }
-  get activity() {
-    return this.activities.get('activity') as FormArray;
+
+  addAcadMetForm() {
+        this.AcadMetAct = this.AcadMetForm.get('AcadMetAct') as FormArray;
+        this.AcadMetAct.push(this.initAcadMetForm());
   }
-  get time_frame() {
-    return this.activities.get('time_frame') as FormArray;
-  }
-  get impl() {
-    return this.activities.get('impl') as FormArray;
+
+  addAcadMetFormParam(id, activity, timeFrame, implementation) {
+    this.AcadMetAct = this.AcadMetForm.get('AcadMetAct') as FormArray;
+    this.AcadMetAct.push(this.initAcadMetFormParam(id, activity, timeFrame, implementation));
   }
 
   get budId() {
@@ -92,7 +116,6 @@ export class YearPlanComponent implements OnInit {
   get resImpl() {
     return this.Research.get('implementation') as FormArray;
   }
-  public activities: FormGroup;
   public budgetLength;
   public budgets: FormGroup;
   public orgs: FormGroup;
@@ -161,26 +184,23 @@ export class YearPlanComponent implements OnInit {
   private planId1: number;
   private planId2: number;
   private planId3: number;
-
-  gettedActs = [];
-
   gettedResearch = [ ];
 
   getTableSeceltion() {
     return this.layout.getTable();
   }
-  addNewActId() {
-    this.act_id.push(this.fb.control(''));
-  }
-  addNewActivity() {
-    this.activity.push(this.fb.control(''));
-  }
-  addTimeFrame() {
-    this.time_frame.push(this.fb.control(''));
-  }
-  addImpl() {
-    this.impl.push(this.fb.control(''));
-  }
+  // addNewActId() {
+  //   this.act_id.push(this.fb.control(''));
+  // }
+  // addNewActivity() {
+  //   this.activity.push(this.fb.control(''));
+  // }
+  // addTimeFrame() {
+  //   this.time_frame.push(this.fb.control(''));
+  // }
+  // addImpl() {
+  //   this.impl.push(this.fb.control(''));
+  // }
 
   addNewBudId() {
     if(this.budgetLength == 0) {
@@ -272,7 +292,21 @@ export class YearPlanComponent implements OnInit {
     this.resImpl.push(this.fb.control(''));
   }
   ngOnInit() {
-    this.message.hide=true;
+    this.message.hide= true;
+    this.AcadMetForm = this.fb.group({
+      AcadMetAct : this.fb.array([this.initAcadMetForm()])
+    });
+
+    this.api.getActivity().subscribe(
+      res => {
+
+        this.gettedActs = res;
+      },
+      err => {
+        console.log(err);
+      }
+    );
+
     this.api.getYourPlan().subscribe(
       res => {
         if (res[0] !== undefined) {
@@ -461,12 +495,12 @@ export class YearPlanComponent implements OnInit {
     this.translations3 = new FormControl(this.translations.value + this.translations2.value);
     this.advisor3 = new FormControl(this.advisor.value + this.advisor2.value);
 
-    this.activities = this.fb.group({
-      act_id : this.fb.array([]),
-      activity: this.fb.array([]),
-      time_frame: this.fb.array([]),
-      impl: this.fb.array([])
-    });
+    // this.activities = this.fb.group({
+    //   ac_id : this.fb.array([]),
+    //   activities: this.fb.array([]),
+    //   timeFrame: this.fb.array([]),
+    //   implementation: this.fb.array([])
+    // });
     this.budgets = this.fb.group({
       budId: this.fb.array([]),
       activitiess: this.fb.array([]),
@@ -506,6 +540,7 @@ export class YearPlanComponent implements OnInit {
         console.log(err);
       }
     );
+
     this.api.getReasearch().subscribe(
       res => {
         this.gettedResearch = res;
@@ -745,22 +780,31 @@ export class YearPlanComponent implements OnInit {
         this.message.hide = true;
       }, 2000);
     }, 2000);
-    var i = 0;
-    for(; i < this.activities.get('act_id').value.length; i++) {
-      var tempActivity = {
-        activity: this.activities.get('act_id').value[i],
-        time_frame: this.activities.get('activity').value[i],
-        impl: this.activities.get('impl').value[i]
-      };
-      this.api.uploadActivity(tempActivity).subscribe(
-        res => {
+
+    for(var i = 1; i <= this.gettedActs.length; i++) {
+      this.gettedActs[i - 1]. updated = new Date()
+      this.api.updateActivity(i, this.gettedActs[i - 1]).subscribe(res => {
           console.log(res);
         },
-        error1 => {
-          console.log(error1);
-        }
-      );
+        err => {
+          console.log(err);
+        });
     }
+    // for(; i < this.activities.get('act_id').value.length; i++) {
+    //   // var tempActivity = {
+    //   //   activity: this.activities.get('act_id').value[i],
+    //   //   time_frame: this.activities.get('activity').value[i],
+    //   //   impl: this.activities.get('impl').value[i]
+    //   // };
+    //   // this.api.uploadActivity(tempActivity).subscribe(
+    //   //   res => {
+    //   //     console.log(res);
+    //   //   },
+    //   //   error1 => {
+    //   //     console.log(error1);
+    //   //   }
+    //   // );
+    // }
     var i = 0;
     for(; i < this.budgets.get('budId').value.length; i++) {
       // tslint:disable-next-line:prefer-const no-shadowed-variable
@@ -860,6 +904,7 @@ export class YearPlanComponent implements OnInit {
         }
       );
     }
+
   }
 
   downloadPlan() {
@@ -875,26 +920,26 @@ export class YearPlanComponent implements OnInit {
     );
   }
 
-  choosePlan(value) {
-    this.selectPlan = value;
-  }
-  changePlan() {
-    this.message.type = 'error';
-    this.message.text = 'Нажмите "Отправить план", что бы сохранить изменения';
-    this.message.hide = false;
-    this.lectures3.setValue(this.lectures.value + this.lectures2.value);
-    this.practiceStudies3.setValue(this.practiceStudies.value + this.practiceStudies2.value);
-    this.labs3.setValue(this.labs.value + this.labs2.value);
-    this.practicesMasters3.setValue(this.practicesMasters.value + this.practicesMasters2.value);
-    this.supervisDiplomas3.setValue(this.supervisDiplomas.value + this.practicesMasters2.value);
-    this.stateAttestComm3.setValue(this.stateAttestComm.value + this.stateAttestComm2.value);
-    this.tsis3.setValue(this.tsis.value + this.tsis2.value);
-    this.midEndTerm3.setValue(this.midEndTerm.value + this.midEndTerm2.value);
-    this.writtenPaper3.setValue(this.writtenPaper.value + this.writtenPaper2.value);
-    this.umkd3.setValue(this.umkd.value + this.umkd2.value);
-    this.translations3.setValue(this.translations.value + this.translations2.value);
-    this.advisor3.setValue(this.advisor.value + this.advisor2.value);
-  }
+  // choosePlan(value) {
+  //   this.selectPlan = value;
+  // }
+  // changePlan() {
+  //   this.message.type = 'error';
+  //   this.message.text = 'Нажмите "Отправить план", что бы сохранить изменения';
+  //   this.message.hide = false;
+  //   this.lectures3.setValue(this.lectures.value + this.lectures2.value);
+  //   this.practiceStudies3.setValue(this.practiceStudies.value + this.practiceStudies2.value);
+  //   this.labs3.setValue(this.labs.value + this.labs2.value);
+  //   this.practicesMasters3.setValue(this.practicesMasters.value + this.practicesMasters2.value);
+  //   this.supervisDiplomas3.setValue(this.supervisDiplomas.value + this.practicesMasters2.value);
+  //   this.stateAttestComm3.setValue(this.stateAttestComm.value + this.stateAttestComm2.value);
+  //   this.tsis3.setValue(this.tsis.value + this.tsis2.value);
+  //   this.midEndTerm3.setValue(this.midEndTerm.value + this.midEndTerm2.value);
+  //   this.writtenPaper3.setValue(this.writtenPaper.value + this.writtenPaper2.value);
+  //   this.umkd3.setValue(this.umkd.value + this.umkd2.value);
+  //   this.translations3.setValue(this.translations.value + this.translations2.value);
+  //   this.advisor3.setValue(this.advisor.value + this.advisor2.value);
+  // }
   somethingChanged() {
     this.message.type = 'error';
     this.message.text = 'Нажмите "Отправить план", что бы сохранить изменения';

@@ -141,4 +141,14 @@ label.required:after{
   justify-content: center;
   color: #fff
 }
+.osahan-account-page-right{
+  position: relative;
+  z-index: 1;
+}
+/*.newUserModal {*/
+/*  z-index: 1;*/
+/*}*/
+/*.exampleModalLongTitle1 {*/
+/*  z-index: 2;*/
+/*}*/
 

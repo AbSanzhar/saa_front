@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import {catchError, expand, filter, map} from 'rxjs/operators';
 import * as jwt_decode from 'jwt-decode';
 // import {Http, Headers} from '@angular/http';
+// import ResponseContentType;
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  private base = 'http://localhost:8077/';
+   private base =  window["cfgApiBaseUrl"];
+  //private base = 'http://localhost:8077/';
 
   table: number;
 
@@ -32,11 +34,11 @@ export class ApiService {
   // }
 
   login(user): Observable<any> {
+
     const url = 'auth/login';
     return this.http.post<any>(this.base + url, user)
       .pipe(catchError(this.errorHandler));
   }
-
   getAllUsers(): Observable<any> {
     const url = 'users/dis';
     return this.http.get(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'));
@@ -46,8 +48,13 @@ export class ApiService {
     return this.http.get<any>(this.base + url + id  + '?jwt_token=' + window.localStorage.getItem('token'))
     .pipe(catchError(this.errorHandler));
   }
-  getDepUsers(id: number) : Observable<any> {
-    const url = 'depts/'
+  updateProfile(updatedProfile): Observable<any> {
+    const url = 'users/update/';
+    const id = this.getDecodedAccessToken(localStorage.getItem('token')).jti;
+    return this.http.post<any>(this.base + url + id + '?jwt_token=' + window.localStorage.getItem('token'), updatedProfile);
+  }
+  getDepUsers(id: number): Observable<any> {
+    const url = 'depts/';
     return this.http.get(this.base + url + id + '?jwt_token=' + window.localStorage.getItem('token'))
       .pipe(catchError(this.errorHandler));
 
@@ -56,10 +63,11 @@ export class ApiService {
     const url = 'users/dis';
     return this.http.get(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'));
   }
-  getExUsers(): Observable<any> {
-    const url = 'users/ex/dis';
-    return this.http.get(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'));
-  }
+  //Не рабочий метод. Следует ожидать когда будет доведен до ума на беке
+  // getExUsers(): Observable<any> {
+  //   const url = 'users/ex/dis';
+  //   return this.http.get(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'));
+  // }
   getUserDocs(id: number): Observable<any> {
     const url = 'docs/user/';
     return this.http.get<any>(this.base + url + id)
@@ -126,25 +134,30 @@ export class ApiService {
   }
 
   getActivity(): Observable<any> {
-    const url = 'activities/';
+    const url = 'academic-method/';
     const id = this.getDecodedAccessToken(localStorage.getItem('token')).jti;
-    return this.http.get<any>(this.base + url + id);
+    return this.http.get<any>(this.base + url + id + '?jwt_token=' + window.localStorage.getItem('token'));
   }
   selectTable(table) {
     this.table = table;
   }
 
   uploadActivity(activity): Observable<any> {
-    const url = 'activities/add/';
+    const url = 'academic-method/add/';
     const id = this.getDecodedAccessToken(localStorage.getItem('token')).jti;
-    return this.http.post<any>(this.base + url + id, activity).
+    return this.http.post<any>(this.base + url + id + '?jwt_token=' + window.localStorage.getItem('token'), activity).
+    pipe(catchError(this.errorHandler));
+  }
+  updateActivity(acId, activity): Observable<any> {
+    const url = 'academic-method/';
+    return this.http.patch<any>(this.base + url + acId + '?jwt_token=' + window.localStorage.getItem('token'), activity).
     pipe(catchError(this.errorHandler));
   }
 
   getBudget(): Observable<any> {
     const url = 'budget-research/';
     const id = this.getDecodedAccessToken(localStorage.getItem('token')).jti;
-    return this.http.get<any>(this.base + url + id).pipe(catchError(this.errorHandler));
+    return this.http.get<any>(this.base + url + id + '?jwt_token=' + window.localStorage.getItem('token')).pipe(catchError(this.errorHandler));
   }
   uploadBudget(budget): Observable<any> {
     const url = 'budget-research/add/';
@@ -167,18 +180,17 @@ export class ApiService {
 
   getPublications(): Observable<any> {
     const url = 'publication/';
-    console.log('I was decleared');
     const id = this.getDecodedAccessToken(localStorage.getItem('token')).jti;
-    return this.http.get<any>(this.base + url + id).pipe(catchError(this.errorHandler));
+    return this.http.get<any>(this.base + url + id + '?jwt_token=' + window.localStorage.getItem('token')).pipe(catchError(this.errorHandler));
   }
   uploadPub(pub): Observable<any> {
     const url = 'publication/add/';
     const id = this.getDecodedAccessToken(localStorage.getItem('token')).jti;
-    return this.http.post<any>(this.base + url + id, pub).pipe(catchError(this.errorHandler));
+    return this.http.post<any>(this.base + url + id + '?jwt_token=' + window.localStorage.getItem('token'), pub).pipe(catchError(this.errorHandler));
   }
   updatePub(id, pub): Observable<any> {
     const url = 'publication/update/';
-    return this.http.patch<any>(this.base + url + id, pub);
+    return this.http.patch<any>(this.base + url + id + '?jwt_token=' + window.localStorage.getItem('token'), pub);
   }
 
   getEvent(): Observable<any> {
@@ -233,13 +245,14 @@ export class ApiService {
     return this.http.post<any>(this.base + url + id, research).pipe(catchError(this.errorHandler));
   }
 
-  downloadPubFile(filePath) : Observable<any>{
+  downloadPubFile(filePath): Observable<any>{
     let headers = new HttpHeaders();
+    const url = 'publication/uploads/';
     headers = headers.set('Content-Type', 'application/octet-stream');
     // const blob = new Blob(filePath, { type: 'application/octet-stream' });
     //
     // this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
-    return this.http.get<any>(filePath, { headers, responseType: 'blob' as 'json'});
+    return this.http.get<any>(this.base + url + filePath + '?jwt_token=' + window.localStorage.getItem('token'), { headers, responseType: 'blob' as 'json'});
   }
   generatePubFile() : Observable<any> {
     const url = 'publication/reportPdf/';
@@ -250,26 +263,33 @@ export class ApiService {
     return this.http.get<any>(this.base + url + id, { headers, responseType: 'blob' });
   }
   uploadPubFile(id, file): Observable<any> {
-      const url = 'publication/addFile?id=' + id;
-      const fd = new FormData();
+      const url = 'publication/addFile/';
       console.log(id);
       console.log(file);
       console.log(file.name);
       // const newBlob = new Blob([file], { type: 'multipart/form-data' });
       const formData: FormData = new FormData();
-      formData.append('fileKey', file, file.name);
-      formData.append('id', id);
-      const httpHeaders = new HttpHeaders ({
-        'Content-Type': 'multipart/form-data',
-        Authorization: 'Bearer ' + localStorage.getItem('token')
-      });
-      // fd.append('file', newBlob, file.name);
-      // console.log(fd.get('file'));
-      console.log(formData.get('fileKey'));
-      console.log(formData.get('id'));
-      return this.http.post<any>(this.base + url, formData, { headers: httpHeaders });
+      formData.append('file', file, file.name);
+      // formData.append('id', id);
+      // const httpHeaders = new HttpHeaders ({
+      //   'Content-Type': 'multipart/form-data',
+      //   Authorization: 'Bearer ' + localStorage.getItem('token')
+      // });
+      console.log(formData.get('file'));
+      // console.log(formData.get('id'));
+      return this.http.post<any>(this.base + url + id + '?jwt_token=' + window.localStorage.getItem('token'), formData);
   }
 
+  getAllMyDisSovets(): Observable<any> {
+    const url = 'dissovet/member/';
+    const id = this.getDecodedAccessToken(localStorage.getItem('token')).jti;
+    return this.http.get(this.base + url + id + '?jwt_token=' + window.localStorage.getItem('token'));
+  }
+  getSecDisSovet(): Observable<any> {
+    const url = 'dissovet/secretary/';
+    const id = this.getDecodedAccessToken(localStorage.getItem('token')).jti;
+    return this.http.get(this.base + url + id + '?jwt_token=' + window.localStorage.getItem('token'));
+  }
   uploadDisSovet(disSovet): Observable<any> {
     const url = 'dissovet/add';
     return this.http.post(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'), disSovet);
@@ -279,7 +299,56 @@ export class ApiService {
     const url = 'dissovet/add/memberUser/';
     return this.http.post(this.base + url + disId + '?jwt_token=' + window.localStorage.getItem('token'), disMember);
   }
+  uploadNewUser(newUser): Observable<any> {
+    const url = 'levye/add';
+    return this.http.post(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'), newUser);
+  }
 
+
+  getScienceProject(): Observable<any> {
+    const url = 'science-member/user/';
+    const id = this.getDecodedAccessToken(localStorage.getItem('token')).jti;
+    return this.http.get(this.base + url + id + '?jwt_token=' + window.localStorage.getItem('token'));
+  }
+  getAllScienceProjects(): Observable<any> {
+    const url = 'projects/all';
+    return this.http.get(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'));
+  }
+  updateScienceProject(id, proj): Observable<any> {
+    const url = 'projects/update/';
+    return this.http.patch(this.base + url + id + '?jwt_token=' + window.localStorage.getItem('token'), proj);
+  }
+
+
+  getAllTeachers(): Observable<any> {
+    const url = 'users/teachers';
+    return this.http.get(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'));
+  }
+
+  addProject(project): Observable<any> {
+    const url = 'projects/add/';
+    const id = this.getDecodedAccessToken(localStorage.getItem('token')).jti;
+    return this.http.post(this.base + url + id + '?jwt_token=' + window.localStorage.getItem('token'), project);
+  }
+  addMemberToProject(member): Observable<any> {
+    const url = 'science-member/add';
+    return this.http.post(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'), member);
+  }
+
+  addRole(role): Observable<any> {
+    const url = 'roles/add';
+    return this.http.post(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'), role);
+  }
+  deleteScPrRole(id): Observable<any> {
+    const url = 'roles/del/';
+    return this.http.delete(this.base + url + id + '?jwt_token=' + window.localStorage.getItem('token'));
+  }
+
+  getNotifications(): Observable<any> {
+    const url = 'notifications/all/';
+    const id = this.getDecodedAccessToken(localStorage.getItem('token')).jti;
+    return this.http.get(this.base + url + id + '?jwt_token=' + window.localStorage.getItem('token'));
+  }
   errorHandler(error: HttpErrorResponse) {
     return throwError(error.message || 'Server Error');
   }
