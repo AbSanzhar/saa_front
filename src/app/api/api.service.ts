@@ -349,6 +349,27 @@ export class ApiService {
     const id = this.getDecodedAccessToken(localStorage.getItem('token')).jti;
     return this.http.get(this.base + url + id + '?jwt_token=' + window.localStorage.getItem('token'));
   }
+
+  addPatent(patent): Observable<any> {
+    const url = 'patent/add';
+    return this.http.post(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'), patent);
+  }
+
+  getPatent(userId): Observable<any> {
+    const url = 'patent/getByUserId';
+    return this.http.post(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'), userId);
+  }
+
+  getAllPatents(scienceId): Observable<any> {
+    const url = 'patent/getAll';
+    return this.http.post(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'), scienceId);
+  }
+
+  setPatentStatus(status): Observable<any> {
+    const url = 'patent/updateStatus';
+    return this.http.post(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'), status);
+  }
+
   errorHandler(error: HttpErrorResponse) {
     return throwError(error.message || 'Server Error');
   }

@@ -25,8 +25,8 @@
                                   <small class="text-danger" [class.d-none]="updateProfForm.get('patronomyc').valid || updateProfForm.get('patronomyc').untouched">Данное поле обязательно для заполнения</small>
                                 </div>
                                 <div class="form-group">
-                                  <label for="email" class="col-form-label required">E-mail:</label>
-                                  <input [class.is-invalid]="updateProfForm.get('email').invalid && updateProfForm.get('email').touched" type="text" class="form-control" id="email" formControlName="email">
+                                  <label for="email0" class="col-form-label required">E-mail:</label>
+                                  <input [class.is-invalid]="updateProfForm.get('email').invalid && updateProfForm.get('email').touched" type="text" class="form-control" id="email0" formControlName="email">
                                   <small class="text-danger" [class.d-none]="updateProfForm.get('email').valid || updateProfForm.get('email').untouched">Данное поле обязательно для заполнения</small>
                                 </div>
                               </form>
@@ -51,6 +51,7 @@
                               <button *ngIf="Science_DeptRole && selectTable==7 && !updateProj" class="btn btn-warning" type="submit" (click)="updateProject()">Изменить научные проекты</button>
                               <button *ngIf="Science_DeptRole && selectTable==7 && updateProj" class="btn btn-warning" type="submit" (click)="updateProject()">Cохранить изменения</button>
                               <button *ngIf="ScProjectManager" class="btn btn-warning my-3" type="submit" data-toggle="modal" data-target="#exampleModal2">Создать научный проект</button>
+                              <button *ngIf="Teacher_Role" class="btn btn-warning my-3" type="submit" data-toggle="modal" data-target="#exampleModal3">Добавить патент</button>
                             </div>
                         </div>
                     </div>
@@ -73,6 +74,8 @@
                     <a *ngIf="ScJunRes || ScSeniorRes || ScLeadingRes || ScProjectManager || Teacher_Role" class="list-group-item list-group-item-action" id="list-profile-list3" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile" (click)="selectTable = 5">Мои научные проекты</a>
                     <a *ngIf="Science_DeptRole" class="list-group-item list-group-item-action active" id="list-profile-list4" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile" (click)="selectTable = 6">Список преподователей</a>
                     <a *ngIf="Science_DeptRole" class="list-group-item list-group-item-action" id="list-profile-list5" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile" (click)="selectTable = 7">Список всех научных проектов</a>
+                    <a *ngIf="Teacher_Role" class= "list-group-item list-group-item-action" id="list-profile-list6" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile" (click)="selectTable = 8">Мои патенты</a>
+                    <a *ngIf="Science_DeptRole" class="list-group-item list-group-item-action" id="list-profile-list7" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile" (click)="selectTable = 9">Список всех патентов</a>
                   </div>
 
                     <div  class="tab-pane fade  active show" id="favourites" role="tabpanel" aria-labelledby="favourites-tab" *ngIf="selectTable == 1 && Teacher_Role">
@@ -683,6 +686,92 @@
 
                 </div>
               </div>
+
+
+              <div class="tab-pane fade  active show" id="favourites313" role="tabpanel" aria-labelledby="favourites-tab" *ngIf="selectTable == 8">
+                <div class="row table-responsive">
+                  <form>
+
+                    <table class="table table-bordered table-hover table-sm my-2">
+                      <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" colspan="1">ID</th>
+                        <th scope="col" colspan="1">Номер патента</th>
+                        <th scope="col" colspan="1">Страна </th>
+                        <th scope="col" colspan="1">Патент на изобретение</th>
+                        <th scope="col" colspan="1">Опубликован в TR</th>
+                        <th scope="col" colspan="1">Автор</th>
+                        <th scope="col" colspan="1">Статус модерации</th>
+                        <th scope="col" colspan="1">Дата ввода в базу</th>
+                        <th scope="col" colspan="1">Кем проверено</th>
+                      </tr>
+                      </thead>
+                      <tbody class="table-striped">
+                      <tr *ngFor="let res of patents;">
+                        <td>{{res.pntId}}</td>
+                        <td>{{res.ptntNumber}}</td>
+                        <td>{{res.ptntIssueDate}}</td>
+                        <td>{{res.ptntCountry}}</td>
+                        <td>{{res.ptntPublishedTR}}</td>
+                        <td>{{res.ptntUser}}</td>
+                        <td>{{res.ptntStatus}}</td>
+                        <td>{{res.ptntInsertedDate}}</td>
+                        <td>{{res.ptntCheckedUser}}</td>
+                      </tr>
+                      </tbody>
+                    </table>
+
+                  </form>
+
+                </div>
+              </div>
+
+
+              <div class="tab-pane fade  active show" id="favourites3133" role="tabpanel" aria-labelledby="favourites-tab" *ngIf="selectTable == 9">
+                <div class="row table-responsive">
+                  <form>
+
+                    <table class="table table-bordered table-hover table-sm my-2" *ngIf="!updateStatusPatent">
+                      <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" colspan="1">ID</th>
+                        <th scope="col" colspan="1">Номер патента</th>
+                        <th scope="col" colspan="1">Дата выдачи</th>
+                        <th scope="col" colspan="1">Страна </th>
+                        <th scope="col" colspan="1">Патент на изобретение</th>
+                        <th scope="col" colspan="1">Опубликован в TR</th>
+                        <th scope="col" colspan="1">Автор</th>
+                        <th scope="col" colspan="1">Статус модерации</th>
+                        <th scope="col" colspan="1">Дата ввода в базу</th>
+                        <th scope="col" colspan="1">Кем проверено</th>
+                      </tr>
+                      </thead>
+                      <tbody class="table-striped">
+                      <tr *ngFor="let res of AllPatens;">
+                        <td>{{res.ptntId}}</td>
+                        <td>{{res.ptntNumber}}</td>
+                        <td>{{res.ptntIssueDate}}</td>
+                        <td>{{res.ptntCountry}}</td>
+                        <td>{{res.ptntType}}</td>
+                        <td>{{res.ptntPublishedTR}}</td>
+                        <td>{{res.ptntUser}}</td>
+                        <td>{{res.ptntStatus}}
+                          <button *ngIf="res.ptntStatus == 'Under review'" class="btn btn-success" (click)="setPatentStatus(res.ptntId, 2)">Подтвердить</button>
+                          <button *ngIf="res.ptntStatus == 'Under review'" class="btn btn-danger" (click)="setPatentStatus(res.ptntId, 3)">Отправить на доработку</button>
+                          <button *ngIf="res.ptntStatus == 'Confirmed'" class="btn btn-danger" (click)="setPatentStatus(res.ptntId, 3)">Отправить на доработку</button>
+                          <button *ngIf="res.ptntStatus == 'Returned for revision'" class="btn btn-success" (click)="setPatentStatus(res.ptntId, 2)">Подтвердить</button>
+                        </td>
+                        <td>{{res.ptntInsertedDate}}</td>
+                        <td>{{res.ptntCheckedUser}}</td>
+                      </tr>
+                      </tbody>
+                    </table>
+
+                  </form>
+
+                </div>
+              </div>
+
 
             </div>
         </div>
@@ -1431,6 +1520,69 @@
         <button [disabled]="newProjForm.invalid" [class.invalid]="newProjForm.invalid" *ngIf="!PmNextPage" type="button" class="btn btn-primary" (click)="PmNextPage = true">Создать научный проект</button>
         <button *ngIf="PmNextPage" type="button" class="btn btn-secondary" (click)="PmNextPage = false">Назад</button>
         <button [disabled]="newProjMemForm.controls['ScienceMember'].invalid" [class.invalid]="newProjMemForm.controls['ScienceMember'].invalid" *ngIf="PmNextPage" type="button" class="btn btn-primary" data-dismiss="modal" (click)="sendProject()">Создать</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel9">Добавить патент</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="patentForm">
+          <div class="form-group">
+            <label for="ptnt_number" class="col-form-label required">Номер патента:</label>
+            <input [class.is-invalid]="patentForm.get('ptnt_number').invalid && patentForm.get('ptnt_number').touched" type="text" class="form-control" id="ptnt_number" formControlName="ptnt_number">
+            <small class="text-danger" [class.d-none]="patentForm.get('ptnt_number').valid || patentForm.get('ptnt_number').untouched">Данное поле обязательно для заполнения</small>
+          </div>
+          <div class="form-group">
+            <label for="ptnt_issue_date" class="col-form-label required">Дата выдачи:</label>
+            <input [class.is-invalid]= "patentForm.get('ptnt_issue_date').invalid && patentForm.get('ptnt_issue_date').touched" type="date" class="form-control" id="ptnt_issue_date" formControlName="ptnt_issue_date">
+            <small class="text-danger" [class.d-none]="patentForm.get('ptnt_issue_date').valid || patentForm.get('ptnt_issue_date').untouched">Данное поле обязательно для заполнения</small>
+          </div>
+
+          <div class="form-group">
+            <label for="ptnt_country_id" class="col-form-label required">Cтрана</label>
+            <select class="form-control mb-1 mt-1" id = "ptnt_country_id" formControlName="ptnt_country_id">
+              <option value="1">Казахстан</option>
+            </select>
+          </div>
+
+<!--          <div class="custom-control custom-checkbox">-->
+<!--            <input type="checkbox" class="custom-control-input" id="customCheck1">-->
+<!--            <label class="custom-control-label" for="customCheck1">Это патент на изобретение</label>-->
+<!--          </div>-->
+
+          <div class="form-group">
+            <select class="form-control mb-1 mt-1" id = "ptnt_type_id" formControlName="ptnt_type_id">
+              <option value="1">Отечественный</option>
+              <option value="2">Зарубежный</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="ptnt_published_TR" class="col-form-label required">Опубликован в базе TR(ссылка):</label>
+            <input [class.is-invalid]= "patentForm.get('ptnt_published_TR').invalid && patentForm.get('ptnt_published_TR').touched" type="text" class="form-control" id="ptnt_published_TR" formControlName="ptnt_published_TR">
+            <small class="text-danger" [class.d-none]="patentForm.get('ptnt_published_TR').valid || patentForm.get('ptnt_published_TR').untouched">Данное поле обязательно для заполнения</small>
+          </div>
+
+<!--          <div class="form-group">-->
+<!--            <label for="exampleFormControlFile1">Загрузить файл</label>-->
+<!--            <input type="file" class="form-control-file" id="exampleFormControlFile2">-->
+<!--          </div>-->
+        </form>
+      </div>
+      {{ patentForm.value | json}}
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+        <button [disabled]="patentForm.invalid" [class.disabled]="patentForm.invalid" type="button" class="btn btn-primary" (click)="sendPatent()" data-dismiss="modal">Добавить патент</button>
       </div>
     </div>
   </div>

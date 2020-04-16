@@ -237,6 +237,10 @@ export class ProfileComponent implements OnInit {
   public AllTeachers = [];
   public publicationForm: FormGroup;
   public eventForm: FormGroup;
+  public patentForm: FormGroup;
+  public patents;
+  public AllPatens;
+  public updateStatusPatent = false;
 
   public selectTable = 1;
 
@@ -275,6 +279,20 @@ export class ProfileComponent implements OnInit {
       ScienceMember: this.fb.array([])
     });
     this.addProjectMemberRow(9);
+    this.patentForm = this.fb.group({
+      ptnt_id : [2],
+      ptnt_number: ['', Validators.required],
+      ptnt_issue_date: ['', Validators.required],
+      ptnt_country_id: ['', Validators.required],
+      ptnt_type_id: ['', Validators.required],
+      ptnt_published_TR: ['', Validators.required],
+      ptnt_user_id: [this.IdToken],
+      ptnt_status_id: ['1'],
+      ptnt_inserted_date: [new Date()],
+      ptnt_file_id: ['1'],
+      ptnt_checked_user_id: ['2']
+    });
+
     this.newProjForm = this.fb.group({
       scId: ['', Validators.required],
       scName: ['', Validators.required],
@@ -316,6 +334,18 @@ export class ProfileComponent implements OnInit {
     }
     if(this.Teacher_Role == false && this.Science_DeptRole == true) {
       this.selectTable = 6;
+      const science_id = {
+        ptnt_user_id: this.IdToken
+      }
+      this._api.getAllPatents(science_id).subscribe(
+        res => {
+          console.log(res);
+          this.AllPatens = res;
+        },
+        err => {
+          console.log(err);
+        }
+      );
     }
     this._api.getUserById(this.IdToken).subscribe(
       res => {
@@ -414,6 +444,19 @@ export class ProfileComponent implements OnInit {
       );
     }
     if(this.Teacher_Role == true) {
+      const userId = {
+        ptnt_user_id: this.IdToken
+      };
+      this._api.getPatent(userId).subscribe(
+        res => {
+          console.log(res);
+          this.patents = res;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+
       this._api.getScienceProject().subscribe(
         res => {
           console.log(res);
@@ -1398,5 +1441,63 @@ export class ProfileComponent implements OnInit {
   }
   onDissovet() {
     this.router.navigate(['/dissovet']);
+  }
+
+  sendPatent() {
+    console.log(this.patentForm.value);
+    let patent = {
+      "ptnt_number":"1",
+      "ptnt_issue_date":"2020-04-16",
+      "ptnt_country_id":"1",
+      "ptnt_type_id":"2",
+      "ptnt_published_TR":"null",
+      "ptnt_user_id":"1",
+      "ptnt_status_id":"1",
+      "ptnt_inserted_date":"",
+      "ptnt_checked_user_id":"2",
+      "ptnt_file_id":"1"
+    };
+    console.log(patent);
+    this._api.addPatent(this.patentForm.value).subscribe(res => {
+      console.log(res);
+    }, error1 => {
+      console.log(error1);
+    });
+  }
+
+  setPatentStatus(patId, statusId) {
+    const status = {
+      ptnt_id: patId,
+      ptnt_user_id: this.IdToken,
+      ptnt_status_id: statusId,
+    };
+
+    this._api.setPatentStatus(status).subscribe(
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.log(err);
+      }
+    );
+
+    setTimeout( () => {
+      this.updateStatusPatent = true;
+      const science_id = {
+        ptnt_user_id: this.IdToken
+      }
+      this._api.getAllPatents(science_id).subscribe(
+        res => {
+          console.log(res);
+          this.AllPatens = res;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+      setTimeout( ()=> {
+        this.updateStatusPatent = false;
+      }, 1000);
+    }, 1000);
   }
 }
