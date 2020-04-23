@@ -241,6 +241,7 @@ export class ProfileComponent implements OnInit {
   public patents;
   public AllPatens;
   public updateStatusPatent = false;
+  public PatentFile: Array<File> = [];
 
   public selectTable = 1;
 
@@ -1454,8 +1455,7 @@ export class ProfileComponent implements OnInit {
       "ptnt_user_id":"1",
       "ptnt_status_id":"1",
       "ptnt_inserted_date":"",
-      "ptnt_checked_user_id":"2",
-      "ptnt_file_id":"1"
+      "ptnt_checked_user_id":"2"
     };
     console.log(patent);
     this._api.addPatent(this.patentForm.value).subscribe(res => {
@@ -1463,6 +1463,15 @@ export class ProfileComponent implements OnInit {
     }, error1 => {
       console.log(error1);
     });
+    console.log(this.PatentFile);
+    this._api.uploadPatentFile(this.PatentFile).subscribe(
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
   setPatentStatus(patId, statusId) {
@@ -1499,5 +1508,10 @@ export class ProfileComponent implements OnInit {
         this.updateStatusPatent = false;
       }, 1000);
     }, 1000);
+  }
+
+  onPatentFileChange(event) {
+    console.log(event);
+    this.PatentFile = <Array<File>>event.target.files;
   }
 }

@@ -1536,7 +1536,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="patentForm">
+        <form [formGroup]="patentForm" enctype='multipart/form-data'>
           <div class="form-group">
             <label for="ptnt_number" class="col-form-label required">Номер патента:</label>
             <input [class.is-invalid]="patentForm.get('ptnt_number').invalid && patentForm.get('ptnt_number').touched" type="text" class="form-control" id="ptnt_number" formControlName="ptnt_number">
@@ -1555,11 +1555,6 @@
             </select>
           </div>
 
-<!--          <div class="custom-control custom-checkbox">-->
-<!--            <input type="checkbox" class="custom-control-input" id="customCheck1">-->
-<!--            <label class="custom-control-label" for="customCheck1">Это патент на изобретение</label>-->
-<!--          </div>-->
-
           <div class="form-group">
             <select class="form-control mb-1 mt-1" id = "ptnt_type_id" formControlName="ptnt_type_id">
               <option value="1">Отечественный</option>
@@ -1573,13 +1568,22 @@
             <small class="text-danger" [class.d-none]="patentForm.get('ptnt_published_TR').valid || patentForm.get('ptnt_published_TR').untouched">Данное поле обязательно для заполнения</small>
           </div>
 
+          <div class="form-group">
+            <label for="exampleFormControlFile31">Загрузить файл(на русском языке)</label>
+            <input type="file" class="form-control-file" id="exampleFormControlFile31" (change)="onPatentFileChange($event)" multiple>
+          </div>
+
 <!--          <div class="form-group">-->
-<!--            <label for="exampleFormControlFile1">Загрузить файл</label>-->
-<!--            <input type="file" class="form-control-file" id="exampleFormControlFile2">-->
+<!--            <label for="exampleFormControlFile32">Загрузить файл(на английском языке)</label>-->
+<!--            <input type="file" class="form-control-file" id="exampleFormControlFile32" (change)="onPatentFileChange($event)">-->
+<!--          </div>-->
+
+<!--          <div class="form-group">-->
+<!--            <label for="exampleFormControlFile33">Загрузить файл(на казахском языке)</label>-->
+<!--            <input type="file" class="form-control-file" id="exampleFormControlFile33" (change)="onPatentFileChange($event)">-->
 <!--          </div>-->
         </form>
       </div>
-      {{ patentForm.value | json}}
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
         <button [disabled]="patentForm.invalid" [class.disabled]="patentForm.invalid" type="button" class="btn btn-primary" (click)="sendPatent()" data-dismiss="modal">Добавить патент</button>

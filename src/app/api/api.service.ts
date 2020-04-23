@@ -370,6 +370,24 @@ export class ApiService {
     return this.http.post(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'), status);
   }
 
+  uploadPatentFile(file): Observable<any> {
+    const url = 'https://nir.iitu.kz:8443/saa-uploader/uploadFile';
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    const httpHeaders = new HttpHeaders ({
+      'Content-Type': 'multipart/form-data',
+    });
+    console.log(file);
+    return this.http.post(url, file,
+    {
+      reportProgress: true,
+        responseType: 'json',
+        headers: {
+          'Content-type': undefined
+        }
+    }).pipe(catchError(this.errorHandler));
+  }
+
   errorHandler(error: HttpErrorResponse) {
     return throwError(error.message || 'Server Error');
   }
