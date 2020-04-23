@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { ApiService } from '../../api/api.service';
-import * as jwt_decode from "jwt-decode";
+import * as jwt_decode from 'jwt-decode';
 import {Form, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {StartEndDateValidator} from '../../shared/start-end-date.validator';
 import {Router} from '@angular/router';
@@ -13,45 +13,7 @@ import {Router} from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
 
-  public updatePubForm: FormGroup;
-  public updateEventForm: FormGroup;
-  public updateProjForm: FormGroup;
-  public newProjForm: FormGroup;
-  public newProjMemForm: FormGroup;
-  public updateProf = false;
-  public updateProfForm: FormGroup;
-  public updatePub = false;
-  public updateProj = false;
-  public PmNextPage = false;
-  public DisNextMemPage = false;
-  public NewUserPage = false;
-  public array1 = ['1.1. Тепло- и электроэнергетика и влияние энергетического сектора на окружающую среду, энергосбережение', '1.2. Альтернативная энергетика и технологии: возобновляемые источники энергии, ядерная и водородная энергетика другие источники энергии', '1.3.Транспортное, сельскохозяйственное, нефтегазовое и горно-металлургическое машиностроение'];
-  public array2 = ['2.1. Фундаментальные и прикладные исследования в области химической науки', '2.2. Фундаментальные и прикладные научные исследования в области почвенной науки', '2.3. Геология и разработка месторождений полезных ископаемых', '2.4. Комплексное использование минерального сырья', '2.5. Управление водными, почвенными и биологическими ресурсами', '2.6. Мониторинг объектов окружающей среды и «зеленые» технологии', '2.7. Комплексная переработка углеводородного сырья', '2.8. Композиционные материалы', '2.9. Наноматериалы и нанотехнологии', '2.10. Биомедицинские материалы и биологически активные вещества', '2.11.Новые материалы многоцелевого назначения на основе природного сырья и техногенных отходов', '2.12. Промышленная биотехнология', '2.13.Технологии получения штаммов продуцентов биопрепаратов', '2.14.Системы поиска, разведки и разработки МПИ', '2.15.Системы обогащения, комплексного извлечения, переработки природного и техногенного рудного сырья', '2.16. Добыча и использование нерудных полезных ископаемых',
-  '2.17. Производство и обработка металлов и материалов', '2.18. Системы эффективного водопользования', '2.19. Системы очистки сточных вод, газоочистки и пылеулавливания', '2.20. Системы по переработке промышленных и бытовых отходов', '2.21. Системы поддержания биологического разнообразия', '2.22.Системы снижения уровня выбросов парниковых газов и применения альтернативных источников энергии', '2.23. Системы по предотвращению опустынивания и деградации земель', '2.24. Информационные системы и база данных', '2.25. Каталитические системы и технологии', '2.26. Полимерные материалы со специальными свойствам', '2.27. Функциональные материалы для текстильной и легкой промышленности', '2.28. Новые строительные конструкции зданий и сооружений, технологии производства строительных материалов и изделий, сейсмостойкое строительство и безопасность сооружений, новейшие архитектурные формы'];
-  public array3 = ['3.1. Интеллектуальные информационные технологии', '3.2. Телекоммуникационные технологии', '3.3. Космические технологии', '3.4. Высокопроизводительные вычислительные технологии', '3.5. Методы и системы информационной безопасности и защиты данных', '3.6. Научные исследования в области естественных наук'];
-  public arr31 = ['3.1.1. Интеллектуальные системы управления и принятия решений (в том числе в режиме реального времени)', '3.1.2. Речевые технологии и компьютерная лингвистика', '3.1.3. Распознавание образов и обработка изображений', '3.1.4. Машинное обучение (machine learning)', '3.1.5. Интеллектуальные робототехнические системы', '3.1.6. Смарт технологии в науке и образовании', '3.1.7. Основы новых технологий для индустрии: системы дополненной и виртуальной реальности, 3D-принтинг и другое аддитивное производство. Интернет вещей'];
-  public arr32 = ['3.2.1. Управление и оптимизация в системах связи, сетях передачи данных (в том числе мультисервисных платформах: мобильных и игровых интернет технологиях)', '3.2.2. Информационно-коммуникационные системы для онлайн-торговли, цифрового банкинга и других цифровых сервисов'];
-  public arr33 = ['3.3.1. Технологии разработки аппаратно-программных средств и приборов для космической техники и наземно-космической инфраструктуры', '3.3.2. Развитие научной и экспериментальной базы исследований дальнего и ближнего космоса'];
-  public arr34 = ['3.4.1. Облачные, параллельные и распределенные вычисления', '3.4.2. Bid-data и data mining технологии', '3.4.3.Архитектура и технологии проектирования технического обеспечения вычислительных систем', '3.4.4. Информационно-поисковые системы'];
-  public arr35 = ['3.5.1. Методы и алгоритмы обеспечения информационной безопасности сложных систем и данных', '3.5.2. Технологии и программно-технические средства защиты информации'];
-  public arr36 = ['3.6.1. Фундаментальные и прикладные исследования в области математики', '3.6.2.Фундаментальные и прикладные исследования в области физики и астрономии', '3.6.3. Фундаментальные и прикладные исследования в области информатики', '3.6.4. Математическое и компьютерное моделирования в области механики'];
-  public array4 = ['4.1. Развитие интенсивного животноводства', '4.2. Обеспечение ветеринарной безопасности', '4.3. Интенсивное земледелие и растениеводство', '4.4. Обеспечение фитосанитарной безопасности', '4.5. Переработка и хранение сельскохозяйственной продукции и сырья', '4.6. Техническое обеспечение модернизации агропромышленного комплекса', '4.7. Устойчивое развитие сельских территорий'];
-  public array5 = ['5.1. Биотехнологии в сельском хозяйстве и охране окружающей среды', '5.2. Биотехнологии в медицине', '5.3. Развитие отечественной фармацевтической науки и промышленной биотехнологии'];
-  public arr51 = ['5.1.1. Технология геномного редактирования, маркер-сопутствующая и геномная  селекция для улучшения хозяйственно-ценных признаков растений и животных', '5.1.2. Биотехнология для создания биоудобрений и биологических препаратов для борьбы с болезнями сельскохозяйственных растений', ' 5.1.3. Молекулярно-генетические и клеточные технологии для создания вакцин, био- и лекарственных препаратов и диагностических тест-систем нового поколения', '5.1.4. Биотехнологии для сохранения и воспроизводства биоразнобразия естественных экосистем', '5.1.1. Технология геномного редактирования, маркер-сопутствующая и геномная  селекция для улучшения хозяйственно-ценных признаков растений и животных',
-  '5.1.5. Биотехнологии для реабилитации техногенно-нарушенных экосистем, очистки сточных вод и почв от промышленных и агропромышленных загрязнений', '5.1.6. Инновационные биотехнологии получения альтернативных источников энергии', '5.1.7. Информационные технологии в биологии, сельском хозяйстве и экологии'];
-  public arr52 = ['5.2.1.  Развитие клеточных технологий и тканевой инженерии для медицины', '5.2.2. Молекулярно-генетические, геномные технологии и биоинформатика для развития персонализированной медицины', '5.2.3. Мультиомные и молекулярные технологии для досимптомной диагностики, профилактики и лечения заболеваний',
-  '5.2.4. Новые технологии и биологически активные субстанции для решения проблем анте- и постнатального развития, старения, продления жизни человека', '5.2.5. Новые биотехнологии получения био- и лекарственных препаратов для превентивной медицины'];
-  public arr53 = ['5.3.1. Разработка оригинальных лекарственных и профилактических препаратов, изделий медицинского назначения, оборудований и приборов для медицины и ветеринарии, технологии их производства, доклинические и клинические исследования', '5.3.2.Технологии получения ценных компонентов из растительного, животного и минерального сырья биотехнологическими методами', '5.3.3.Технология получения штаммов-продуцентов биопрепаратов, ферментов белков и аминокислот для сельского хозяйства, пищевой и перерабатывающей промышленности', '5.3.4.Технологии глубокой переработки сырья с использованием микроорганизмов и/или ферментов, биологически активных субстанций'];
-  public array6 = ['6.1.Фундаментальные и прикладные исследования в области социально-экономических и гуманитарных наук', '6.2. Фундаментальные и прикладные исследования проблем образования ХХІ века', '6.3. Фундаментальные и прикладные исследования проблем модернизации общественного сознания'];
-  public arr61 = ['6.1.1. Исследование социально-экономических условий развития наукоемких конкурентоспособных производств (экономик)', '6.1.2. Исследование в области реализации социальной и экономической политики государства в современных условиях', '6.1.3. Актуальные проблемы социальных и общественно-гуманитарных наук и междисциплинарные исследования', '6.1.4. Исследования в области культуры, традиций, ценностей в условиях модернизации общества и государства', '6.1.5. ІІІ-я технологическая модернизация экономики, Индустрия 4.0, промышленная и технологическая политика, инновационная экономика, научное, креативное и социальное предпринимательство'];
-  public arr63 = ['6.3.1. Новое гуманитарное знание', '6.3.2. Туған жер. Общенациональное единство, мир и согласие', '6.3.3. Духовные святыни Казахстана. Сакральная география Казахстана', '6.3.4.Общность истории, культуры и языка. Современная Казахстанская культура в глобальном мире', '6.3.5. Рухани жаңғыру және Ұлы даланың жеті қыры'];
-  message = {
-    type: '',
-    text: '',
-    hide: false
-  };
-
-  //Update Project
+  // Update Project
   get ProjectScId() {
     return this.updateProjForm.get('scId') as FormArray;
   }
@@ -210,13 +172,44 @@ export class ProfileComponent implements OnInit {
   get disFullName() {
     return this.disMemForm.get('fullName') as FormArray;
   }
-  getDecodedAccessToken(token: string): any {
-    try {
-      return jwt_decode(token);
-    } catch (Error) {
-      return null;
-    }
-  }
+
+  public updatePubForm: FormGroup;
+  public updateEventForm: FormGroup;
+  public updateProjForm: FormGroup;
+  public newProjForm: FormGroup;
+  public newProjMemForm: FormGroup;
+  public updateProf = false;
+  public updateProfForm: FormGroup;
+  public updatePub = false;
+  public updateProj = false;
+  public PmNextPage = false;
+  public DisNextMemPage = false;
+  public NewUserPage = false;
+  public array1 = ['1.1. Тепло- и электроэнергетика и влияние энергетического сектора на окружающую среду, энергосбережение', '1.2. Альтернативная энергетика и технологии: возобновляемые источники энергии, ядерная и водородная энергетика другие источники энергии', '1.3.Транспортное, сельскохозяйственное, нефтегазовое и горно-металлургическое машиностроение'];
+  public array2 = ['2.1. Фундаментальные и прикладные исследования в области химической науки', '2.2. Фундаментальные и прикладные научные исследования в области почвенной науки', '2.3. Геология и разработка месторождений полезных ископаемых', '2.4. Комплексное использование минерального сырья', '2.5. Управление водными, почвенными и биологическими ресурсами', '2.6. Мониторинг объектов окружающей среды и «зеленые» технологии', '2.7. Комплексная переработка углеводородного сырья', '2.8. Композиционные материалы', '2.9. Наноматериалы и нанотехнологии', '2.10. Биомедицинские материалы и биологически активные вещества', '2.11.Новые материалы многоцелевого назначения на основе природного сырья и техногенных отходов', '2.12. Промышленная биотехнология', '2.13.Технологии получения штаммов продуцентов биопрепаратов', '2.14.Системы поиска, разведки и разработки МПИ', '2.15.Системы обогащения, комплексного извлечения, переработки природного и техногенного рудного сырья', '2.16. Добыча и использование нерудных полезных ископаемых',
+  '2.17. Производство и обработка металлов и материалов', '2.18. Системы эффективного водопользования', '2.19. Системы очистки сточных вод, газоочистки и пылеулавливания', '2.20. Системы по переработке промышленных и бытовых отходов', '2.21. Системы поддержания биологического разнообразия', '2.22.Системы снижения уровня выбросов парниковых газов и применения альтернативных источников энергии', '2.23. Системы по предотвращению опустынивания и деградации земель', '2.24. Информационные системы и база данных', '2.25. Каталитические системы и технологии', '2.26. Полимерные материалы со специальными свойствам', '2.27. Функциональные материалы для текстильной и легкой промышленности', '2.28. Новые строительные конструкции зданий и сооружений, технологии производства строительных материалов и изделий, сейсмостойкое строительство и безопасность сооружений, новейшие архитектурные формы'];
+  public array3 = ['3.1. Интеллектуальные информационные технологии', '3.2. Телекоммуникационные технологии', '3.3. Космические технологии', '3.4. Высокопроизводительные вычислительные технологии', '3.5. Методы и системы информационной безопасности и защиты данных', '3.6. Научные исследования в области естественных наук'];
+  public arr31 = ['3.1.1. Интеллектуальные системы управления и принятия решений (в том числе в режиме реального времени)', '3.1.2. Речевые технологии и компьютерная лингвистика', '3.1.3. Распознавание образов и обработка изображений', '3.1.4. Машинное обучение (machine learning)', '3.1.5. Интеллектуальные робототехнические системы', '3.1.6. Смарт технологии в науке и образовании', '3.1.7. Основы новых технологий для индустрии: системы дополненной и виртуальной реальности, 3D-принтинг и другое аддитивное производство. Интернет вещей'];
+  public arr32 = ['3.2.1. Управление и оптимизация в системах связи, сетях передачи данных (в том числе мультисервисных платформах: мобильных и игровых интернет технологиях)', '3.2.2. Информационно-коммуникационные системы для онлайн-торговли, цифрового банкинга и других цифровых сервисов'];
+  public arr33 = ['3.3.1. Технологии разработки аппаратно-программных средств и приборов для космической техники и наземно-космической инфраструктуры', '3.3.2. Развитие научной и экспериментальной базы исследований дальнего и ближнего космоса'];
+  public arr34 = ['3.4.1. Облачные, параллельные и распределенные вычисления', '3.4.2. Bid-data и data mining технологии', '3.4.3.Архитектура и технологии проектирования технического обеспечения вычислительных систем', '3.4.4. Информационно-поисковые системы'];
+  public arr35 = ['3.5.1. Методы и алгоритмы обеспечения информационной безопасности сложных систем и данных', '3.5.2. Технологии и программно-технические средства защиты информации'];
+  public arr36 = ['3.6.1. Фундаментальные и прикладные исследования в области математики', '3.6.2.Фундаментальные и прикладные исследования в области физики и астрономии', '3.6.3. Фундаментальные и прикладные исследования в области информатики', '3.6.4. Математическое и компьютерное моделирования в области механики'];
+  public array4 = ['4.1. Развитие интенсивного животноводства', '4.2. Обеспечение ветеринарной безопасности', '4.3. Интенсивное земледелие и растениеводство', '4.4. Обеспечение фитосанитарной безопасности', '4.5. Переработка и хранение сельскохозяйственной продукции и сырья', '4.6. Техническое обеспечение модернизации агропромышленного комплекса', '4.7. Устойчивое развитие сельских территорий'];
+  public array5 = ['5.1. Биотехнологии в сельском хозяйстве и охране окружающей среды', '5.2. Биотехнологии в медицине', '5.3. Развитие отечественной фармацевтической науки и промышленной биотехнологии'];
+  public arr51 = ['5.1.1. Технология геномного редактирования, маркер-сопутствующая и геномная  селекция для улучшения хозяйственно-ценных признаков растений и животных', '5.1.2. Биотехнология для создания биоудобрений и биологических препаратов для борьбы с болезнями сельскохозяйственных растений', ' 5.1.3. Молекулярно-генетические и клеточные технологии для создания вакцин, био- и лекарственных препаратов и диагностических тест-систем нового поколения', '5.1.4. Биотехнологии для сохранения и воспроизводства биоразнобразия естественных экосистем', '5.1.1. Технология геномного редактирования, маркер-сопутствующая и геномная  селекция для улучшения хозяйственно-ценных признаков растений и животных',
+  '5.1.5. Биотехнологии для реабилитации техногенно-нарушенных экосистем, очистки сточных вод и почв от промышленных и агропромышленных загрязнений', '5.1.6. Инновационные биотехнологии получения альтернативных источников энергии', '5.1.7. Информационные технологии в биологии, сельском хозяйстве и экологии'];
+  public arr52 = ['5.2.1.  Развитие клеточных технологий и тканевой инженерии для медицины', '5.2.2. Молекулярно-генетические, геномные технологии и биоинформатика для развития персонализированной медицины', '5.2.3. Мультиомные и молекулярные технологии для досимптомной диагностики, профилактики и лечения заболеваний',
+  '5.2.4. Новые технологии и биологически активные субстанции для решения проблем анте- и постнатального развития, старения, продления жизни человека', '5.2.5. Новые биотехнологии получения био- и лекарственных препаратов для превентивной медицины'];
+  public arr53 = ['5.3.1. Разработка оригинальных лекарственных и профилактических препаратов, изделий медицинского назначения, оборудований и приборов для медицины и ветеринарии, технологии их производства, доклинические и клинические исследования', '5.3.2.Технологии получения ценных компонентов из растительного, животного и минерального сырья биотехнологическими методами', '5.3.3.Технология получения штаммов-продуцентов биопрепаратов, ферментов белков и аминокислот для сельского хозяйства, пищевой и перерабатывающей промышленности', '5.3.4.Технологии глубокой переработки сырья с использованием микроорганизмов и/или ферментов, биологически активных субстанций'];
+  public array6 = ['6.1.Фундаментальные и прикладные исследования в области социально-экономических и гуманитарных наук', '6.2. Фундаментальные и прикладные исследования проблем образования ХХІ века', '6.3. Фундаментальные и прикладные исследования проблем модернизации общественного сознания'];
+  public arr61 = ['6.1.1. Исследование социально-экономических условий развития наукоемких конкурентоспособных производств (экономик)', '6.1.2. Исследование в области реализации социальной и экономической политики государства в современных условиях', '6.1.3. Актуальные проблемы социальных и общественно-гуманитарных наук и междисциплинарные исследования', '6.1.4. Исследования в области культуры, традиций, ценностей в условиях модернизации общества и государства', '6.1.5. ІІІ-я технологическая модернизация экономики, Индустрия 4.0, промышленная и технологическая политика, инновационная экономика, научное, креативное и социальное предпринимательство'];
+  public arr63 = ['6.3.1. Новое гуманитарное знание', '6.3.2. Туған жер. Общенациональное единство, мир и согласие', '6.3.3. Духовные святыни Казахстана. Сакральная география Казахстана', '6.3.4.Общность истории, культуры и языка. Современная Казахстанская культура в глобальном мире', '6.3.5. Рухани жаңғыру және Ұлы даланың жеті қыры'];
+  message = {
+    type: '',
+    text: '',
+    hide: false
+  };
 
   // public currentPage = 1;
   public DecodedToken = this.getDecodedAccessToken(localStorage.getItem('token'));
@@ -225,13 +218,13 @@ export class ProfileComponent implements OnInit {
   public depUsers = [];
 
   // Profile user
-  public user: any = {}
+  public user: any = {};
 
   // Documents list
-  public documents = []
+  public documents = [];
 
-  public publications = []
-  public Allpublications = []
+  public publications = [];
+  public Allpublications = [];
   public events;
   public AllProjects = [];
   public AllTeachers = [];
@@ -241,7 +234,10 @@ export class ProfileComponent implements OnInit {
   public patents;
   public AllPatens;
   public updateStatusPatent = false;
-  public PatentFile: Array<File> = [];
+  public PatentFileRu;
+  public PatentFileKz;
+  public PatentFileEn;
+  public uploadForm: FormGroup;
 
   public selectTable = 1;
 
@@ -274,7 +270,23 @@ export class ProfileComponent implements OnInit {
   public newUserForm: FormGroup;
   public MyDissovets: any;
   public MySecDissovets: any;
+
+  selectedFile: File = null;
+  private temPub: {};
+  private temEvent: {};
+  public names = [ ];
+  public exNames = [ ];
+  getDecodedAccessToken(token: string): any {
+    try {
+      return jwt_decode(token);
+    } catch (Error) {
+      return null;
+    }
+  }
   ngOnInit() {
+    this.uploadForm = this.fb.group({
+      profile: ['']
+    });
     setInterval(() => this.checkScProjManager(), 1000);
     this.newProjMemForm = this.fb.group({
       ScienceMember: this.fb.array([])
@@ -312,7 +324,7 @@ export class ProfileComponent implements OnInit {
       scDept: ['', Validators.required],
       scDirector: this.IdToken
     }, {validator: StartEndDateValidator});
-    for (var i = 0; i < this.roles.length; i++) {
+    for (let i = 0; i < this.roles.length; i++) {
       if (this.roles[i] == 'Head_Of_Dept') {
         this.headDep = true;
       } else if (this.roles[i] == 'Science_Secretary_Dissovet') {
@@ -323,21 +335,21 @@ export class ProfileComponent implements OnInit {
         this.Science_DeptRole = true;
       } else if (this.roles[i] == 'Teacher') {
         this.Teacher_Role = true;
-      } else if(this.roles[i] == 'Science_Project_Manager') {
+      } else if (this.roles[i] == 'Science_Project_Manager') {
         this.ScProjectManager = true;
-      } else if(this.roles[i] == 'Leading_Researcher') {
+      } else if (this.roles[i] == 'Leading_Researcher') {
         this.ScLeadingRes = true;
-      } else if(this.roles[i] == 'Senior_Researcher') {
+      } else if (this.roles[i] == 'Senior_Researcher') {
         this.ScSeniorRes = true;
-      } else if(this.roles[i] == 'Junior_Researcher') {
+      } else if (this.roles[i] == 'Junior_Researcher') {
         this.ScJunRes = true;
       }
     }
-    if(this.Teacher_Role == false && this.Science_DeptRole == true) {
+    if (this.Teacher_Role == false && this.Science_DeptRole == true) {
       this.selectTable = 6;
       const science_id = {
         ptnt_user_id: this.IdToken
-      }
+      };
       this._api.getAllPatents(science_id).subscribe(
         res => {
           console.log(res);
@@ -351,7 +363,7 @@ export class ProfileComponent implements OnInit {
     this._api.getUserById(this.IdToken).subscribe(
       res => {
         console.log(res);
-        this.newProjForm.patchValue({scFirstName: res.firstName + ' ' + res.lastName})
+        this.newProjForm.patchValue({scFirstName: res.firstName + ' ' + res.lastName});
         this.user = res;
         this.updateProfForm = this.fb.group({
           firstName: [res.firstName, Validators.required],
@@ -365,12 +377,12 @@ export class ProfileComponent implements OnInit {
         console.log(err);
       }
     );
-    if(this.ScProjectManager == true) {
+    if (this.ScProjectManager == true) {
       this._api.getAllTeachers().subscribe(
         res => {
           console.log(res);
-          for(var i = 0; i < res.length; i++) {
-            if(res[i].userId != this.IdToken) {
+          for (let i = 0; i < res.length; i++) {
+            if (res[i].userId != this.IdToken) {
               console.log(res[i]);
               this.AllTeachers.push(res[i]);
             }
@@ -385,10 +397,10 @@ export class ProfileComponent implements OnInit {
       this._api.getAllScienceProjects().subscribe(
         res => {
           console.log(res);
-           for(var i = 0; i < res.length; i++) {
+          for (let i = 0; i < res.length; i++) {
               res[i].scAgrDate = new Date(res[i].scAgrDate).getFullYear() + '-' + (new Date(res[i].scAgrDate).getMonth() + 1) + '-' + new Date(res[i].scAgrDate).getDate();
-              res[i].scStDate = new Date(res[i].scStDate).getFullYear() + '-' + (new Date(res[i].scStDate).getMonth()+1)+ '-' + new Date(res[i].scStDate).getDate();
-              res[i].scEndDate = new Date(res[i].scEndDate).getFullYear() + '-' + (new Date(res[i].scEndDate).getMonth()+1) + '-' + new Date(res[i].scEndDate).getDate();
+              res[i].scStDate = new Date(res[i].scStDate).getFullYear() + '-' + (new Date(res[i].scStDate).getMonth() + 1) + '-' + new Date(res[i].scStDate).getDate();
+              res[i].scEndDate = new Date(res[i].scEndDate).getFullYear() + '-' + (new Date(res[i].scEndDate).getMonth() + 1) + '-' + new Date(res[i].scEndDate).getDate();
            }
           this.AllProjects = res;
           console.log(new Date(res[0].scAgrDate).getDate());
@@ -399,9 +411,9 @@ export class ProfileComponent implements OnInit {
       );
       this._api.getAllTeachers().subscribe(
         res => {
-          for(let i = 0; i < res.length; i++) {
-            for(let j = 0; j < res[i].roles.length; j++) {
-              if(res[i].roles[j].roleName == 'Science_Project_Manager') {
+          for (let i = 0; i < res.length; i++) {
+            for (let j = 0; j < res[i].roles.length; j++) {
+              if (res[i].roles[j].roleName == 'Science_Project_Manager') {
                   res[i].scRole = true;
               }
             }
@@ -416,12 +428,12 @@ export class ProfileComponent implements OnInit {
     }
     this.startPubDate = new FormControl();
     this.endPubDate = new FormControl();
-    if(this.disMemRole == true) {
+    if (this.disMemRole == true) {
       this._api.getAllMyDisSovets().subscribe(
         res => {
           this.MyDissovets = res;
           console.log(res);
-          for (var i = 0; i < res.length; i++) {
+          for (let i = 0; i < res.length; i++) {
             this.MyDissovets[i].disStopDate = new Date(this.MyDissovets[i].disStopDate).toDateString();
           }
         },
@@ -430,12 +442,12 @@ export class ProfileComponent implements OnInit {
         }
       );
     }
-    if(this.disRole == true) {
+    if (this.disRole == true) {
       this._api.getSecDisSovet().subscribe(
         res => {
           console.log(res);
           this.MySecDissovets = res;
-          for (var i = 0; i < res.length; i++) {
+          for (let i = 0; i < res.length; i++) {
             this.MySecDissovets[i].disStopDate = new Date(this.MySecDissovets[i].disStopDate).getFullYear();
           }
         },
@@ -444,7 +456,7 @@ export class ProfileComponent implements OnInit {
         }
       );
     }
-    if(this.Teacher_Role == true) {
+    if (this.Teacher_Role == true) {
       const userId = {
         ptnt_user_id: this.IdToken
       };
@@ -461,7 +473,7 @@ export class ProfileComponent implements OnInit {
       this._api.getScienceProject().subscribe(
         res => {
           console.log(res);
-          for(let i = 0; i < res.length; i++) {
+          for (let i = 0; i < res.length; i++) {
             res[i].scAgrDate = new Date(res[i].scAgrDate).getFullYear() + '-' + (new Date(res[i].scAgrDate).getMonth() + 1) + '-' + new Date(res[i].scAgrDate).getDate();
             res[i].scStDate = new Date(res[i].scStDate).getFullYear() + '-' + (new Date(res[i].scStDate).getMonth() + 1) + '-' + new Date(res[i].scStDate).getDate();
             res[i].scEndDate = new Date(res[i].scEndDate).getFullYear() + '-' + (new Date(res[i].scEndDate).getMonth() + 1) + '-' + new Date(res[i].scEndDate).getDate();
@@ -474,19 +486,19 @@ export class ProfileComponent implements OnInit {
         }
       );
     }
-    if(this.headDep == true) {
+    if (this.headDep == true) {
       this._api.getDepUsers(this.IdToken).subscribe(
         res => {
           console.log(res);
-          for (var i = 0; i < res.usersDeptsEntities.length; i++) {
-            let tempUser = {
-              'userId': res.usersDeptsEntities[i].primaryKey.userEntity.userId,
-              'firstName': res.usersDeptsEntities[i].primaryKey.userEntity.firstName,
-              'lastName': res.usersDeptsEntities[i].primaryKey.userEntity.lastName,
-              'email': res.usersDeptsEntities[i].primaryKey.userEntity.email,
-              'description': res.usersDeptsEntities[i].primaryKey.userEntity.description,
-              'userType': res.usersDeptsEntities[i].userType
-            }
+          for (let i = 0; i < res.usersDeptsEntities.length; i++) {
+            const tempUser = {
+              userId: res.usersDeptsEntities[i].primaryKey.userEntity.userId,
+              firstName: res.usersDeptsEntities[i].primaryKey.userEntity.firstName,
+              lastName: res.usersDeptsEntities[i].primaryKey.userEntity.lastName,
+              email: res.usersDeptsEntities[i].primaryKey.userEntity.email,
+              description: res.usersDeptsEntities[i].primaryKey.userEntity.description,
+              userType: res.usersDeptsEntities[i].userType
+            };
             this.depUsers.push(tempUser);
           }
         },
@@ -572,7 +584,7 @@ export class ProfileComponent implements OnInit {
 
     this._api.getAllScienceProjects().subscribe(
         res => {
-          for(var i = 0; i < res.length; i++) {
+          for (let i = 0; i < res.length; i++) {
             this.ProjectScId.push(this.fb.control(res[i].scId));
             this.ProjectScName.push(this.fb.control(res[i].scName));
             this.ProjectScType.push(this.fb.control(res[i].scType));
@@ -593,7 +605,7 @@ export class ProfileComponent implements OnInit {
       }
     );
 
-    if(this.Teacher_Role == true) {
+    if (this.Teacher_Role == true) {
       this._api.getPublications().subscribe(
         res => {
           // var i = 0;
@@ -615,7 +627,7 @@ export class ProfileComponent implements OnInit {
       this._api.getPublications().subscribe(
         res => {
           console.log(res);
-          var i = 0;
+          let i = 0;
           for (; i < res.length; i++) {
             console.log(res[i].pubType);
             this.updatePubId.push(this.fb.control(res[i].pubId));
@@ -664,10 +676,10 @@ export class ProfileComponent implements OnInit {
   }
 
   sendPublication($event) {
-    var publicationType1 = (<HTMLInputElement> document.getElementById('publicationType')).value;
+    const publicationType1 = (document.getElementById('publicationType') as HTMLInputElement).value;
     this.publicationForm.patchValue({
       pubType: publicationType1
-    })
+    });
     this._api.uploadPub(this.publicationForm.value).subscribe(
       res => {
         console.log(res);
@@ -703,7 +715,7 @@ export class ProfileComponent implements OnInit {
     );
     this.reloadPublications = false;
     setTimeout(() => {
-      this.reloadPublications = true
+      this.reloadPublications = true;
       this._api.getPublications().subscribe(
         res => {
           this.publications = res;
@@ -733,8 +745,8 @@ export class ProfileComponent implements OnInit {
       this.updateProj = true;
 
     } else {
-      for(var i = 0; i < this.AllProjects.length; i++) {
-        let tempProject = {
+      for (let i = 0; i < this.AllProjects.length; i++) {
+        const tempProject = {
           scId: this.updateProjForm.get('scId').value[i],
           scName: this.updateProjForm.get('scName').value[i],
           scType: this.updateProjForm.get('scType').value[i],
@@ -764,10 +776,10 @@ export class ProfileComponent implements OnInit {
         this._api.getAllScienceProjects().subscribe(
           res => {
             console.log(res);
-            for(var i = 0; i < res.length; i++) {
+            for (let i = 0; i < res.length; i++) {
               res[i].scAgrDate = new Date(res[i].scAgrDate).getFullYear() + '-' + (new Date(res[i].scAgrDate).getMonth() + 1) + '-' + new Date(res[i].scAgrDate).getDate();
-              res[i].scStDate = new Date(res[i].scStDate).getFullYear() + '-' + (new Date(res[i].scStDate).getMonth()+1)+ '-' + new Date(res[i].scStDate).getDate();
-              res[i].scEndDate = new Date(res[i].scEndDate).getFullYear() + '-' + (new Date(res[i].scEndDate).getMonth()+1) + '-' + new Date(res[i].scEndDate).getDate();
+              res[i].scStDate = new Date(res[i].scStDate).getFullYear() + '-' + (new Date(res[i].scStDate).getMonth() + 1) + '-' + new Date(res[i].scStDate).getDate();
+              res[i].scEndDate = new Date(res[i].scEndDate).getFullYear() + '-' + (new Date(res[i].scEndDate).getMonth() + 1) + '-' + new Date(res[i].scEndDate).getDate();
             }
             this.AllProjects = res;
             console.log(new Date(res[0].scAgrDate).getDate());
@@ -791,8 +803,8 @@ export class ProfileComponent implements OnInit {
     console.log(this.updateProj);
   }
   sendEvent() {
-    var evType1 = (<HTMLInputElement> document.getElementById('evType')).value;
-    var evRole1 = (<HTMLInputElement> document.getElementById('evRole')).value;
+    const evType1 = (document.getElementById('evType') as HTMLInputElement).value;
+    const evRole1 = (document.getElementById('evRole') as HTMLInputElement).value;
     this.eventForm.patchValue({
       evType: evType1,
       evRole: evRole1
@@ -829,19 +841,15 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  selectedFile: File = null;
-  private temPub: {};
-  private temEvent: {};
-
   onFileSelected(event) {
-    this.selectedFile = <File> event.target.files[0];
+    this.selectedFile = event.target.files[0] as File;
   }
 
   downloadPublicationFile(filePath) {
     this._api.downloadPubFile(filePath).subscribe(
       res => {
         console.log(res);
-        var newBlob = new Blob([res], {type: 'application/octet-stream'});
+        const newBlob = new Blob([res], {type: 'application/octet-stream'});
         window.open(window.URL.createObjectURL(newBlob));
       },
       error1 => {
@@ -868,7 +876,7 @@ export class ProfileComponent implements OnInit {
       this._api.getUserById(this.IdToken).subscribe(
         res => {
           console.log(res);
-          this.newProjForm.patchValue({scFirstName: res.firstName + ' ' + res.lastName})
+          this.newProjForm.patchValue({scFirstName: res.firstName + ' ' + res.lastName});
           this.user = res;
           this.updateProfForm = this.fb.group({
             firstName: [res.firstName, Validators.required],
@@ -991,7 +999,7 @@ export class ProfileComponent implements OnInit {
     console.log(this.depUsers);
     this._api.generatePubFile().subscribe(
       res => {
-        var newBlob = new Blob([res], {type: 'application/pdf'});
+        const newBlob = new Blob([res], {type: 'application/pdf'});
         window.open(window.URL.createObjectURL(newBlob));
       },
       err => {
@@ -1002,8 +1010,8 @@ export class ProfileComponent implements OnInit {
 
   changeStartDate() {
     this.startDate = new Date(this.startPubDate.value);
-    if (this.endPubDate.value != "" && this.startPubDate.value != "" && this.endPubDate.value != null) {
-      console.log('this is filter')
+    if (this.endPubDate.value != '' && this.startPubDate.value != '' && this.endPubDate.value != null) {
+      console.log('this is filter');
       this.publications = this.Allpublications.filter((item: any) => {
         return new Date(item.pubYear).getTime() >= this.startDate.getTime() &&
           new Date(item.pubYear).getTime() <= this.endDate.getTime();
@@ -1020,8 +1028,8 @@ export class ProfileComponent implements OnInit {
 
   changeEndDate() {
     this.endDate = new Date(this.endPubDate.value);
-    if (this.endPubDate.value != "" && this.startPubDate.value != "" && this.startPubDate.value != null) {
-      console.log('this is filter')
+    if (this.endPubDate.value != '' && this.startPubDate.value != '' && this.startPubDate.value != null) {
+      console.log('this is filter');
       this.publications = this.Allpublications.filter((item: any) => {
         return new Date(item.pubYear).getTime() >= this.startDate.getTime() &&
           new Date(item.pubYear).getTime() <= this.endDate.getTime();
@@ -1037,20 +1045,20 @@ export class ProfileComponent implements OnInit {
     console.log(this.endDate.getTime());
     console.log(this.endPubDate.value);
     console.log(this.startPubDate.value);
-    console.log(this.startPubDate.value == "");
-    console.log(this.endPubDate.value == "");
+    console.log(this.startPubDate.value == '');
+    console.log(this.endPubDate.value == '');
   }
   goPreviousDis() {
-    const control = <FormArray>this.disMemForm.controls['disMember'];
-    for(let i = control.length - 1; i >=0; i--) {
+    const control = this.disMemForm.controls.disMember as FormArray;
+    for (let i = control.length - 1; i >= 0; i--) {
       control.removeAt(i);
     }
-    if(this.DisNextMemPage == true) {
+    if (this.DisNextMemPage == true) {
       this.DisNextMemPage = false;
     }
   }
   goPreviousDisMem() {
-    if(this.NewUserPage == true) {
+    if (this.NewUserPage == true) {
       this.NewUserPage = false;
       this.DisNextMemPage = true;
     }
@@ -1066,21 +1074,20 @@ export class ProfileComponent implements OnInit {
     //   });
     this.exNames = [];
     this.names = [];
-    for (var i = 0; i < this.disForm.get('membersNum').value; i++) {
+    for (let i = 0; i < this.disForm.get('membersNum').value; i++) {
       this.addRow();
     }
-    if(this.DisNextMemPage == false) {
+    if (this.DisNextMemPage == false) {
       this.DisNextMemPage = true;
     }
     this._api.getOwnUsers().subscribe(
       res => {
         console.log(res);
-        for (var i = 0; i < res.length; i++) {
-          if(res[i].userId != this.user.userId) {
-            if(res[i].own == true) {
+        for (let i = 0; i < res.length; i++) {
+          if (res[i].userId != this.user.userId) {
+            if (res[i].own == true) {
               this.names.push(res[i]);
-            }
-            else {
+            } else {
               this.exNames.push(res[i]);
             }
           }
@@ -1099,9 +1106,9 @@ export class ProfileComponent implements OnInit {
       res => {
         console.log(res);
 
-        for (var i = 0; i < this.disForm.get('membersNum').value; i++) {
+        for (let i = 0; i < this.disForm.get('membersNum').value; i++) {
           if (this.disMemForm.get('disMember').value[i].memberType == 'Внутренний сотрудник') {
-            let tempDisMem = {
+            const tempDisMem = {
               // firstName: this.disMemForm.get('disMember').value[i].firstName,
               // lastName: this.disMemForm.get('disMember').value[i].lastName,
               memberType: this.disMemForm.get('disMember').value[i].memberType,
@@ -1161,14 +1168,12 @@ export class ProfileComponent implements OnInit {
       }, 2000);
     }, 200);
   }
-  public names = [ ];
-  public exNames = [ ];
   onSubmit() {
 
   }
-  addRow(){
+  addRow() {
 
-    const control = <FormArray>this.disMemForm.controls['disMember'];
+    const control = this.disMemForm.controls.disMember as FormArray;
 
     // instantiate a new day FormGroup;
     const newDisMember: FormGroup = this.initItems();
@@ -1177,8 +1182,8 @@ export class ProfileComponent implements OnInit {
     control.push(newDisMember);
   }
   deleteDisMember() {
-    const control = <FormArray>this.disMemForm.controls['disMember'];
-    if(control.length > 1) {
+    const control = this.disMemForm.controls.disMember as FormArray;
+    if (control.length > 1) {
       control.removeAt(control.length - 1);
     }
   }
@@ -1199,7 +1204,7 @@ export class ProfileComponent implements OnInit {
   }
 
   addProjectMemberRow(scId) {
-    const control = <FormArray>this.newProjMemForm.controls['ScienceMember'];
+    const control = this.newProjMemForm.controls.ScienceMember as FormArray;
 
     // instantiate a new day FormGroup;
     const newDisMember: FormGroup = this.initProjectMember(scId);
@@ -1216,8 +1221,8 @@ export class ProfileComponent implements OnInit {
     });
   }
   deleteProjectMember() {
-    const control = <FormArray>this.newProjMemForm.controls['ScienceMember'];
-    if(control.length > 1) {
+    const control = this.newProjMemForm.controls.ScienceMember as FormArray;
+    if (control.length > 1) {
       control.removeAt(control.length - 1);
     }
   }
@@ -1235,12 +1240,11 @@ export class ProfileComponent implements OnInit {
     this._api.getOwnUsers().subscribe(
       res => {
         console.log(res);
-        for (var i = 0; i < res.length; i++) {
-          if(res[i].userId != this.user.userId) {
-            if(res[i].own = true) {
+        for (let i = 0; i < res.length; i++) {
+          if (res[i].userId != this.user.userId) {
+            if (res[i].own = true) {
               this.names.push(res[i]);
-            }
-            else {
+            } else {
               this.exNames.push(res[i]);
             }
           }
@@ -1269,8 +1273,8 @@ export class ProfileComponent implements OnInit {
       );
       setTimeout(() => {
       this.reloadScPrRole = false;
-        for(let i = 0; i < this.AllTeachers.length; i++) {
-          if(this.AllTeachers[i].userId == id) {
+      for (let i = 0; i < this.AllTeachers.length; i++) {
+          if (this.AllTeachers[i].userId == id) {
             this.AllTeachers[i].scRole = true;
           }
         }
@@ -1291,8 +1295,8 @@ export class ProfileComponent implements OnInit {
     );
     setTimeout(() => {
       this.reloadScPrRole = false;
-      for(let i = 0; i < this.AllTeachers.length; i++) {
-        if(this.AllTeachers[i].userId == id) {
+      for (let i = 0; i < this.AllTeachers.length; i++) {
+        if (this.AllTeachers[i].userId == id) {
           this.AllTeachers[i].scRole = false;
         }
       }
@@ -1306,13 +1310,13 @@ export class ProfileComponent implements OnInit {
     this._api.addProject(this.newProjForm.value).subscribe(
       res => {
         console.log(res);
-        const control = <FormArray>this.newProjMemForm.controls['ScienceMember'];
-        let members = control.value;
-        let mainMember = {
-          "scAddDate": new Date(),
-          "scRole": "Научный руководитель",
-          "scId": res.scId,
-          "userId": this.IdToken
+        const control = this.newProjMemForm.controls.ScienceMember as FormArray;
+        const members = control.value;
+        const mainMember = {
+          scAddDate: new Date(),
+          scRole: 'Научный руководитель',
+          scId: res.scId,
+          userId: this.IdToken
         };
         this._api.addMemberToProject(mainMember).subscribe(
           res => {
@@ -1321,8 +1325,8 @@ export class ProfileComponent implements OnInit {
           err => {
             console.log(err);
           }
-        )
-        for(var i = 0; i < control.length; i++) {
+        );
+        for (let i = 0; i < control.length; i++) {
           if (members[i].scRole == 'Ведущий научный сотрудник') {
             const role = {
               userId: members[i].userId,
@@ -1336,9 +1340,8 @@ export class ProfileComponent implements OnInit {
                 console.log(err);
               }
             );
-          }
-          else
-            if(members[i].scRole == 'Старший научный сотрудник') {
+          } else
+            if (members[i].scRole == 'Старший научный сотрудник') {
               const role = {
                 userId: members[i].userId,
                 roleName: 'Senior_Researcher'
@@ -1351,9 +1354,8 @@ export class ProfileComponent implements OnInit {
                   console.log(err);
                 }
               );
-            }
-            else
-              if(members[i].scRole == 'Младший научный сотрудник') {
+            } else
+              if (members[i].scRole == 'Младший научный сотрудник') {
                 const role = {
                   userId: members[i].userId,
                   roleName: 'Junior_Researcher'
@@ -1386,11 +1388,11 @@ export class ProfileComponent implements OnInit {
       this.reloadProject = false;
       this.newProjForm.reset();
       this.newProjMemForm.reset();
-      if(this.Teacher_Role == true) {
+      if (this.Teacher_Role == true) {
         this._api.getScienceProject().subscribe(
           res => {
             console.log(res);
-            for(let i = 0; i < res.length; i++) {
+            for (let i = 0; i < res.length; i++) {
               res[i].scAgrDate = new Date(res[i].scAgrDate).getFullYear() + '-' + (new Date(res[i].scAgrDate).getMonth() + 1) + '-' + new Date(res[i].scAgrDate).getDate();
               res[i].scStDate = new Date(res[i].scStDate).getFullYear() + '-' + (new Date(res[i].scStDate).getMonth() + 1) + '-' + new Date(res[i].scStDate).getDate();
               res[i].scEndDate = new Date(res[i].scEndDate).getFullYear() + '-' + (new Date(res[i].scEndDate).getMonth() + 1) + '-' + new Date(res[i].scEndDate).getDate();
@@ -1409,19 +1411,19 @@ export class ProfileComponent implements OnInit {
     }, 2000);
   }
   checkScProjManager() {
-    if(this.ScProjectManager == true) {
-      let allDates = [];
+    if (this.ScProjectManager == true) {
+      const allDates = [];
       for (let i = 0; i < this.science_projects.length; i++) {
         allDates.push(new Date(this.science_projects[i].scEndDate));
       }
       // console.log(allDates);
       let latest = allDates[0];
-      for(let i = 1; i < allDates.length; i++) {
-        if(latest < allDates[i]) {
+      for (let i = 1; i < allDates.length; i++) {
+        if (latest < allDates[i]) {
           latest = allDates[i];
         }
       }
-      let today = new Date();
+      const today = new Date();
       // console.log(today);
       latest.setDate(latest.getDate() + 1);
       // console.log(latest);
@@ -1434,9 +1436,9 @@ export class ProfileComponent implements OnInit {
       // console.log(latest.getTime() < today.getTime());
       // console.log(today.getTime() - latest.getTime());
       // console.log((today.getTime() - latest.getTime() > 1000) && (today.getTime() - latest.getTime() < 3000));
-      if((today.getTime() - latest.getTime() > 1000) && (today.getTime() - latest.getTime() < 3000))  {
+      if ((today.getTime() - latest.getTime() > 1000) && (today.getTime() - latest.getTime() < 3000))  {
         this.getScienceManaged(this.IdToken);
-        this.ScProjectManager =false;
+        this.ScProjectManager = false;
       }
     }
   }
@@ -1446,16 +1448,16 @@ export class ProfileComponent implements OnInit {
 
   sendPatent() {
     console.log(this.patentForm.value);
-    let patent = {
-      "ptnt_number":"1",
-      "ptnt_issue_date":"2020-04-16",
-      "ptnt_country_id":"1",
-      "ptnt_type_id":"2",
-      "ptnt_published_TR":"null",
-      "ptnt_user_id":"1",
-      "ptnt_status_id":"1",
-      "ptnt_inserted_date":"",
-      "ptnt_checked_user_id":"2"
+    const patent = {
+      ptnt_number: '1',
+      ptnt_issue_date: '2020-04-16',
+      ptnt_country_id: '1',
+      ptnt_type_id: '2',
+      ptnt_published_TR: 'null',
+      ptnt_user_id: '1',
+      ptnt_status_id: '1',
+      ptnt_inserted_date: '',
+      ptnt_checked_user_id: '2'
     };
     console.log(patent);
     this._api.addPatent(this.patentForm.value).subscribe(res => {
@@ -1463,15 +1465,15 @@ export class ProfileComponent implements OnInit {
     }, error1 => {
       console.log(error1);
     });
-    console.log(this.PatentFile);
-    this._api.uploadPatentFile(this.PatentFile).subscribe(
-      res => {
-        console.log(res);
-      },
-      err => {
-        console.log(err);
-      }
-    );
+    // console.log(this.PatentFile);
+    // this._api.uploadPatentFile(this.PatentFile).subscribe(
+    //   res => {
+    //     console.log(res);
+    //   },
+    //   err => {
+    //     console.log(err);
+    //   }
+    // );
   }
 
   setPatentStatus(patId, statusId) {
@@ -1494,7 +1496,7 @@ export class ProfileComponent implements OnInit {
       this.updateStatusPatent = true;
       const science_id = {
         ptnt_user_id: this.IdToken
-      }
+      };
       this._api.getAllPatents(science_id).subscribe(
         res => {
           console.log(res);
@@ -1504,7 +1506,7 @@ export class ProfileComponent implements OnInit {
           console.log(err);
         }
       );
-      setTimeout( ()=> {
+      setTimeout( () => {
         this.updateStatusPatent = false;
       }, 1000);
     }, 1000);
@@ -1512,6 +1514,23 @@ export class ProfileComponent implements OnInit {
 
   onPatentFileChange(event) {
     console.log(event);
-    this.PatentFile = <Array<File>>event.target.files;
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.uploadForm.get('profile').setValue(file);
+    }
+    this.PatentFileRu = event.target.files[0];
+  }
+
+  uploadFileRu() {
+    console.log('12345');
+    console.log(this.PatentFileRu);
+    this._api.uploadPatentFile(this.PatentFileRu).subscribe(
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 }

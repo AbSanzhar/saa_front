@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpErrorResponse, HttpEventType, } from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpErrorResponse, HttpEventType, HttpRequest,} from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import {catchError, expand, filter, map} from 'rxjs/operators';
 import * as jwt_decode from 'jwt-decode';
@@ -371,21 +371,45 @@ export class ApiService {
   }
 
   uploadPatentFile(file): Observable<any> {
+    console.log('UPLOAD');
     const url = 'https://nir.iitu.kz:8443/saa-uploader/uploadFile';
-    const formData: FormData = new FormData();
-    formData.append('file', file);
     const httpHeaders = new HttpHeaders ({
       'Content-Type': 'multipart/form-data',
     });
-    console.log(file);
-    return this.http.post(url, file,
-    {
-      reportProgress: true,
-        responseType: 'json',
-        headers: {
-          'Content-type': undefined
-        }
-    }).pipe(catchError(this.errorHandler));
+    const formData = new FormData();
+    formData.append('file', file);
+    console.log(formData);
+    
+
+    // this.http.post <any>(url, formData, {
+    //   // headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data' })
+    // })
+    //   .subscribe(
+    //     data => {
+    //       console.log(data);
+    //     }
+    //   );
+
+    // const req = new HttpRequest('POST', url, formData, {
+    //   reportProgress: true,
+    //   responseType: 'json',
+    //   headers: httpHeaders
+    // });
+    // this.http.post<any>(url, formData).subscribe(
+    //   (res) => console.log(res),
+    //   (err) => console.log(err)
+    // );
+    // console.log(req);
+    // return this.http.post(url, {file: file},
+    // {
+    //   reportProgress: true,
+    //     responseType: 'json',
+    //     headers: {
+    //       'Content-type': undefined
+    //     }
+    // }).pipe(catchError(this.errorHandler));
+    // return this.http.request(req);
+    return null;
   }
 
   errorHandler(error: HttpErrorResponse) {
