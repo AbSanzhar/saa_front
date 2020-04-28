@@ -1569,22 +1569,10 @@
           </div>
 
           <div class="form-group">
-<!--            <label for="exampleFormControlFile31">Загрузить файл(на русском языке)</label>-->
-<!--            <input type="file" class="form-control-file" id="exampleFormControlFile31" (change)="onPatentFileChange($event)" multiple>-->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadFileRu">
-              Загрузить файл(на русском языке)
+              Загрузить файл
             </button>
           </div>
-
-<!--          <div class="form-group">-->
-<!--            <label for="exampleFormControlFile32">Загрузить файл(на английском языке)</label>-->
-<!--            <input type="file" class="form-control-file" id="exampleFormControlFile32" (change)="onPatentFileChange($event)">-->
-<!--          </div>-->
-
-<!--          <div class="form-group">-->
-<!--            <label for="exampleFormControlFile33">Загрузить файл(на казахском языке)</label>-->
-<!--            <input type="file" class="form-control-file" id="exampleFormControlFile33" (change)="onPatentFileChange($event)">-->
-<!--          </div>-->
         </form>
       </div>
       <div class="modal-footer">
@@ -1605,21 +1593,34 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="uploadModalLabelRu">Загрузка файла на русском</h5>
+        <h5 class="modal-title" id="uploadModalLabelRu">Загрузка файла</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form [formGroup] = "uploadForm" enctype="multipart/form-data" (ngSubmit)="uploadFileRu()">
-          <input type="file" class="form-control-file" id="fileRu" (change)="onPatentFileChange($event)">
-          <button [disabled]="!PatentFileRu" class="btn btn-primary btn-lg">Загрузить
-          </button>
+        <form  enctype="multipart/form-data">
+          <label for="fileRu">Загрузить файл(на русском языке)</label>-->
+          <input type="file" class="form-control-file" id="fileRu" (change)="onRUPatentFileChange($event)">
+        </form>
+      </div>
+
+      <div class="modal-body">
+        <form  enctype="multipart/form-data">
+          <label for="fileKZ">Загрузить файл(на казахском языке)</label>-->
+          <input type="file" class="form-control-file" id="fileKZ" (change)="onKZPatentFileChange($event)">
+        </form>
+      </div>
+
+      <div class="modal-body">
+        <form enctype="multipart/form-data" >
+          <label for="fileEN">Загрузить файл(на английском языке)</label>-->
+          <input type="file" class="form-control-file" id="fileEN" (change)="onENPatentFileChange($event)">
         </form>
       </div>
       <div class="modal-footer">
-<!--        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-<!--        <button type="button" class="btn btn-primary">Save changes</button>-->
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button [disabled]="!PatentFileRu || !PatentFileKz || !PatentFileEn" [class.disabled]="!PatentFileRu || !PatentFileKz || !PatentFileEn" type="button" class="btn btn-primary" (click)="uploadFileRu()" data-dismiss="modal">Загрузить файлы</button>
       </div>
     </div>
   </div>

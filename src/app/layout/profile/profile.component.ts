@@ -4,7 +4,7 @@ import * as jwt_decode from 'jwt-decode';
 import {Form, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {StartEndDateValidator} from '../../shared/start-end-date.validator';
 import {Router} from '@angular/router';
-
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-profile',
@@ -234,9 +234,12 @@ export class ProfileComponent implements OnInit {
   public patents;
   public AllPatens;
   public updateStatusPatent = false;
-  public PatentFileRu;
-  public PatentFileKz;
-  public PatentFileEn;
+  public PatentFileRu = null;
+  public PatentFileKz = null;
+  public PatentFileEn = null;
+  public PatentLinkRu = null;
+  public PatentLinkKz = null;
+  public PatentLinkEn = null;
   public uploadForm: FormGroup;
 
   public selectTable = 1;
@@ -293,7 +296,6 @@ export class ProfileComponent implements OnInit {
     });
     this.addProjectMemberRow(9);
     this.patentForm = this.fb.group({
-      ptnt_id : [2],
       ptnt_number: ['', Validators.required],
       ptnt_issue_date: ['', Validators.required],
       ptnt_country_id: ['', Validators.required],
@@ -302,7 +304,6 @@ export class ProfileComponent implements OnInit {
       ptnt_user_id: [this.IdToken],
       ptnt_status_id: ['1'],
       ptnt_inserted_date: [new Date()],
-      ptnt_file_id: ['1'],
       ptnt_checked_user_id: ['2']
     });
 
@@ -1447,19 +1448,27 @@ export class ProfileComponent implements OnInit {
   }
 
   sendPatent() {
+    // const patent = {
+    //   ptnt_number: '1',
+    //   ptnt_issue_date: '2020-04-16',
+    //   ptnt_country_id: '1',
+    //   ptnt_type_id: '2',
+    //   ptnt_published_TR: 'null',
+    //   ptnt_user_id: '1',
+    //   ptnt_status_id: '1',
+    //   ptnt_inserted_date: '',
+    //   ptnt_checked_user_id: '2'
+    // };
+    // console.log(patent);
+    this.patentForm.patchValue({
+      ptnt_file_kz: [this.PatentLinkKz],
+      ptnt_file_en: [this.PatentLinkEn],
+      ptnt_file_ru: [this.PatentLinkRu],
+      ptnt_file_name_ru: [this.PatentFileRu.name],
+      ptnt_file_name_kz: [this.PatentFileKz.name],
+      ptnt_file_name_en: [this.PatentFileEn.name],
+    });
     console.log(this.patentForm.value);
-    const patent = {
-      ptnt_number: '1',
-      ptnt_issue_date: '2020-04-16',
-      ptnt_country_id: '1',
-      ptnt_type_id: '2',
-      ptnt_published_TR: 'null',
-      ptnt_user_id: '1',
-      ptnt_status_id: '1',
-      ptnt_inserted_date: '',
-      ptnt_checked_user_id: '2'
-    };
-    console.log(patent);
     this._api.addPatent(this.patentForm.value).subscribe(res => {
       console.log(res);
     }, error1 => {
@@ -1512,7 +1521,7 @@ export class ProfileComponent implements OnInit {
     }, 1000);
   }
 
-  onPatentFileChange(event) {
+  onRUPatentFileChange(event) {
     console.log(event);
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
@@ -1521,16 +1530,72 @@ export class ProfileComponent implements OnInit {
     this.PatentFileRu = event.target.files[0];
   }
 
+  onKZPatentFileChange(event) {
+    console.log(event);
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.uploadForm.get('profile').setValue(file);
+    }
+    this.PatentFileKz = event.target.files[0];
+  }
+
+  onENPatentFileChange(event) {
+    console.log(event);
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.uploadForm.get('profile').setValue(file);
+    }
+    this.PatentFileEn = event.target.files[0];
+  }
+
   uploadFileRu() {
     console.log('12345');
     console.log(this.PatentFileRu);
-    this._api.uploadPatentFile(this.PatentFileRu).subscribe(
-      res => {
-        console.log(res);
-      },
-      err => {
-        console.log(err);
-      }
-    );
+    console.log(this.PatentFileKz);
+    console.log(this.PatentFileEn);
+    const formData = new FormData();
+    formData.append('file', this.PatentFileRu);
+    $.ajax({
+      url: 'https://nir.iitu.kz:8443/saa-uploader/uploadFile',
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      async: false,
+    }).done(function (data) {
+      const obj = JSON.parse(data);
+      this.PatentLinkRu = obj.filePath;
+      console.log(obj);
+    });
+
+    const formDataKZ = new FormData();
+    formDataKZ.append('file', this.PatentFileKz);
+    $.ajax({
+      url: 'https://nir.iitu.kz:8443/saa-uploader/uploadFile',
+      type: 'POST',
+      data: formDataKZ,
+      processData: false,
+      contentType: false,
+      async: false,
+    }).done(function (data) {
+      const obj = JSON.parse(data);
+      this.PatentLinkKz = obj.filePath;
+      console.log(obj);
+    });
+
+    const formDataEN = new FormData();
+    formDataEN.append('file', this.PatentFileEn);
+    $.ajax({
+      url: 'https://nir.iitu.kz:8443/saa-uploader/uploadFile',
+      type: 'POST',
+      data: formDataEN,
+      processData: false,
+      contentType: false,
+      async: false,
+    }).done(function (data) {
+      const obj = JSON.parse(data);
+      this.PatentLinkEn = obj.filePath;
+      console.log(obj);
+    });
   }
 }
