@@ -194,14 +194,16 @@ export class ApiService {
   }
 
   getEvent(): Observable<any> {
-    const url = 'event/';
-    const id = this.getDecodedAccessToken(localStorage.getItem('token')).jti;
-    return this.http.get<any>(this.base + url + id).pipe(catchError(this.errorHandler));
+    const url = 'event/getAllByUserId';
+    const user = {
+      event_user_id : this.getDecodedAccessToken(localStorage.getItem('token')).jti
+    };
+    console.log(user);
+    return this.http.post<any>(this.base + url, user).pipe(catchError(this.errorHandler));
   }
   uploadEvent(Event1): Observable<any> {
-    const url = 'event/add/';
-    const id = this.getDecodedAccessToken(localStorage.getItem('token')).jti;
-    return this.http.post<any>(this.base + url + id, Event1).pipe(catchError(this.errorHandler));
+    const url = 'event/add';
+    return this.http.post<any>(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'), Event1).pipe(catchError(this.errorHandler));
   }
   updateEvent(id, event): Observable<any> {
     const url = 'event/update/';

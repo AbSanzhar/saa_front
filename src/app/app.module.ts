@@ -26,12 +26,12 @@ import { HashLocationStrategy, LocationStrategy  } from '@angular/common';
     SocketIoModule.forRoot(config)
   ],
   providers: [
+    {provide : LocationStrategy , useClass: HashLocationStrategy},
     {
       provide: HTTP_INTERCEPTORS,
       useClass: Interceptor,
       multi: true,
     },
-    {provide : LocationStrategy , useClass: HashLocationStrategy},
     WebSocketService
   ],
   bootstrap: [AppComponent]

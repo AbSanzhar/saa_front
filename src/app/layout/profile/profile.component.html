@@ -102,6 +102,7 @@
                             <thead class="thead-dark">
                             <tr>
                               <th scope="col" colspan="1" rowspan="1">№</th>
+                              <th scope="col" colspan="1" rowspan="1">Файл</th>
                               <th scope="col" colspan="1" rowspan="1">Тип публикации</th>
                               <th scope="col" colspan="1">Соавторы</th>
                               <th scope="col" colspan="1">Название публикации</th>
@@ -116,6 +117,7 @@
                             <tbody>
                               <tr *ngFor="let results of publications;" (click)="downloadPublicationFile(results.pubFile)">
                                 <td>{{results.pubId}}</td>
+                                <td> <a href="https://nir.iitu.kz/{{results.pubFile}}" download="">{{results.pubName}}</a> </td>
                               <td>{{results.pubType}}</td>
                               <td>{{results.pubCoAuthor}}</td>
                                 <td>{{results.pubName}}</td>
@@ -223,6 +225,7 @@
                           <thead class="thead-dark">
                           <tr>
                             <th scope="col" colspan="1" rowspan="1">№</th>
+                            <th scope="col" colspan="1" rowspan="1">Файл </th>
                             <th scope="col" colspan="1" rowspan="1">Тип мероприятия</th>
                             <th scope="col" colspan="1">Роль</th>
                             <th scope="col" colspan="1">Название</th>
@@ -234,12 +237,13 @@
                           <tbody>
                           <tr *ngFor="let results of events;">
                             <td>{{results.evId}}</td>
-                            <td>{{results.evType}}</td>
-                            <td>{{results.evRole}}</td>
-                            <td>{{results.evName}}</td>
-                            <td>{{results.evYear}}</td>
-                            <td>{{results.evCity}}</td>
-                            <td>{{results.evUrl}}</td>
+<!--                            <td> <a href="https://nir.iitu.kz/{{results.event_file}}" download="">{{results.eventName}}</a> </td>-->
+                            <td>{{results.event_type}}</td>
+                            <td>{{results.event_role}}</td>
+                            <td>{{results.event_name}}</td>
+                            <td>{{results.event_date}}</td>
+                            <td>{{results.event_city}}</td>
+                            <td>{{results.event_url}}</td>
                           </tr>
                           </tbody>
                         </table>
@@ -325,19 +329,19 @@
 <!--                          <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">-->
 <!--                            <div class="list-card-image">-->
 <!--                              <div class="favourite-heart text-danger position-absolute"><a href="#"><i class="icofont-heart"></i></a></div>-->
-<!--                              <div class="member-plan position-absolute"><span class="badge badge-dark">{{ev.evType}}</span></div>-->
+<!--                              <div class="member-plan position-absolute"><span class="badge badge-dark">{{ev.event_type}}</span></div>-->
 <!--                            </div>-->
 <!--                            <div class="p-3 position-relative">-->
 <!--                              <div class="list-card-body">-->
 <!--                                <h6 class="mb-1 pt-3">-->
-<!--                                  <a href="#" class="text-black">{{ev.evRole}}</a>-->
+<!--                                  <a href="#" class="text-black">{{ev.event_role}}</a>-->
 <!--                                </h6>-->
-<!--                                <p class="text-gray mb-3">{{ev.evCity}}</p>-->
-<!--                                <p class="text-gray mb-3">{{ev.evUrl}}</p>-->
-<!--                                <p class="text-gray mb-3 time"><span class="bg-light text-dark rounded-sm pl-2 pb-1 pt-1 pr-2"><i class="icofont-wall-clock"></i> {{ev.evYear | date:'shortDate'}}</span></p>-->
+<!--                                <p class="text-gray mb-3">{{ev.event_city}}</p>-->
+<!--                                <p class="text-gray mb-3">{{ev.event_url}}</p>-->
+<!--                                <p class="text-gray mb-3 time"><span class="bg-light text-dark rounded-sm pl-2 pb-1 pt-1 pr-2"><i class="icofont-wall-clock"></i> {{ev.event_date | date:'shortDate'}}</span></p>-->
 <!--                              </div>-->
 <!--                              <div class="list-card-badge">-->
-<!--                                <span class="badge badge-danger">{{ev.evName}}</span> <small></small>-->
+<!--                                <span class="badge badge-danger">{{ev.event_name}}</span> <small></small>-->
 <!--                              </div>-->
 <!--                            </div>-->
 <!--                          </div>-->
@@ -704,6 +708,9 @@
                         <th scope="col" colspan="1">Статус модерации</th>
                         <th scope="col" colspan="1">Дата ввода в базу</th>
                         <th scope="col" colspan="1">Кем проверено</th>
+                        <th scope="col" colspan="1">KZ</th>
+                        <th scope="col" colspan="1">RU</th>
+                        <th scope="col" colspan="1">EN</th>
                       </tr>
                       </thead>
                       <tbody class="table-striped">
@@ -713,16 +720,18 @@
                         <td>{{res.ptntIssueDate}}</td>
                         <td>{{res.ptntCountry}}</td>
                         <td>{{res.ptntPublishedTR}}</td>
-                        <td>{{res.ptntUser}}</td>
+                        <td>{{res.ptntUser.firstName}}  {{res.ptntUser.lastName}}</td>
                         <td>{{res.ptntStatus}}</td>
                         <td>{{res.ptntInsertedDate}}</td>
-                        <td>{{res.ptntCheckedUser}}</td>
+                        <td *ngIf="res.ptntCheckedUser != null">{{res.ptntCheckedUser.firstName}} {{res.ptntCheckedUser.lastName}}</td>
+                        <td *ngIf="res.ptntCheckedUser == null"></td>
+                        <td> <a href="https://nir.iitu.kz/{{res.ptntFileUrlKz}}" download="">{{res.ptntFileNameKz}}</a></td>
+                        <td> <a href="https://nir.iitu.kz/{{res.ptntFileUrlRu}}" download="">{{res.ptntFileNameRu}}</a></td>
+                        <td> <a href="https://nir.iitu.kz/{{res.ptntFileUrlEn}}" download="">{{res.ptntFileNameEn}}</a></td>
                       </tr>
                       </tbody>
                     </table>
-
                   </form>
-
                 </div>
               </div>
 
@@ -754,7 +763,7 @@
                         <td>{{res.ptntCountry}}</td>
                         <td>{{res.ptntType}}</td>
                         <td>{{res.ptntPublishedTR}}</td>
-                        <td>{{res.ptntUser}}</td>
+                        <td>{{res.ptntUser.firstName}}  {{res.ptntUser.lastName}}</td>
                         <td>{{res.ptntStatus}}
                           <button *ngIf="res.ptntStatus == 'Under review'" class="btn btn-success" (click)="setPatentStatus(res.ptntId, 2)">Подтвердить</button>
                           <button *ngIf="res.ptntStatus == 'Under review'" class="btn btn-danger" (click)="setPatentStatus(res.ptntId, 3)">Отправить на доработку</button>
@@ -762,7 +771,11 @@
                           <button *ngIf="res.ptntStatus == 'Returned for revision'" class="btn btn-success" (click)="setPatentStatus(res.ptntId, 2)">Подтвердить</button>
                         </td>
                         <td>{{res.ptntInsertedDate}}</td>
-                        <td>{{res.ptntCheckedUser}}</td>
+                        <td *ngIf="res.ptntCheckedUser != null">{{res.ptntCheckedUser.firstName}} {{res.ptntCheckedUser.lastName}}</td>
+                        <td *ngIf="res.ptntCheckedUser == null"></td>
+                        <td> <a href="https://nir.iitu.kz/{{res.ptntFileUrlKz}}" download="">{{res.ptntFileNameKz}}</a></td>
+                        <td> <a href="https://nir.iitu.kz/{{res.ptntFileUrlRu}}" download="">{{res.ptntFileNameRu}}</a></td>
+                        <td> <a href="https://nir.iitu.kz/{{res.ptntFileUrlEn}}" download="">{{res.ptntFileNameEn}}</a></td>
                       </tr>
                       </tbody>
                     </table>
@@ -838,8 +851,9 @@
             <small class="text-danger" [class.d-none]="publicationForm.get('pubDoi').valid || publicationForm.get('pubDoi').untouched">Данное поле обязательно для заполнения</small>
           </div>
           <div class="form-group">
-            <label for="exampleFormControlFile1">Загрузить файл</label>
-            <input type="file" class="form-control-file" id="exampleFormControlFile1" (change)="onFileSelected($event)">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadPublicationFile">
+              Загрузить файл
+            </button>
           </div>
         </form>
       </div>
@@ -851,12 +865,35 @@
   </div>
 </div>
 
+<div class="modal fade" id="uploadPublicationFile" tabindex="-1" role="dialog" aria-labelledby="uploadPulibcationFile" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadPublicationModalLabelRu">Загрузка файла</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form  enctype="multipart/form-data">
+          <label for="fileRu">Загрузить публикацию</label>
+          <input type="file" class="form-control-file" id="PubfileRu" (change)="onPubFileSelected($event)">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button [disabled]="!selectedFile" [class.disabled]="!selectedFile" type="button" class="btn btn-primary" (click)="uploadPublicationFile()" data-dismiss="modal">Загрузить файлы</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel1">Новая публикация</h5>
+        <h5 class="modal-title" id="exampleModalLabel1">Новая мероприятия</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -864,13 +901,13 @@
       <div class="modal-body">
         <form [formGroup]="eventForm">
           <label>Тип мероприятия</label>
-          <select class="form-control" id="evType">
+          <select class="form-control" id="event_type">
             <option value="Конференция">Конференция</option>
             <option value="Форум">Форум</option>
             <option value="Семинар">Семинар</option>
           </select>
           <label>Роль</label>
-          <select class="form-control" id="evRole">
+          <select class="form-control" id="event_role">
             <option value="Председатель">Председатель</option>
             <option value="Участник">Участник</option>
             <option value="Слушатель">Слушатель</option>
@@ -878,27 +915,28 @@
           </select>
           <div class="form-group">
             <label for="publicationName" class="col-form-label required">Название:</label>
-            <input [class.is-invalid]="eventForm.get('evName').invalid && eventForm.get('evName').touched" type="text" class="form-control" id="evName" formControlName="evName">
-            <small class="text-danger" [class.d-none]="eventForm.get('evName').valid || eventForm.get('evName').untouched">Данное поле обязательно для заполнения</small>
+            <input [class.is-invalid]="eventForm.get('event_name').invalid && eventForm.get('event_name').touched" type="text" class="form-control" id="event_name" formControlName="event_name">
+            <small class="text-danger" [class.d-none]="eventForm.get('event_name').valid || eventForm.get('event_name').untouched">Данное поле обязательно для заполнения</small>
           </div>
           <div class="form-group">
             <label for="year" class="col-form-label required">Год:</label>
-            <input [class.is-invalid]= "eventForm.get('evYear').invalid && eventForm.get('evYear').touched" type="date" class="form-control" id="evYear" formControlName="evYear">
-            <small class="text-danger" [class.d-none]="eventForm.get('evYear').valid || eventForm.get('evYear').untouched">Данное поле обязательно для заполнения</small>
+            <input [class.is-invalid]= "eventForm.get('event_date').invalid && eventForm.get('event_date').touched" type="date" class="form-control" id="event_date" formControlName="event_date">
+            <small class="text-danger" [class.d-none]="eventForm.get('event_date').valid || eventForm.get('event_date').untouched">Данное поле обязательно для заполнения</small>
           </div>
           <div class="form-group">
             <label for="publicationCity" class="col-form-label required">Город:</label>
-            <input [class.is-invalid]="eventForm.get('evCity').invalid && eventForm.get('evCity').touched" type="text" class="form-control" id="evCity" formControlName="evCity">
-          <small class="text-danger" [class.d-none]="eventForm.get('evCity').valid || eventForm.get('evCity').untouched">Данное поле обязательно для заполнения</small>
+            <input [class.is-invalid]="eventForm.get('event_city').invalid && eventForm.get('event_city').touched" type="text" class="form-control" id="event_city" formControlName="event_city">
+          <small class="text-danger" [class.d-none]="eventForm.get('event_city').valid || eventForm.get('event_city').untouched">Данное поле обязательно для заполнения</small>
           </div>
           <div class="form-group">
             <label for="publicationURL" class="col-form-label required"> URL</label>
-            <input [class.is-invalid]="eventForm.get('evUrl').invalid && eventForm.get('evUrl').touched" type="text" class="form-control" id="evURL" formControlName="evUrl">
-          <small class="text-danger" [class.d-none]="eventForm.get('evUrl').valid || eventForm.get('evUrl').untouched">Данное поле обязательно для заполнения</small>
+            <input [class.is-invalid]="eventForm.get('event_url').invalid && eventForm.get('event_url').touched" type="text" class="form-control" id="event_url" formControlName="event_url">
+          <small class="text-danger" [class.d-none]="eventForm.get('event_url').valid || eventForm.get('event_url').untouched">Данное поле обязательно для заполнения</small>
           </div>
           <div class="form-group">
-            <label for="exampleFormControlFile1">Загрузить файл</label>
-            <input type="file" class="form-control-file" id="exampleFormControlFile2">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadEventFile">
+              Загрузить файл
+            </button>
           </div>
         </form>
       </div>
@@ -909,6 +947,30 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="uploadEventFile" tabindex="-1" role="dialog" aria-labelledby="uploadEventFile" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadEventModalLabelRu">Загрузка файла</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form  enctype="multipart/form-data">
+          <label for="fileRu">Загрузить мероприятие</label>
+          <input type="file" class="form-control-file" id="EventfileRu" (change)="onEventFileSelected($event)">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button [disabled]="!selectedEventFile" [class.disabled]="!selectedEventFile" type="button" class="btn btn-primary" (click)="uploadEventFile()" data-dismiss="modal">Загрузить файлы</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 
