@@ -47,6 +47,7 @@
                               <button *ngIf="!updatePub && selectTable == 2 && Teacher_Role" class="btn btn-warning" type="submit" data-toggle="modal" data-target="#exampleModal1">Cоздать мероприятие</button>
                               <button *ngIf="!updatePub && selectTable == 1 && Teacher_Role" class="btn btn-warning" type="submit" data-toggle="modal" data-target="#exampleModal">Cоздать публикацию</button>
                               <button *ngIf="!updatePub && Teacher_Role" class="btn btn-warning my-3" type="submit" (click)="genereatePubPDF()">Cоздать cписок научных трудов</button>
+                              <button (click)="generatePdf()">Open PDF</button>
                               <button *ngIf="!updatePub && disRole" class="btn btn-warning " type="submit"  data-toggle="modal" data-target="#exampleModalCenter" routerLink="/dissovet" (click)="onDissovet()">Cоздать Диссовет</button>
                               <button *ngIf="Science_DeptRole && selectTable==7 && !updateProj" class="btn btn-warning" type="submit" (click)="updateProject()">Изменить научные проекты</button>
                               <button *ngIf="Science_DeptRole && selectTable==7 && updateProj" class="btn btn-warning" type="submit" (click)="updateProject()">Cохранить изменения</button>

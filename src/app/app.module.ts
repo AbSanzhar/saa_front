@@ -13,7 +13,6 @@ import { PushNotificationsModule } from 'ng-push';
 import {CustomHttpInterceptorService} from './api/CustomHttpInterceptorService';
 const config: SocketIoConfig = { url: 'http://localhost:8077', options: {} };
 import { HashLocationStrategy, LocationStrategy  } from '@angular/common';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +31,7 @@ import { HashLocationStrategy, LocationStrategy  } from '@angular/common';
       useClass: Interceptor,
       multi: true,
     },
-    WebSocketService
+    WebSocketService,
   ],
   bootstrap: [AppComponent]
 })

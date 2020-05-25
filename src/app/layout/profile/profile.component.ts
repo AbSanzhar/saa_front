@@ -5,6 +5,9 @@ import {Form, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '
 import {StartEndDateValidator} from '../../shared/start-end-date.validator';
 import {Router} from '@angular/router';
 import * as $ from 'jquery';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-profile',
@@ -12,7 +15,6 @@ import * as $ from 'jquery';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-
   // Update Project
   get ProjectScId() {
     return this.updateProjForm.get('scId') as FormArray;
@@ -297,6 +299,49 @@ export class ProfileComponent implements OnInit {
   private temEvent: {};
   public names = [];
   public exNames = [];
+  generatePdf() {
+    const documentDefinition = {  info: {
+        title: 'ИПП(' + this.user.firstName[0] + '.' + this.user.lastName + ')',
+        author: this.user.firstName + ' ' + this.user.lastName,
+        subject: 'ИПП',
+        keywords: 'keywords for document',
+      },
+      content: [
+        { text: '1. Оқу- әдістеме жұмысы / Учебно-методическая работа/Academic and methodological activities', style: 'anotherStyle' },
+
+        {
+          table: {
+            widths: ['*', 'auto', 'auto', 'auto'],
+
+            body: [
+              [ {text: 'Рет саны №п.п№', rowSpan: 2, colSpan: 1},
+                {text: 'Жұмыс аталуы, орындалу мерзімі\n' +
+                  'Наименование работ, срок выполнения\n' +
+                  'Activities, time frame\n', bold: true, rowSpan: 2, colSpan: 1},
+                {text: 'Жұмыс көлемі\n' +
+                    'Объем работы\n' +
+                    '(сағат / часы)\n' +
+                    'Workload \n' +
+                    '(hrs)\n', colSpan: 2, rowSpan: 1}],
+              ['' , '', 'sdfsdf', 'sdfsdf'],
+              [{text: 'текстовое содержимое', bold: true}, 'Вторая', 'Третья', 'sdfsdf']
+            ],
+            headerRows: 2
+          }
+        },
+
+
+      ],
+
+      styles: {
+        anotherStyle: {
+          fontSize: 12,
+          bold: true,
+          alignment: 'center'
+        }
+      }};
+    pdfMake.createPdf(documentDefinition).open();
+  }
 
   getDecodedAccessToken(token: string): any {
     try {
