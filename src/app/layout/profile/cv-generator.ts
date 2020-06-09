@@ -378,7 +378,6 @@ export class DocumentCreator {
                     ],
                     alignment: AlignmentType.LEFT
                   })],
-                  rowSpan: 4,
                   verticalMerge: VerticalMergeType.RESTART
                 }),
                 new TableCell({
@@ -432,7 +431,10 @@ export class DocumentCreator {
 
             new TableRow({
               children: [
-
+                new TableCell({
+                  children: [],
+                  verticalMerge: VerticalMergeType.CONTINUE
+                }),
                 new TableCell({
                   children: [new Paragraph({
                     children: [
@@ -447,7 +449,6 @@ export class DocumentCreator {
                     ],
                     alignment: AlignmentType.LEFT
                   })],
-                  verticalMerge: VerticalMergeType.CONTINUE
                 }),
                 new TableCell({
                   children: [new Paragraph({
@@ -486,6 +487,10 @@ export class DocumentCreator {
 
             new TableRow({
               children: [
+                new TableCell({
+                  children: [],
+                  verticalMerge: VerticalMergeType.CONTINUE
+                }),
                 new TableCell({
                   children: [new Paragraph({
                     children: [
@@ -539,10 +544,194 @@ export class DocumentCreator {
             new TableRow({
               children: [
                 new TableCell({
+                  children: [],
+                  verticalMerge: VerticalMergeType.CONTINUE
+                }),
+                new TableCell({
                   children: [new Paragraph({
                     children: [
                       new TextRun({
                         text: '- 5 и более лет',
+                        size: 20,
+                        font: {
+                          name: "Courier New",
+                        },
+                        color: 'black'
+                      }),
+                    ],
+                    alignment: AlignmentType.LEFT
+                  })],
+                }),
+                new TableCell({
+                  children: [new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: '0/1',
+                        size: 20,
+                        font: {
+                          name: "Courier New",
+                        },
+                        color: 'black'
+                      }),
+                    ],
+                    alignment: AlignmentType.LEFT
+                  })],
+                }),
+                new TableCell({
+                  children: [new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: '',
+                        size: 20,
+                        font: {
+                          name: "Courier New",
+                        },
+                        color: 'black'
+                      }),
+                    ],
+                    alignment: AlignmentType.LEFT
+                  })],
+                }),
+
+              ],
+            }),
+
+
+
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: '2',
+                        size: 20,
+                        font: {
+                          name: "Courier New",
+                        },
+                        color: 'black'
+                      }),
+                    ],
+                    alignment: AlignmentType.LEFT
+                  })],
+                  verticalMerge: VerticalMergeType.RESTART
+                }),
+                new TableCell({
+                  children: [new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: 'Форма собственности:',
+                        size: 20,
+                        font: {
+                          name: "Courier New",
+                        },
+                        color: 'black'
+                      }),
+                    ],
+                    alignment: AlignmentType.LEFT
+                  })],
+                }),
+                new TableCell({
+                  children: [new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: '',
+                        size: 20,
+                        font: {
+                          name: "Courier New",
+                        },
+                        color: 'black'
+                      }),
+                    ],
+                    alignment: AlignmentType.LEFT
+                  })],
+                }),
+                new TableCell({
+                  children: [new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: '',
+                        size: 20,
+                        font: {
+                          name: "Courier New",
+                        },
+                        color: 'black'
+                      }),
+                    ],
+                    alignment: AlignmentType.LEFT
+                  })],
+                }),
+
+              ],
+            }),
+
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [],
+                  verticalMerge: VerticalMergeType.CONTINUE
+                }),
+                new TableCell({
+                  children: [new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: '- государственная',
+                        size: 20,
+                        font: {
+                          name: "Courier New",
+                        },
+                        color: 'black'
+                      }),
+                    ],
+                    alignment: AlignmentType.LEFT
+                  })],
+                }),
+                new TableCell({
+                  children: [new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: '0/1',
+                        size: 20,
+                        font: {
+                          name: "Courier New",
+                        },
+                        color: 'black'
+                      }),
+                    ],
+                    alignment: AlignmentType.LEFT
+                  })],
+                }),
+                new TableCell({
+                  children: [new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: '',
+                        size: 20,
+                        font: {
+                          name: "Courier New",
+                        },
+                        color: 'black'
+                      }),
+                    ],
+                    alignment: AlignmentType.LEFT
+                  })],
+                }),
+
+              ],
+            }),
+
+
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [],
+                  verticalMerge: VerticalMergeType.CONTINUE
+                }),
+                new TableCell({
+                  children: [new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: '- частная',
                         size: 20,
                         font: {
                           name: "Courier New",
@@ -588,63 +777,69 @@ export class DocumentCreator {
               ],
             }),
 
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [],
+                }),
+                new TableCell({
+                  children: [new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: 'Итого по блоку 1:',
+                        size: 20,
+                        font: {
+                          name: "Courier New",
+                        },
+                        color: 'black'
+                      }),
+                    ],
+                    alignment: AlignmentType.LEFT
+                  })],
+                }),
+                new TableCell({
+                  children: [new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: '',
+                        size: 20,
+                        font: {
+                          name: "Courier New",
+                        },
+                        color: 'black'
+                      }),
+                    ],
+                    alignment: AlignmentType.LEFT
+                  })],
+                }),
+                new TableCell({
+                  children: [new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: '',
+                        size: 20,
+                        font: {
+                          name: "Courier New",
+                        },
+                        color: 'black'
+                      }),
+                    ],
+                    alignment: AlignmentType.LEFT
+                  })],
+                }),
+
+              ],
+            }),
+
+
 
 
 
 
 
           ],
-
-          //                   width: {
-          //     size: 100,
-          //     type: WidthType.PERCENTAGE,
-          // },
         }),
 
-
-        //             new Table({
-        // rows: [
-        //     new TableRow({
-        //         children: [
-        //             new TableCell({
-        //                 children: [new Paragraph("0,0")],
-        //             }),
-        //             new TableCell({
-        //                 children: [new Paragraph("0,1")],
-        //                 rowSpan: 2,
-        //             }),
-        //             new TableCell({
-        //                 children: [new Paragraph("0,2")],
-        //             }),
-        //         ],
-        //     }),
-        //     new TableRow({
-        //         children: [
-        //             new TableCell({
-        //                 children: [],
-        //             }),
-        //             new TableCell({
-        //                 children: [new Paragraph("1,2")],
-        //                 rowSpan: 2,
-        //             }),
-        //         ],
-        //     }),
-        //     new TableRow({
-        //         children: [
-        //             new TableCell({
-        //                 children: [],
-        //             }),
-        //             new TableCell({
-        //                 children: [],
-        //             }),
-        //         ],
-        //     }),
-        // ],
-        // width: {
-        //     size: 100,
-        //     type: WidthType.PERCENTAGE,
-        // },
-// }),
         this.createContactInfo(PHONE_NUMBER, PROFILE_URL, EMAIL),
         this.createHeading("Education"),
         ...educations
