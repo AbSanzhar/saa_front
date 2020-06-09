@@ -5,7 +5,9 @@ import {LayoutComponent} from '../layout.component';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 @Component({
   selector: 'app-year-plan',
   templateUrl: './year-plan.component.html',
@@ -908,6 +910,48 @@ export class YearPlanComponent implements OnInit {
   }
 
   downloadPlan() {
+    const documentDefinition = {  info: {
+        title: 'ИПП(' + ')',
+        author: ' a',
+        subject: 'ИПП',
+        keywords: 'keywords for document',
+      },
+      content: [
+        { text: '1. Оқу- әдістеме жұмысы / Учебно-методическая работа/Academic and methodological activities', bold: true},
+
+        {
+          table: {
+            widths: ['auto', 'auto', 'auto', 'auto'],
+
+            body: [
+              [ {text: 'Рет саны №п.п№', rowSpan: 2, bold: true},
+                {text: 'Жұмыс аталуы, орындалу мерзімі\n' +
+                    'Наименование работ, срок выполнения\n' +
+                    'Activities, time frame\n', bold: true, rowSpan: 2},
+                {text: 'Жұмыс көлемі\n' +
+                    'Объем работы\n' +
+                    '(сағат / часы)\n' +
+                    'Workload \n' +
+                    '(hrs)\n', colSpan: 2, bold: true, align: 'center'}, ''],
+              ['' , '', {text:'Жоспардың орындалу уақыты\n' +
+                  'Срок  выполения плана\n' +
+                  'Time frame\n', bold: true}, {text:'Жоспардың орындалуы\n' +
+                  'Фактическое\n' +
+                  'выполнение плана\n' +
+                  'Implementation\n', bold: true }],
+              [{text: this.gettedActs[0].acId}, {text: this.gettedActs[0].activities}, {text: this.gettedActs[0].timeFrame}, {text: this.gettedActs[0].implementation}],
+              this.gettedActs.map(function(act) {
+                return act.acId;
+              })
+            ],
+            headerRows: 2
+          }
+        },
+      ],
+    };
+    pdfMake.createPdf(documentDefinition).open();
+
+
     this.api.downloadYourPlan().subscribe(
       res => {
         this.url = window.URL.createObjectURL(res);

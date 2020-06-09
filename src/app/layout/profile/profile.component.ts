@@ -8,6 +8,12 @@ import * as $ from 'jquery';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import { Packer } from 'docx';
+import { saveAs } from 'file-saver';
+
+import { experiences, education, skills, achievements } from './cv-data';
+import { DocumentCreator } from './cv-generator';
+
 
 @Component({
   selector: 'app-profile',
@@ -299,6 +305,8 @@ export class ProfileComponent implements OnInit {
   private temEvent: {};
   public names = [];
   public exNames = [];
+
+
   generatePdf() {
     const documentDefinition = {  info: {
         title: 'ИПП(' + this.user.firstName[0] + '.' + this.user.lastName + ')',
@@ -307,39 +315,35 @@ export class ProfileComponent implements OnInit {
         keywords: 'keywords for document',
       },
       content: [
-        { text: '1. Оқу- әдістеме жұмысы / Учебно-методическая работа/Academic and methodological activities', style: 'anotherStyle' },
+        { text: '1. Оқу- әдістеме жұмысы / Учебно-методическая работа/Academic and methodological activities', bold: true},
 
         {
           table: {
-            widths: ['*', 'auto', 'auto', 'auto'],
+            widths: ['auto', 'auto', 'auto', 'auto'],
 
             body: [
-              [ {text: 'Рет саны №п.п№', rowSpan: 2, colSpan: 1},
+              [ {text: 'Рет саны №п.п№', rowSpan: 2, bold: true},
                 {text: 'Жұмыс аталуы, орындалу мерзімі\n' +
                   'Наименование работ, срок выполнения\n' +
-                  'Activities, time frame\n', bold: true, rowSpan: 2, colSpan: 1},
+                  'Activities, time frame\n', bold: true, rowSpan: 2},
                 {text: 'Жұмыс көлемі\n' +
                     'Объем работы\n' +
                     '(сағат / часы)\n' +
                     'Workload \n' +
-                    '(hrs)\n', colSpan: 2, rowSpan: 1}],
-              ['' , '', 'sdfsdf', 'sdfsdf'],
-              [{text: 'текстовое содержимое', bold: true}, 'Вторая', 'Третья', 'sdfsdf']
+                    '(hrs)\n', colSpan: 2, bold: true, align: 'center'}, ''],
+              ['' , '', {text: 'Жоспардың орындалу уақыты\n' +
+              'Срок  выполения плана\n' +
+              'Time frame\n', bold: true}, {text: 'Жоспардың орындалуы\n' +
+              'Фактическое\n' +
+              'выполнение плана\n' +
+              'Implementation\n', bold: true }],
+              [{text: '1', bold: true}, 'Вторая', 'Третья', 'sdfsdf']
             ],
             headerRows: 2
           }
         },
-
-
       ],
-
-      styles: {
-        anotherStyle: {
-          fontSize: 12,
-          bold: true,
-          alignment: 'center'
-        }
-      }};
+      };
     pdfMake.createPdf(documentDefinition).open();
   }
 
@@ -351,7 +355,27 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  name = "Angular";
+
+  public download(): void {
+    const documentCreator = new DocumentCreator();
+    const doc = documentCreator.create([
+      experiences,
+      education,
+      skills,
+      achievements
+    ]);
+
+    Packer.toBlob(doc).then(blob => {
+      console.log(blob);
+      saveAs(blob, "Рейтинг лист.docx");
+      console.log("Document created successfully");
+    });
+  }
+
   ngOnInit() {
+
+
     this.uploadForm = this.fb.group({
       profile: ['']
     });
