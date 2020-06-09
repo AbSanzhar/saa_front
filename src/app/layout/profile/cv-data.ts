@@ -1,8 +1,7 @@
 export const experiences = [
   {
     isCurrent: true,
-    summary: "Об утверждении Правил оказания государственной услуги \"Аккредитация субъектов научной и (или) научно-технической деятельности\"\n" +
-      "Приказ Министра образования и науки Республики Казахстан от 12 мая 2020 года № 196. Зарегистрирован в Министерстве юстиции Республики Казахстан 13 мая 2020 года № 20626\n",
+    summary: "Full-stack developer working with Angular and Java. Working for the iShares platform",
     title: "Associate Software Developer",
     startDate: {
       month: 11,

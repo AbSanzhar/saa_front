@@ -1,4 +1,4 @@
-import { AlignmentType, Document, HeadingLevel, Packer, Paragraph, TabStopPosition, TabStopType, TextRun, Table, TableRow, TableCell,WidthType  } from "docx";
+import { AlignmentType, Document, HeadingLevel, Packer, Paragraph, TabStopPosition, TabStopType, TextRun, Table, TableRow, TableCell,WidthType, VerticalMergeType  } from "docx";
 const PHONE_NUMBER = "07534563401";
 const PROFILE_URL = "https://www.linkedin.com/in/dolan1";
 const EMAIL = "docx@docx.com";
@@ -346,7 +346,7 @@ export class DocumentCreator {
                   children: [new Paragraph({
                     children: [
                       new TextRun({
-                        text: '',
+                        text: ' ',
                         size: 20,
                         font: {
                           name: "Courier New",
@@ -378,7 +378,8 @@ export class DocumentCreator {
                     ],
                     alignment: AlignmentType.LEFT
                   })],
-                  rowSpan: 4
+                  rowSpan: 4,
+                  verticalMerge: VerticalMergeType.RESTART
                 }),
                 new TableCell({
                   children: [new Paragraph({
@@ -431,6 +432,7 @@ export class DocumentCreator {
 
             new TableRow({
               children: [
+
                 new TableCell({
                   children: [new Paragraph({
                     children: [
@@ -445,6 +447,7 @@ export class DocumentCreator {
                     ],
                     alignment: AlignmentType.LEFT
                   })],
+                  verticalMerge: VerticalMergeType.CONTINUE
                 }),
                 new TableCell({
                   children: [new Paragraph({
@@ -497,6 +500,7 @@ export class DocumentCreator {
                     ],
                     alignment: AlignmentType.LEFT
                   })],
+                  verticalMerge: VerticalMergeType.CONTINUE
                 }),
                 new TableCell({
                   children: [new Paragraph({
@@ -548,6 +552,7 @@ export class DocumentCreator {
                     ],
                     alignment: AlignmentType.LEFT
                   })],
+                  verticalMerge: VerticalMergeType.CONTINUE
                 }),
                 new TableCell({
                   children: [new Paragraph({
@@ -584,54 +589,62 @@ export class DocumentCreator {
             }),
 
 
+
+
+
+
           ],
 
-
+          //                   width: {
+          //     size: 100,
+          //     type: WidthType.PERCENTAGE,
+          // },
         }),
 
-        new Table({
-          rows: [
-            new TableRow({
-              children: [
-                new TableCell({
-                  children: [new Paragraph("0,0")],
-                }),
-                new TableCell({
-                  children: [new Paragraph("0,1")],
-                  rowSpan: 2,
-                }),
-                new TableCell({
-                  children: [new Paragraph("0,2")],
-                }),
-              ],
-            }),
-            new TableRow({
-              children: [
-                new TableCell({
-                  children: [],
-                }),
-                new TableCell({
-                  children: [new Paragraph("1,2")],
-                  rowSpan: 2,
-                }),
-              ],
-            }),
-            new TableRow({
-              children: [
-                new TableCell({
-                  children: [],
-                }),
-                new TableCell({
-                  children: [],
-                }),
-              ],
-            }),
-          ],
-          width: {
-            size: 100,
-            type: WidthType.PERCENTAGE,
-          },
-        }),
+
+        //             new Table({
+        // rows: [
+        //     new TableRow({
+        //         children: [
+        //             new TableCell({
+        //                 children: [new Paragraph("0,0")],
+        //             }),
+        //             new TableCell({
+        //                 children: [new Paragraph("0,1")],
+        //                 rowSpan: 2,
+        //             }),
+        //             new TableCell({
+        //                 children: [new Paragraph("0,2")],
+        //             }),
+        //         ],
+        //     }),
+        //     new TableRow({
+        //         children: [
+        //             new TableCell({
+        //                 children: [],
+        //             }),
+        //             new TableCell({
+        //                 children: [new Paragraph("1,2")],
+        //                 rowSpan: 2,
+        //             }),
+        //         ],
+        //     }),
+        //     new TableRow({
+        //         children: [
+        //             new TableCell({
+        //                 children: [],
+        //             }),
+        //             new TableCell({
+        //                 children: [],
+        //             }),
+        //         ],
+        //     }),
+        // ],
+        // width: {
+        //     size: 100,
+        //     type: WidthType.PERCENTAGE,
+        // },
+// }),
         this.createContactInfo(PHONE_NUMBER, PROFILE_URL, EMAIL),
         this.createHeading("Education"),
         ...educations
