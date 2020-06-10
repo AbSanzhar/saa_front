@@ -12,7 +12,7 @@ import { Packer } from 'docx';
 import { saveAs } from 'file-saver';
 
 import { experiences, education, skills, achievements } from './cv-data';
-import { DocumentCreator } from './cv-generator';
+import { DocumentCreator } from './rateList-generator';
 
 
 @Component({
@@ -305,8 +305,8 @@ export class ProfileComponent implements OnInit {
   private temEvent: {};
   public names = [];
   public exNames = [];
-
-
+  public PubTypeCounts;
+  public UserDegreeCounts;
   generatePdf() {
     const documentDefinition = {  info: {
         title: 'ИПП(' + this.user.firstName[0] + '.' + this.user.lastName + ')',
@@ -355,16 +355,10 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  name = "Angular";
 
   public download(): void {
     const documentCreator = new DocumentCreator();
-    const doc = documentCreator.create([
-      experiences,
-      education,
-      skills,
-      achievements
-    ]);
+    const doc = DocumentCreator.create(this.PubTypeCounts, this.UserDegreeCounts);
 
     Packer.toBlob(doc).then(blob => {
       console.log(blob);
@@ -374,7 +368,25 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._api.getPubTypeCount().subscribe(
+      res => {
+        console.log(res);
+        this.PubTypeCounts = res;
+      },
+      err => {
+        console.log(err);
+      }
+    );
 
+    this._api.getUserDegreeCount().subscribe(
+      res => {
+        console.log(res);
+        this.UserDegreeCounts = res;
+      },
+      err => {
+        console.log(err);
+      }
+    );
 
     this.uploadForm = this.fb.group({
       profile: ['']

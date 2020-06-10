@@ -381,38 +381,19 @@ export class ApiService {
     const formData = new FormData();
     formData.append('file', file);
     console.log(formData);
-    
-
-    // this.http.post <any>(url, formData, {
-    //   // headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data' })
-    // })
-    //   .subscribe(
-    //     data => {
-    //       console.log(data);
-    //     }
-    //   );
-
-    // const req = new HttpRequest('POST', url, formData, {
-    //   reportProgress: true,
-    //   responseType: 'json',
-    //   headers: httpHeaders
-    // });
-    // this.http.post<any>(url, formData).subscribe(
-    //   (res) => console.log(res),
-    //   (err) => console.log(err)
-    // );
-    // console.log(req);
-    // return this.http.post(url, {file: file},
-    // {
-    //   reportProgress: true,
-    //     responseType: 'json',
-    //     headers: {
-    //       'Content-type': undefined
-    //     }
-    // }).pipe(catchError(this.errorHandler));
-    // return this.http.request(req);
     return null;
   }
+
+  getPubTypeCount(): Observable<any> {
+    const url = 'ratingList/publicationTypeCount';
+    return this.http.get(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'));
+  }
+
+  getUserDegreeCount(): Observable<any> {
+    const url = 'ratingList/UserDegreeCount';
+    return this.http.get(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'));
+  }
+
 
   errorHandler(error: HttpErrorResponse) {
     return throwError(error.message || 'Server Error');
