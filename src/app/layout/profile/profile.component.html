@@ -48,8 +48,8 @@
                               <button *ngIf="!updatePub && selectTable == 1 && Teacher_Role" class="btn btn-warning" type="submit" data-toggle="modal" data-target="#exampleModal">Cоздать публикацию</button>
                               <button *ngIf="!updatePub && Teacher_Role" class="btn btn-warning my-3" type="submit" (click)="genereatePubPDF()">Cоздать cписок научных трудов</button>
                               <button (click)="generatePdf()">Open PDF</button>
-                              <button (click)="download()">Generate Word Document</button>
-                              <button *ngIf="!updatePub && disRole" class="btn btn-warning " type="submit"  data-toggle="modal" data-target="#exampleModalCenter" routerLink="/dissovet" (click)="onDissovet()">Cоздать Диссовет</button>
+                              <button class="btn btn-warning my-2" type="submit" (click)="download()">Generate Word Document</button>
+                              <button *ngIf="!updatePub && disRole" class="btn btn-warning my-2" type="submit"  data-toggle="modal" data-target="#exampleModalCenter" routerLink="/dissovet" (click)="onDissovet()">Cоздать Диссовет</button>
                               <button *ngIf="Science_DeptRole && selectTable==7 && !updateProj" class="btn btn-warning" type="submit" (click)="updateProject()">Изменить научные проекты</button>
                               <button *ngIf="Science_DeptRole && selectTable==7 && updateProj" class="btn btn-warning" type="submit" (click)="updateProject()">Cохранить изменения</button>
                               <button *ngIf="ScProjectManager" class="btn btn-warning my-3" type="submit" data-toggle="modal" data-target="#exampleModal2">Создать научный проект</button>
@@ -798,6 +798,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Новая публикация</h5>
+        {{publicationForm.value | json}}
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true"></span>
         </button>
@@ -812,6 +813,13 @@
             <option value="Пособие">Пособие</option>
             <option value="Охранный документ">Охранный документ</option>
             <option value="Периодическое издание">Периодическое издание</option>
+          </select>
+          <label>Где опубликовано</label>
+          <select class="form-control" id="pubPublished">
+            <option value="в международных рецензируемых научных журналах(по JCR, или имеющих в базе данных Scopus, в Web of Science)">в международных рецензируемых научных журналах(по JCR, или имеющих в базе данных Scopus, в Web of Science)</option>
+            <option value="в научных журналах, индексируемых РИНЦ и других международных базах с ненулевым импакт-фактором">в научных журналах, индексируемых РИНЦ и других международных базах с ненулевым импакт-фактором</option>
+            <option value="КОКСОН МОН РК">КОКСОН МОН РК</option>
+            <option value="в материалах конференций, форумов, съездов, симпозиумов, конгрессов">в материалах конференций, форумов, съездов, симпозиумов, конгрессов</option>
           </select>
           <div class="form-group">
             <label for="soAname" class="col-form-label">Cоавтор:</label>

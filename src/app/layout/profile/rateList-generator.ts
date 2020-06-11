@@ -3,7 +3,7 @@ import { AlignmentType, Document, HeadingLevel, Packer, Paragraph, TabStopPositi
 import {ApiService} from '../../api/api.service';
 
 export class DocumentCreator {
-  public static create(PubTypeCount, UserDegreeCount): Document {
+  public static create(PubTypeCount, UserDegreeCount, publishCount): Document {
     const document = new Document({
       creator: 'Men'
     });
@@ -4504,7 +4504,7 @@ export class DocumentCreator {
                   children: [new Paragraph({
                     children: [
                       new TextRun({
-                        text: '- в международных рецензируемых научных журналах, входящих в 1, 2 и 3 квартиль по данным Journal Citation Reports (Джоурнал Ситэйшн Рэпортс) компании Clarivate Analytics (Кларивэйт Аналитикс), или имеющих в базе данных Scopus (Скопус) показатель процентиль по CiteScore (СайтСкор) не менее 35 хотя бы по одной из научных областей, в области социальных и гуманитарных наук, в журналах, индексируемых в базе данных Web of Science Core Collection (Уэп оф Сайнс Кор Калэкшн) (Arts and Humanities Citation Index (Артс энд Хюманитис Ситэйшн Индекс), Science Citation Index Expanded (Сайнс Ситэйшн Индекс Экспандэд), Social Sciences Citation Index (Сошл Сайнс Ситиэйшн Индекс)), компании Clarivate Analytics (Кларивэйт Аналитикс)Сокращенный вариант, нужно чтобы была ссылка на полный вариант в виде вопроса или инфо: в международных рецензируемых научных журналах(по JCR, или имеющих в базе данных Scopus, в Web of Science)',
+                        text: '- в международных рецензируемых научных журналах, входящих в 1, 2 и 3 квартиль по данным Journal Citation Reports (Джоурнал Ситэйшн Рэпортс) компании Clarivate Analytics (Кларивэйт Аналитикс), или имеющих в базе данных Scopus (Скопус) показатель процентиль по CiteScore (СайтСкор) не менее 35 хотя бы по одной из научных областей, в области социальных и гуманитарных наук, в журналах, индексируемых в базе данных Web of Science Core Collection (Уэп оф Сайнс Кор Калэкшн) (Arts and Humanities Citation Index (Артс энд Хюманитис Ситэйшн Индекс), Science Citation Index Expanded (Сайнс Ситэйшн Индекс Экспандэд), Social Sciences Citation Index (Сошл Сайнс Ситиэйшн Индекс)), компании Clarivate Analytics (Кларивэйт Аналитикс)',
                         size: 20,
                         font: {
                           name: "Courier New",
@@ -4534,7 +4534,7 @@ export class DocumentCreator {
                   children: [new Paragraph({
                     children: [
                       new TextRun({
-                        text: '',
+                        text: `${publishCount.internationalScientificJournal}`,
                         size: 20,
                         font: {
                           name: "Courier New",
@@ -4590,7 +4590,7 @@ export class DocumentCreator {
                   children: [new Paragraph({
                     children: [
                       new TextRun({
-                        text: '',
+                        text: `${publishCount.scientificJournal}`,
                         size: 20,
                         font: {
                           name: "Courier New",
@@ -4645,7 +4645,7 @@ export class DocumentCreator {
                   children: [new Paragraph({
                     children: [
                       new TextRun({
-                        text: '',
+                        text: `${publishCount.scientificPublications}`,
                         size: 20,
                         font: {
                           name: "Courier New",
@@ -4701,7 +4701,7 @@ export class DocumentCreator {
                   children: [new Paragraph({
                     children: [
                       new TextRun({
-                        text: '',
+                        text: `${publishCount.conferenceProceedings}`,
                         size: 20,
                         font: {
                           name: "Courier New",

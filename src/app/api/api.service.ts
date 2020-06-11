@@ -394,6 +394,11 @@ export class ApiService {
     return this.http.get(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'));
   }
 
+  getPublishCount(): Observable<any> {
+    const url = 'publication/publishedCount';
+    return this.http.get(this.base + url + '?jwt_token=' + window.localStorage.getItem('token'));
+  }
+
 
   errorHandler(error: HttpErrorResponse) {
     return throwError(error.message || 'Server Error');

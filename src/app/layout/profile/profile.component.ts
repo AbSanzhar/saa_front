@@ -307,6 +307,7 @@ export class ProfileComponent implements OnInit {
   public exNames = [];
   public PubTypeCounts;
   public UserDegreeCounts;
+  public publishCount;
   generatePdf() {
     const documentDefinition = {  info: {
         title: 'ИПП(' + this.user.firstName[0] + '.' + this.user.lastName + ')',
@@ -358,7 +359,7 @@ export class ProfileComponent implements OnInit {
 
   public download(): void {
     const documentCreator = new DocumentCreator();
-    const doc = DocumentCreator.create(this.PubTypeCounts, this.UserDegreeCounts);
+    const doc = DocumentCreator.create(this.PubTypeCounts, this.UserDegreeCounts, this.publishCount);
 
     Packer.toBlob(doc).then(blob => {
       console.log(blob);
@@ -382,6 +383,15 @@ export class ProfileComponent implements OnInit {
       res => {
         console.log(res);
         this.UserDegreeCounts = res;
+      },
+      err => {
+        console.log(err);
+      }
+    );
+    this._api.getPublishCount().subscribe(
+      res => {
+        console.log(res);
+        this.publishCount = res;
       },
       err => {
         console.log(err);
@@ -642,7 +652,8 @@ export class ProfileComponent implements OnInit {
       pubPage: ['', Validators.required],
       pubUrl: ['', Validators.required],
       pubDoi: ['', Validators.required],
-      pubFile: ''
+      pubFile: '',
+      pubPublished: ['', Validators.required]
     });
     this.eventForm = this.fb.group({
       event_type: [''],
@@ -831,8 +842,10 @@ export class ProfileComponent implements OnInit {
 
   sendPublication($event) {
     const publicationType1 = (document.getElementById('publicationType') as HTMLInputElement).value;
+    const publicationPub = (document.getElementById('pubPublished') as HTMLInputElement).value;
     this.publicationForm.patchValue({
       pubType: publicationType1,
+      pubPublished: publicationPub
     });
     console.log(this.publicationForm.value);
     this._api.uploadPub(this.publicationForm.value).subscribe(
